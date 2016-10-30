@@ -115,7 +115,7 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
     if (err) {
       return done(err);
     } else {
-      // Si un usuario no ha podido ser encontrado, crea un nueo user, en otro caso, continua al siguiente middleware
+      // Si un usuario no ha podido ser encontrado, crea un nuevo user, en otro caso, continua al siguiente middleware
       if (!user) {
         // Configura un posible username base username
         var possibleUsername = profile.username || ((profile.email) ? profile.email.split('@')[0] : '');

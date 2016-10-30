@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Usar la propiedad 'title' para renderizar un título de página  -->
+	<title><%= title %></title>
+</head>
+<body>
+	<!-- Si un usuario es autentificado, mostrar el nombre completo del usuario, de no ser así mostrar los enlaces de autentificación -->
+	<% if ( userFullName ) { %>
+		<h2>Hola <%=userFullName%> </h2> 
+		<a href="/signout">Cerrar Sesión</a>
+	<% } else { %>
+		<a href="/signup">Crear Cuenta</a>
+		<a href="/signin">Identificarse</a>
+	<% } %>
+	<br>
+
+	<!-- Load the static image file  -->
+	<img src="img/Foto HV - Luisca.JPG" alt="Logo">
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Usar la propiedad 'title' para renderizar un titulo de página -->
+		<title>
+			<%=title %>
+		</title>
+	</head>
+	<body>
+		<!-- Mostrar mensajes flass -->
+		<% for(var i in messages) { %>
+			<div class='flash'><%= messages[i] %></div>
+		<% } %>
+		<!--  Renderiar el formulario signin -->
+		<form action='/signin' method='post'>
+			<div>
+				<label>Usuario:</label>
+				<input type='text' name='username'>
+			</div>
+			<div>
+				<label>Contraseña:</label>
+				<input type='password' name='password'>
+			</div>			
+			<div>
+				<input type='submit' value='Identificarse'>
+			</div>
+		</form>
+		<a href="/oauth/google">Identificarse usando Google</a>
+	</body>
+</html>

@@ -6,7 +6,7 @@ var mongoose = require('./config/mongoose'),express = require('./config/express'
 var db = mongoose();
 var app = express();
 var passport = passport();
-app.listen(8081);
+app.listen(3000);
 module.exports = app;
 
-console.log('Servidor ejecutándose en http://localhost:8081/');
+console.log('Servidor ejecutándose en http://localhost:3000/');

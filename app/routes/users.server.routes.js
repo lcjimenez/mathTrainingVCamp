@@ -29,10 +29,11 @@ module.exports = function(app) {
     ],
     failureRedirect: '/signin'
   }));
-  app.get('/oauth/google/callback', passport.authenticate('google', {
-    failureRedirect: '/signin',
-    successRedirect: '/'
-  }));
+  app.get('/oauth/google/callback', 
+    passport.authenticate('google', {failureRedirect: '/signin'}),
+    function(req, res) {
+    res.redirect('/');
+  });
 
   //Configurar la route 'signout'
   app.get('/signout', users.signout);

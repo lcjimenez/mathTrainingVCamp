@@ -12,8 +12,13 @@ var UserSchema = new Schema({
   lastName: String,
   email: {
     type: String,
+    //Configurar un único index 'email'
+    unique: true,
+    //Validar existencia valor 'email'
+    require: 'El correo es obligatorio',
     // Validar el formato email 
-    match: [/.+\@.+\..+/, "Por favor escribe una dirección de email correcta"]
+    //match: [/.+\@.+\..+/, "Por favor escribe una dirección de email correcta"]
+    match: [/.+\@universidadean.edu.co$/, "Por favor escribe una dirección de correo de la Universidad EAN"]
   },
   username: {
     type: String,

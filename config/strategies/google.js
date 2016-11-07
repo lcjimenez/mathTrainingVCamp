@@ -12,9 +12,28 @@ module.exports = function() {
     passReqToCallback: true
   },
   function(req, accessToken, refreshToken, profile, done) {
+  //function(req, res, accessToken, refreshToken, profile, done) {
+
+      var providerData = profile._json;
+      providerData.accessToken = accessToken;
+      providerData.refreshToken = refreshToken;
+
+      var providerUserProfile = {
+        firstName: profile.name.givenName,
+        lastName: profile.name.familyName,
+        fullName: profile.displayName,
+        email: profile.emails[0].value,
+        username: profile.username,
+        provider: 'google',
+        providerId: profile.id,
+        providerData: providerData
+      };
+
+      users.saveOAuthUserProfile(req, providerUserProfile, done);
+      //users.saveOAuthUserProfile(req, res, providerUserProfile, done);
 
     // Se asegura que el dominio del correo electrónico pertenence a la universidad ean
-    if(profile._json.domain === config.domain){
+    /*if(profile._json.domain === config.domain){
       var providerData = profile._json;
       providerData.accessToken = accessToken;
       providerData.refreshToken = refreshToken;
@@ -34,7 +53,11 @@ module.exports = function() {
     }
     else{
         // fail        
-        done(new Error(profile._json.domain + " es un dominio inválido "+JSON.stringify(profile._json)));
-    }
+        //done(new Error(profile._json.domain + " es un dominio inválido "+JSON.stringify(profile._json)));
+        
+        return done(null, false, {
+          message: 'El dominio no pertenece a la universidad'
+        });
+    }*/
   }));
 };

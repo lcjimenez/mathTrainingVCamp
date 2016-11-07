@@ -68,8 +68,10 @@ exports.renderSignup = function(req, res, next) {
 // Crear un nuevo método controller que crea nuevos users 'regular'
 exports.signup = function(req, res, next) {
   // Si user no está conectado, crear y hacer login a un nuevo usuario, en otro caso redireccionar el user de vuelta a la página de la aplicación principal
+  // El req.user se obtiene al utilizar el paquete 'passport' (revisar General->Configure->Sessions en su documentación oficial)
   if (!req.user) {
     // Crear una nueva instancia del modelo 'User'
+    // req.body se obtiene al utilizar el paquete 'body-parser'
     var user = new User(req.body);
     var message = null;
 
@@ -84,6 +86,7 @@ exports.signup = function(req, res, next) {
         var message = getErrorMessage(err);
 
         // Configura los mensajes flash
+        // req.flash se obtiene al utilizar el paquete 'flash'
         req.flash('error', message);
 
         // Redirecciona al usuario de vuelta a la página signup
@@ -106,6 +109,7 @@ exports.signup = function(req, res, next) {
 
 // Crear un nuevo método controller que crea nuevos usuarios 'OAuth'
 exports.saveOAuthUserProfile = function(req, profile, done) {
+//exports.saveOAuthUserProfile = function(req, res, profile, done) {
   // Prueba a encontrar un documento user que fue registrado usando el actual provider OAuth
   User.findOne({
     provider: profile.provider,
@@ -130,8 +134,15 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
 
           // Intenta salvar el nuevo documento user
           user.save(function(err) {
+            // Si ocurre un error, usa el mensaje flash para reportar el error
+
+            var message = getErrorMessage(err);
+            // Configura los mensajes flash
+            // req.flash se obtiene al utilizar el paquete 'flash'
+            req.flash('error', message);
             // Continúa al siguiente middleware
-            return done(err, user);
+            //return done(err, user);
+            return done(null, null);
           });
         });
       } else {

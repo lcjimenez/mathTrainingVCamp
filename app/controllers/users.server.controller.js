@@ -33,30 +33,23 @@ var getErrorMessage = function(err) {
   return message;
 };
 
-// Crear un nuevo método controller que renderiza la página signin
-exports.renderSignin = function(req, res, next) {
-  // Si el usuario no está conectado renderizar la página signin, en otro caso redireccionar al usuario de vuelta a la página principal de la aplicación
-  if (!req.user) {
-    // Usa el objeto 'response' para renderizar la página signin
-    res.render('signin', {
-      // Configurar la variable title de la página
-      title: 'Sign-in Form',
-      // Configurar la variable del mensaje flash
-      messages: req.flash('error') || req.flash('info')
-    });
-  } else {
-    return res.redirect('/');
-  }
+exports.success = function(req, res){
+  res.send({state: 'success', user: req.user ? req.user : null});
 };
 
+exports.failure = function(req, res){
+  res.send({state: 'failure', user: null, message: req.flash('error')});
+};
+
+
 // Crear un nuevo método controller que renderiza la página signup
-exports.renderSignup = function(req, res, next) {
+exports.errorRegister = function(req, res, next) {
   // Si el usuario no está conectado renderizar la página signup, en otro caso redireccionar al usuario de vuelta a la página principal de la aplicación
   if (!req.user) {
     // Usa el objeto 'response' para renderizar la página signup
-    res.render('signup', {
+    res.render('error-register', {
       // Configurar la variable title de la página
-      title: 'Sign-up Form',
+      title: 'Error en el registro',
       // Configurar la variable del mensaje flash
       messages: req.flash('error')
     });
@@ -65,8 +58,9 @@ exports.renderSignup = function(req, res, next) {
   }
 };
 
+
 // Crear un nuevo método controller que crea nuevos users 'regular'
-exports.signup = function(req, res, next) {
+exports.register = function(req, res, next) {
   // Si user no está conectado, crear y hacer login a un nuevo usuario, en otro caso redireccionar el user de vuelta a la página de la aplicación principal
   // El req.user se obtiene al utilizar el paquete 'passport' (revisar General->Configure->Sessions en su documentación oficial)
   if (!req.user) {
@@ -89,8 +83,8 @@ exports.signup = function(req, res, next) {
         // req.flash se obtiene al utilizar el paquete 'flash'
         req.flash('error', message);
 
-        // Redirecciona al usuario de vuelta a la página signup
-        return res.redirect('/signup');
+        // Indica que hubo un error en el proceso de creación de usuario
+        return res.redirect('/users/failure');
       }
 
       // Si el usuario fue creado de modo correcto usa el método 'login' de Passport para hacer login
@@ -98,12 +92,12 @@ exports.signup = function(req, res, next) {
         // Si ocurre un error de login moverse al siguiente middleware
         if (err) return next(err);
 
-        // Redireccionar al usuario de vuelta a la página de la aplicación principal
-        return res.redirect('/');
+        // Indica que el proceso de creación de usuario se realizó correctamente
+        return res.redirect('/users/success');
       });
     });
   } else {
-    return res.redirect('/');
+    return res.redirect('/users/success');
   }
 };
 
@@ -136,13 +130,16 @@ exports.saveOAuthUserProfile = function(req, profile, done) {
           user.save(function(err) {
             // Si ocurre un error, usa el mensaje flash para reportar el error
 
-            var message = getErrorMessage(err);
+            if(err){
+              var message = getErrorMessage(err);
             // Configura los mensajes flash
             // req.flash se obtiene al utilizar el paquete 'flash'
             req.flash('error', message);
+            return done(null, false);
+            }
             // Continúa al siguiente middleware
-            //return done(err, user);
-            return done(null, null);
+            //return done(null, null);
+            return done(err, user);
           });
         });
       } else {
@@ -162,3 +159,15 @@ exports.signout = function(req, res) {
   res.redirect('/');
 };
 
+// Crear un nuevo middleware controller que es usado para autorizar operaciones de autentificación 
+exports.requiresLogin = function(req, res, next) {
+  // Si un usuario no está autentificado envía el mensaje de error apropiado
+  if (!req.isAuthenticated()) {
+    return res.status(401).send({
+      message: 'Usuario no está identificado'
+    });
+  }
+
+  // Llamar al siguiente middleware
+  next();
+};

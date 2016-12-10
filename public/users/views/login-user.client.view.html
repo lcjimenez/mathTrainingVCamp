@@ -1,0 +1,21 @@
+<!-- Crear la View Login -->
+<section data-ng-controller="UsersController">
+	<div>
+		<!-- El formulario login -->
+		<form class="form-auth" data-ng-submit="login()">
+			<h2>Inciar sesión</h2>
+			<p class="text-warning">{{error_message}}</p>
+		    Nombre de Usuario: <br>
+			<input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
+			Contraseña: <br>
+		    <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
+			<input type="submit" value="Iniciar sesión" class="btn btn-primary" />
+		</form>
+	</div>
+	<br>
+	<div>
+		<a href="/oauth/google" class="btn btn-block btn-social btn-google">
+	    	<span class="fa fa-google"></span> Iniciar sesión usando Google
+	    </a>
+	</div>
+</section>

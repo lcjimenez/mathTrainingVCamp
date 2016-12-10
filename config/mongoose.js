@@ -8,6 +8,7 @@ var config = require('./config'),
 // Definir el método de configuración de Mongoose
 module.exports = function(){
 	// Usar Mongoose para conectar a MongoDB
+	mongoose.Promise = global.Promise;
 	var db = mongoose.connect(config.db);
 
 	// Cargar el modelo 'User'

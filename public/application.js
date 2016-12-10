@@ -1,12 +1,13 @@
-var mainApplicationModuleName = "mean";
+var mainApplicationModuleName = 'mean';
 
-var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngRoute','users','example']);
+var mainApplicationModule = angular.module(mainApplicationModuleName, ['googlechart','ngSanitize','ngResource','ngRoute','users','example', 'articles']);
 
-mainApplicationModule.config(['$locationProvider',function ($locationProvider) {
-		$locationProvider.hashPrefix('!');
-	}
+mainApplicationModule.config(['$locationProvider',
+  function($locationProvider) {
+    $locationProvider.hashPrefix('!');
+  }
 ]);
 
-angular.element(document).ready(function(){
-	angular.bootstrap(document, [mainApplicationModuleName]);
+angular.element(document).ready(function() {
+  angular.bootstrap(document, [mainApplicationModuleName]);
 });

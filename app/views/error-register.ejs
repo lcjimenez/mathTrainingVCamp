@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Usar la propiedad 'title' para renderizar un titulo de página -->
+		<title>
+			<%=title %>
+		</title>
+	</head>
+	<body>
+		<!-- Mostrar mensajes flash -->
+		<% for(var i in messages) { %>
+			<div class='flash'><%= messages[i] %></div>
+		<% } %>
+		<!--  Renderiar el formulario signup -->
+		<a href="/">Volver al panel principal</a>
+	</body>
+</html>

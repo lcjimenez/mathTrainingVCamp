@@ -7,19 +7,25 @@ var users = require('../../app/controllers/users.server.controller'),
 
 //Definir el método del módulo routes
 module.exports = function(app) {
-  //Configurar las rutas 'signup'
-  app.route('/signup')
-     .get(users.renderSignup)
-     .post(users.signup);
+
+    //sends successful login state back to angular
+    app.route('/users/success').get(users.success);
+
+    //sends failure login state back to angular
+    app.route('/users/failure').get(users.failure);
+    
+  //Configurar las rutas 'register'
+  app.route('/users/register')
+  .post(users.register);
 
   //Configurar las routes 'signin'
-  app.route('/signin')
-     .get(users.renderSignin)
-     .post(passport.authenticate('local', {
-       successRedirect: '/',
-       failureRedirect: '/signin',
-       failureFlash: true
+  app.route('/users/signin').post(passport.authenticate('local', {
+       successRedirect: '/users/success',
+       failureRedirect: '/users/failure'
      }));
+
+    //Configurar las rutas 'register'
+  app.route('/users/error-register').get(users.errorRegister)
      
  // Configurar las rutas Google OAuth 
   app.get('/oauth/google', passport.authenticate('google', {
@@ -27,14 +33,14 @@ module.exports = function(app) {
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email'
     ],
-    failureRedirect: '/signin'
+    failureRedirect: '/'
   }));
+
   app.get('/oauth/google/callback', 
-    passport.authenticate('google', {failureRedirect: '/signin'}),
-    function(req, res) {
-    res.redirect('/');
-  });
+    passport.authenticate('google', {successRedirect: '/',
+                                     failureRedirect: '/users/error-register',
+                                     failureFlash: true}));
 
   //Configurar la route 'signout'
-  app.get('/signout', users.signout);
+  app.get('/users/signout', users.signout);
 };

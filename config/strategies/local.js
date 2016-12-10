@@ -21,6 +21,7 @@ module.exports = function() {
       
       // Si no se ha encontrado un usuario, continuar al siguiente middleware con un mensaje de error
       if (!user) {
+        console.log('User Not Found with username '+username);
         return done(null, false, {
           message: 'Usuario desconocido'
         });
@@ -28,6 +29,7 @@ module.exports = function() {
 
       // Si la contraseña es incorrecta, continuar al siguiente middleware con un mensaje de error
       if (!user.authenticate(password)) {
+        console.log('Invalid Password');
         return done(null, false, {
           message: 'Contraseña incorrecta'
         });

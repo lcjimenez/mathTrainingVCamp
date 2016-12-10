@@ -49,9 +49,35 @@ module.exports = function(){
 	// Cargar los archivos de enrutamiento
 	require('../app/routes/index.server.routes.js')(app);
 	require('../app/routes/users.server.routes.js')(app);
+	require('../app/routes/articles.server.routes.js')(app);
 
 	// Configurar el servidor de archivos estáticos
 	app.use(express.static('./public'));
+
+	// error handlers
+
+	// development error handler
+	// will print stacktrace
+	if (app.get('env') === 'development') {
+	    app.use(function(err, req, res, next) {
+	        res.status(err.status || 500);
+	        res.render('error', {
+	            message: err.message,
+	            error: err
+	        });
+	    });
+	}
+
+	// production error handler
+	// no stacktraces leaked to user
+	app.use(function(err, req, res, next) {
+	    res.status(err.status || 500);
+	    res.render('error', {
+	        message: err.message,
+	        error: {}
+	    });
+	});
+
 	
 	// Devolver la instancia de la aplicación Express
 	return app;

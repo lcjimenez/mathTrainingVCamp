@@ -1,40 +1,59 @@
-angular.module('example').controller('ExampleController', ['$scope', '$window', '$timeout', 'Authentication',
-  function($scope, $window, $timeout, Authentication) {
+angular.module('example').controller('ExampleController', ['$scope', '$window', '$timeout', '$location', 'Authentication', 'InfoAssignment',
+  function($scope, $window, $timeout, $location, Authentication, InfoAssignment) {
     $scope.authentication = Authentication;
+    $scope.infoAssignment = InfoAssignment;
+    //setTimeout(function() {MathJax.Hub.Queue(["Typeset",MathJax.Hub]);});
 
-
-     // Variables que contienen la información de la vista (html o template) 
-    $scope.enunciado = "";
-    $scope.solucion = "";
-    $scope.respuestaSolucion = "";
-    $scope.mensajeRespuesta = "";
-    $scope.respuesta = "";
-    setTimeout(function() {MathJax.Hub.Queue(["Typeset",MathJax.Hub]);});
-    
-  // Variable que indica si están deshabilitados el botón "enviar" y el campo de "respuesta".
-  $scope.deshabilitado = true;
-  // Se definen las asignaciones, con sus respectivos "tipos"
-  $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'muestraSolucion':true,
-                          'ejercicios':[{'nombre':'1.2.20a','varFunc':'varEj_1_2_20a()','textFunc':'ej_1_2_20a()','tipoRespuesta':'valores'},
-                                        {'nombre':'1.2.20b','varFunc':'varEj_1_2_20b()','textFunc':'ej_1_2_20b()','tipoRespuesta':'valores'},
-                                        {'nombre':'1.4.8','varFunc':'varEj_1_4_8()','textFunc':'ej_1_4_8()','tipoRespuesta':'valores'},
-                                        {'nombre':'1.4.15','varFunc':'varEj_1_4_15()','textFunc':'ej_1_4_15()','tipoRespuesta':'valores'},
-                                        {'nombre':'2.3.17','varFunc':'varEj_2_3_17()','textFunc':'ej_2_3_17()','tipoRespuesta':'funcion'},
-                                        {'nombre':'2.3.30','varFunc':'varEj_2_3_30()','textFunc':'ej_2_3_30()','tipoRespuesta':'funcion'},
-                                        {'nombre':'2.5.9','varFunc':'varEj_2_5_9()','textFunc':'ej_2_5_9()','tipoRespuesta':'funcion'}]},
+    // Se definen las asignaciones, con sus respectivos "tipos"
+$scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'muestraSolucion':true,
+                          'ejercicios':[{'nombre':'1-2-20a','tipoRespuesta':'valores'},
+                                        {'nombre':'1-2-20b','tipoRespuesta':'valores'},
+                                        {'nombre':'1-4-8','tipoRespuesta':'valores'},
+                                        {'nombre':'1-4-15','tipoRespuesta':'valores'},
+                                        {'nombre':'2-3-17','tipoRespuesta':'funcion'},
+                                        {'nombre':'2-3-30','tipoRespuesta':'funcion'},
+                                        {'nombre':'2-5-9','tipoRespuesta':'funcion'}]},
                          {'tipo':'Quices','numeroIntentos':1,'ayudas':false, 'muestraSolucion':false,
-                          'ejercicios':[{'nombre':'1.2.20a','varFunc':'varEj_1_2_20a()','textFunc':'ej_1_2_20a()','tipoRespuesta':'valores'},
-                                        {'nombre':'1.2.20b','varFunc':'varEj_1_2_20b()','textFunc':'ej_1_2_20b()','tipoRespuesta':'valores'},
-                                        {'nombre':'1.4.8','varFunc':'varEj_1_4_8()','textFunc':'ej_1_4_8()','tipoRespuesta':'valores'},
-                                        {'nombre':'1.4.15','varFunc':'varEj_1_4_15()','textFunc':'ej_1_4_15()','tipoRespuesta':'valores'},
-                                        {'nombre':'2.3.17','varFunc':'varEj_2_3_17()','textFunc':'ej_2_3_17()','tipoRespuesta':'funcion'},
-                                        {'nombre':'2.3.30','varFunc':'varEj_2_3_30()','textFunc':'ej_2_3_30()','tipoRespuesta':'funcion'},
-                                        {'nombre':'2.5.9','varFunc':'varEj_2_5_9()','textFunc':'ej_2_5_9()','tipoRespuesta':'funcion'}]}];
+                          'ejercicios':[{'nombre':'1-2-20a','tipoRespuesta':'valores'},
+                                        {'nombre':'1-2-20b','tipoRespuesta':'valores'},
+                                        {'nombre':'1-4-8','tipoRespuesta':'valores'},
+                                        {'nombre':'1-4-15','tipoRespuesta':'valores'},
+                                        {'nombre':'2-3-17','tipoRespuesta':'funcion'},
+                                        {'nombre':'2-3-30','tipoRespuesta':'funcion'},
+                                        {'nombre':'2-5-9','tipoRespuesta':'funcion'}]}];
+
+  // $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'muestraSolucion':true,
+  //                         'ejercicios':[{'nombre':'1-2-20a','varFunc':'varEj_1_2_20a()','textFunc':'ej_1_2_20a()','tipoRespuesta':'valores'},
+  //                                       {'nombre':'1-2-20b','varFunc':'varEj_1_2_20b()','textFunc':'ej_1_2_20b()','tipoRespuesta':'valores'},
+  //                                       {'nombre':'1-4-8','varFunc':'varEj_1_4_8()','textFunc':'ej_1_4_8()','tipoRespuesta':'valores'},
+  //                                       {'nombre':'1-4-15','varFunc':'varEj_1_4_15()','textFunc':'ej_1_4_15()','tipoRespuesta':'valores'},
+  //                                       {'nombre':'2-3-17','varFunc':'varEj_2_3_17()','textFunc':'ej_2_3_17()','tipoRespuesta':'funcion'},
+  //                                       {'nombre':'2-3-30','varFunc':'varEj_2_3_30()','textFunc':'ej_2_3_30()','tipoRespuesta':'funcion'},
+  //                                       {'nombre':'2-5-9','varFunc':'varEj_2_5_9()','textFunc':'ej_2_5_9()','tipoRespuesta':'funcion'}]},
+  //                        {'tipo':'Quices','numeroIntentos':1,'ayudas':false, 'muestraSolucion':false,
+  //                         'ejercicios':[{'nombre':'1-2-20a','varFunc':'varEj_1_2_20a()','textFunc':'ej_1_2_20a()','tipoRespuesta':'valores'},
+  //                                       {'nombre':'1-2-20b','varFunc':'varEj_1_2_20b()','textFunc':'ej_1_2_20b()','tipoRespuesta':'valores'},
+  //                                       {'nombre':'1-4-8','varFunc':'varEj_1_4_8()','textFunc':'ej_1_4_8()','tipoRespuesta':'valores'},
+  //                                       {'nombre':'1-4-15','varFunc':'varEj_1_4_15()','textFunc':'ej_1_4_15()','tipoRespuesta':'valores'},
+  //                                       {'nombre':'2-3-17','varFunc':'varEj_2_3_17()','textFunc':'ej_2_3_17()','tipoRespuesta':'funcion'},
+  //                                       {'nombre':'2-3-30','varFunc':'varEj_2_3_30()','textFunc':'ej_2_3_30()','tipoRespuesta':'funcion'},
+  //                                       {'nombre':'2-5-9','varFunc':'varEj_2_5_9()','textFunc':'ej_2_5_9()','tipoRespuesta':'funcion'}]}];
+
+
+
   
   // Variable asociada a la asignación que contiene el grupo de ejercicios que se están realizando (talleres, quices, etc.). La variables cambia con el menú.
   $scope.asignacion = $scope.asignaciones[0];
+  // Se ajustan los parametros de la asignacion dentro del servicio InfoAssignment para que se puede pasar entre diferentes scope.
+  $scope.infoAssignment.type = $scope.asignacion.tipo;
+  $scope.infoAssignment.attempts = $scope.asignacion.numeroIntentos;
+  $scope.infoAssignment.help = $scope.asignacion.ayudas;
+  $scope.infoAssignment.showSolution = $scope.asignacion.muestraSolucion;
+
+
+
   // Variable asociada al ejercicio particular que se está realizando. La variables cambia al cambiar la item de la paginación. 
-  $scope.ejercicio = {};
+  //$scope.ejercicio = {};
   // Varible que indica la ubicanción (dentro de la paginación) del ejercicio que se está realizando.
   $scope.indice;
   // Variable que contiene las variables del ejercicio que se está realizando en el momento.
@@ -76,15 +95,11 @@ angular.module('example').controller('ExampleController', ['$scope', '$window', 
   // borra la información del ejercicio previo, y su ídice, y se borra el enunciado.
   $scope.asignacionSeleccionada = function(asignacion){
     $scope.asignacion = asignacion;
+    $scope.infoAssignment.type = $scope.asignacion.tipo;
+
     $scope.ejercicio = {};
     $scope.indice = null;
     
-    $scope.enunciado = "";
-    $scope.solucion = "";
-    $scope.respuestaSolucion = "";
-    $scope.mensajeRespuesta = "";
-    $scope.respuesta = "";
-    $scope.deshabilitado = true;
     
     $scope.intentos = "";
     $scope.ayudaDeshabilitada = !($scope.asignacion.ayudas);
@@ -99,9 +114,13 @@ angular.module('example').controller('ExampleController', ['$scope', '$window', 
   // Con la paginación se elige un ejercicio, y éste se guarda dentro de la variables ajercicio. Adicionalmente se 
   // corre el ejercicio escogido pero no se generan variables nuevas
   $scope.ejercicioSeleccionado = function(ejercicio,indice){
-    $scope.ejercicio = ejercicio;
+    //$scope.ejercicio = ejercicio;
+    $scope.infoAssignment.exercise = ejercicio.nombre;
+    $scope.infoAssignment.answerType = ejercicio.tipoRespuesta;
     $scope.indice = indice;
-    $scope.iniciar(false);
+    $location.path("/assignments/"+ ejercicio.nombre);
+    //$scope.iniciar(false);
+
     //$scope.estado = $scope.ejercicio.tipoRespuesta;
   }
   // Se observa cuál es el ejercicio que está elegido, para resaltarlo dentro de la paginación.
@@ -243,69 +262,69 @@ angular.module('example').controller('ExampleController', ['$scope', '$window', 
   // VARIABLES
   // Genera las variables del ejercicio
   $scope.generarVariables = function(varNuevas){
-    google.script.run.withSuccessHandler(
-      function(memoria)
-      {
-        var nuevasVariables = $scope.$eval($scope.ejercicio.varFunc); // Llama a la función que genera las variables del ejercicio escogido.
-        var accion = tiposVariables[0];
+    // google.script.run.withSuccessHandler(
+    //   function(memoria)
+    //   {
+    //     var nuevasVariables = $scope.$eval($scope.ejercicio.varFunc); // Llama a la función que genera las variables del ejercicio escogido.
+    //     var accion = tiposVariables[0];
         
-        if (memoria == null)
-        {
-          memoria = {};
-          memoria[$scope.asignacion.tipo] = {};
-          memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre] = {};
-          memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]] = nuevasVariables;
-          google.script.run.guardarParametros(memoria);
-        }
-        else if (memoria[$scope.asignacion.tipo] == null)
-        {
-          memoria[$scope.asignacion.tipo] = {};
-          memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre] = {};
-          memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]] = nuevasVariables;
-          google.script.run.guardarParametros(memoria);
-        }
-        else if (memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre] == null)
-        {
-          memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre] = {};
-          memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]] = nuevasVariables;
-          google.script.run.guardarParametros(memoria);
-        }
-        else if(varNuevas)
-        {
-          memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]] = nuevasVariables;
-          google.script.run.guardarParametros(memoria);
-        }
-        enCurso = memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]];
-        correctas = memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[1]];
-        erradas = memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[2]];
+    //     if (memoria == null)
+    //     {
+    //       memoria = {};
+    //       memoria[$scope.asignacion.tipo] = {};
+    //       memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre] = {};
+    //       memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]] = nuevasVariables;
+    //       //google.script.run.guardarParametros(memoria);
+    //     }
+    //     else if (memoria[$scope.asignacion.tipo] == null)
+    //     {
+    //       memoria[$scope.asignacion.tipo] = {};
+    //       memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre] = {};
+    //       memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]] = nuevasVariables;
+    //       //google.script.run.guardarParametros(memoria);
+    //     }
+    //     else if (memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre] == null)
+    //     {
+    //       memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre] = {};
+    //       memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]] = nuevasVariables;
+    //       //google.script.run.guardarParametros(memoria);
+    //     }
+    //     else if(varNuevas)
+    //     {
+    //       memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]] = nuevasVariables;
+    //       //google.script.run.guardarParametros(memoria);
+    //     }
+    //     enCurso = memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[0]];
+    //     correctas = memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[1]];
+    //     erradas = memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][tiposVariables[2]];
         
-      }
-    ).obtenerParametros();
+    //   }
+    // ).obtenerParametros();
   }
    
   // GUARDAR
   // Guardar respuesta
   $scope.guardarRespuesta = function(esCorrecto){
-    google.script.run.withSuccessHandler(
-      function(memoria)
-      {
+    // google.script.run.withSuccessHandler(
+    //   function(memoria)
+    //   {
         
-        var accion = (esCorrecto ?  tiposVariables[1] : tiposVariables[2]);
+    //     var accion = (esCorrecto ?  tiposVariables[1] : tiposVariables[2]);
         
-        var variablesProvi = enCurso;
+    //     var variablesProvi = enCurso;
         
-        if (memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][accion] == null)
-        {
-          memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][accion] = [];
-        }
+    //     if (memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][accion] == null)
+    //     {
+    //       memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][accion] = [];
+    //     }
         
-        variablesProvi['tiempo_fin'] = Date();
-        variablesProvi['respuesta_enviada'] = $scope.respuesta.split(";");
+    //     variablesProvi['tiempo_fin'] = Date();
+    //     variablesProvi['respuesta_enviada'] = $scope.respuesta.split(";");
         
-        memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][accion].push(variablesProvi);
-        google.script.run.guardarParametros(memoria);
-      }
-    ).obtenerParametros();
+    //     memoria[$scope.asignacion.tipo][$scope.ejercicio.nombre][accion].push(variablesProvi);
+    //     //google.script.run.guardarParametros(memoria);
+    //   }
+    // ).obtenerParametros();
   }
   
   // AYUDA

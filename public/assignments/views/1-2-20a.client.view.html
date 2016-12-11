@@ -1,0 +1,34 @@
+<section data-ng-controller="AssignmentsController">
+
+  <h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+  <!-- ENUNCIADO -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+        <div id="enunciado" class="panel-body">
+        	<p>Determine los valores de $m$ para los que la función $\phi \left( x \right) = { e }^{ mx }$ es una solución de la ecuación:</p>
+        	<div id='formulaEnunciado'> 
+        		$$ \frac{ { d }^{ 2 } y }{ d{ x }^{ 2 } } {{ ( variables.a < 0 ? ' ' : '+') }} {{variables.a}} \frac{ dy }{ dx } {{( variables.b < 0 ? ' ' : '+')}}  {{variables.b}} y = 0 $$
+        	</div>
+        	<p>Nota: Debe ingresar las respuestas como valores <b>enteros</b> y separado por punto y coma ($;$), por ejemplo, respuestas de la forma $4;5$ o de la forma $3;4;7$.</p>
+        	<br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLES con campos de entrada, comandos y mensajes -->
+  <div ng-include src="'/assignments/views/controls.client.view.html'"></div>
+
+  <!-- SOLUCIÓN -->
+  <div class="row"> 
+    <div id="solucion" class="col-md-12" ng-bind-html="solucion">
+    </div>
+  </div>
+  <!-- RESPUESTA SOLUCIÓN -->
+  <div class="row"> 
+    <div id="respuetaSolucion" class="col-md-12" ng-bind-html="respuestaSolucion">
+    </div>
+  </div>
+</section>

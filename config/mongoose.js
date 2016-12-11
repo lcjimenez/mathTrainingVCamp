@@ -14,6 +14,9 @@ module.exports = function(){
 	// Cargar el modelo 'User'
 	require('../app/models/user.server.model');
 
+		// Cargar el modelo 'Assignment'
+	require('../app/models/assignment.server.model');
+
 		// Cargar el modelo 'Article'
 	require('../app/models/article.server.model');
 

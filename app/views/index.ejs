@@ -8,7 +8,6 @@
 	<!--Bootstrap Social - Social Buttons for Bootstrap-->
 	<link rel="stylesheet" type="text/css" href="/lib/bootstrap-social/bootstrap-social.css" />
 	<link rel="stylesheet" type="text/css" href="/lib/font-awesome/css/font-awesome.css" />
-
 	<!--CSS-->
 	<link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
@@ -21,7 +20,6 @@
             <li role="presentation"><a href="#!/"><span data-ng-hide="authentication.user">Math Training V-Camp</span><span data-ng-show="authentication.user">Sesión de {{authentication.user.username}}</span></a></li>
             <li role="presentation"  data-ng-hide="authentication.user"><a href="#!/login">Iniciar sesión</a></li>
             <li role="presentation" data-ng-hide="authentication.user"><a href="#!/signup">Registrarse</a></li>
-            <!--<li role="presentation"><a href="#!/" ng-click="signout()" ng-show="authenticated">Cerrar sesión</a></li>-->
             <li role="presentation"><a href="#!/" data-ng-show="authentication.user" data-ng-click="signout()">Cerrar sesión</a></li>
           </ul>
         </nav>
@@ -34,7 +32,8 @@
         </div>
       </div>
       <footer class="footer">
-        <p>&copy; 2016 Luis Camilo Jiménez Álvarez; Adriana Maldonado</p>
+        <p>&copy; 2017 Universidad EAN</p>
+        <p>Autores: <a href="http://docentes.universidadean.edu.co/seccion/adriana-maldonado-currea.html" target="_blank">Adriana Maldonado</a>; <a href="http://docentes.universidadean.edu.co/seccion/luis-camilo-jimenez-alvarez.html" target="_blank">Luis Camilo Jiménez</a></p>
       </footer>
     </div> <!-- /container -->
 	
@@ -72,7 +71,10 @@
   <script type="text/javascript" src="/assignments/assignments.client.module.js"></script>
     <script type="text/javascript" src="/assignments/config/assignments.client.routes.js"></script>
     <script type="text/javascript" src="/assignments/config/assignments.client.run.js"></script> 
+    <script type="text/javascript" src="/assignments/directives/mathJaxBind.client.directive.js"></script>
+    <script type="text/javascript" src="/assignments/directives/mathJaxBindCompiled.client.directive.js"></script>
     <script type="text/javascript" src="/assignments/controllers/assignments.client.controller.js"></script>
+    <script type="text/javascript" src="/assignments/services/assignments.client.service.js"></script>
     <script type="text/javascript" src="/assignments/services/info-assignment.client.service.js"></script>
 	<!-- Example -->
 	<script type="text/javascript" src="/example/example.client.module.js"></script>

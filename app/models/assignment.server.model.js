@@ -16,6 +16,10 @@ var AssignmentSchema = new Schema({
 		default: '',
 		trim: true
 	},
+	variables: {
+		type: Object,
+		default: {}
+	},
 	creador: {
 		type: Schema.ObjectId,
 		ref: 'User'

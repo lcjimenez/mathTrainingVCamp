@@ -41,7 +41,7 @@ exports.create = function(req, res) {
 // Crear un nuevo método controller que recupera una lista de artículos
 exports.list = function(req, res) {
 	// Usar el método model 'find' para obtener una lista de artículos
-	Assignment.find().sort('-creado').populate('creador', 'firstName lastName fullName').exec(function(err, assignments) {
+	Assignment.find(req.query).sort('-creado').populate('creador', 'firstName lastName fullName').exec(function(err, assignments) {
 		if (err) {
 			// Si un error ocurre enviar un mensaje de error
 			return res.status(400).send({
@@ -67,6 +67,7 @@ exports.update = function(req, res) {
 	// Actualizar los campos artículo
 	assignment.tipo = req.body.tipo;
 	assignment.ejercicio = req.body.ejercicio;
+	assignment.variables = req.body.variables;
 
 	// Intentar salvar el artículo actualizado
 	assignment.save(function(err) {

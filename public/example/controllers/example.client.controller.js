@@ -21,26 +21,6 @@ $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'mu
                                         {'nombre':'2-3-17','tipoRespuesta':'funcion'},
                                         {'nombre':'2-3-30','tipoRespuesta':'funcion'},
                                         {'nombre':'2-5-9','tipoRespuesta':'funcion'}]}];
-
-  // $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'muestraSolucion':true,
-  //                         'ejercicios':[{'nombre':'1-2-20a','varFunc':'varEj_1_2_20a()','textFunc':'ej_1_2_20a()','tipoRespuesta':'valores'},
-  //                                       {'nombre':'1-2-20b','varFunc':'varEj_1_2_20b()','textFunc':'ej_1_2_20b()','tipoRespuesta':'valores'},
-  //                                       {'nombre':'1-4-8','varFunc':'varEj_1_4_8()','textFunc':'ej_1_4_8()','tipoRespuesta':'valores'},
-  //                                       {'nombre':'1-4-15','varFunc':'varEj_1_4_15()','textFunc':'ej_1_4_15()','tipoRespuesta':'valores'},
-  //                                       {'nombre':'2-3-17','varFunc':'varEj_2_3_17()','textFunc':'ej_2_3_17()','tipoRespuesta':'funcion'},
-  //                                       {'nombre':'2-3-30','varFunc':'varEj_2_3_30()','textFunc':'ej_2_3_30()','tipoRespuesta':'funcion'},
-  //                                       {'nombre':'2-5-9','varFunc':'varEj_2_5_9()','textFunc':'ej_2_5_9()','tipoRespuesta':'funcion'}]},
-  //                        {'tipo':'Quices','numeroIntentos':1,'ayudas':false, 'muestraSolucion':false,
-  //                         'ejercicios':[{'nombre':'1-2-20a','varFunc':'varEj_1_2_20a()','textFunc':'ej_1_2_20a()','tipoRespuesta':'valores'},
-  //                                       {'nombre':'1-2-20b','varFunc':'varEj_1_2_20b()','textFunc':'ej_1_2_20b()','tipoRespuesta':'valores'},
-  //                                       {'nombre':'1-4-8','varFunc':'varEj_1_4_8()','textFunc':'ej_1_4_8()','tipoRespuesta':'valores'},
-  //                                       {'nombre':'1-4-15','varFunc':'varEj_1_4_15()','textFunc':'ej_1_4_15()','tipoRespuesta':'valores'},
-  //                                       {'nombre':'2-3-17','varFunc':'varEj_2_3_17()','textFunc':'ej_2_3_17()','tipoRespuesta':'funcion'},
-  //                                       {'nombre':'2-3-30','varFunc':'varEj_2_3_30()','textFunc':'ej_2_3_30()','tipoRespuesta':'funcion'},
-  //                                       {'nombre':'2-5-9','varFunc':'varEj_2_5_9()','textFunc':'ej_2_5_9()','tipoRespuesta':'funcion'}]}];
-
-
-
   
   // Variable asociada a la asignación que contiene el grupo de ejercicios que se están realizando (talleres, quices, etc.). La variables cambia con el menú.
   $scope.asignacion = $scope.asignaciones[0];

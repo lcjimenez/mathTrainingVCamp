@@ -1,73 +1,73 @@
 <!-- CONTROLES con campos de entrada, comandos y mensajes -->
 <section data-ng-controller="AssignmentsController">
-<div class="row"> 
-<div class="col-md-12">
-  <div class="panel panel-default">
-    <div class="panel-body">
+  <div class="row"> 
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
 
-      <!-- Campo de entrada -->
-      <div class="col-md-6 col-sm-6 col-xs-6">
-        <form>
-          <div class="row form-group">
-            <label for="respuesta" class="control-label">Respuesta</label>
-            <input id="respuesta" type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
-            <span id="ayudaRespuesta" class="help-block">
-              <strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
-              <small>
-                <ul>
-                  <li>
-                      Utilice punto y coma ($;$) para separar varias respuestas.
-                  </li>
-                  <li>
-                      No se debe ingresar unidades de medida como por ejemplo metros, segundos o °F. Se deben ingresar únicamente valores o funciones.
-                  </li>
-                  <li>
-                      Se deben ingresar únicamente los decimales que indique el ejercicio. 
-                  </li>
-                  <li>
-                    <div class="dropdown"> 
-                      Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$.
-                      <span id="dropdownMenu1" class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      ayuda <span class="caret"></span>
-                      </span>
-                      <ol class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Ejemplo: [(a*b)/c]*e^(2*pi*x) equivale a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$.<br>Pulse aquí para revisar la síntaxis completa de <b>mathjs</b></a></li>
-                      </ol>
-                    </div>
-                  </li>
-                  <li>
-                      Antes de enviar verifique que la respuesta proyectada es la correcta.
-                  </li>                          
-                </ul>
-              </small>
-            </span>
+          <!-- Campo de entrada -->
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <form>
+              <div class="row form-group">
+                <label for="respuesta" class="control-label">Respuesta</label>
+                <input id="respuesta" type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+                <span id="ayudaRespuesta" class="help-block">
+                  <strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+                  <small>
+                    <ul>
+                      <li>
+                          Utilice punto y coma ($;$) para separar varias respuestas.
+                      </li>
+                      <li>
+                          No se debe ingresar unidades de medida como por ejemplo metros, segundos o °F. Se deben ingresar únicamente valores o funciones.
+                      </li>
+                      <li>
+                          Se deben ingresar únicamente los decimales que indique el ejercicio. 
+                      </li>
+                      <li>
+                        <div class="dropdown"> 
+                          Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$.
+                          <span id="dropdownMenu1" class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          ayuda <span class="caret"></span>
+                          </span>
+                          <ol class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Ejemplo: [(a*b)/c]*e^(2*pi*x) equivale a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$.<br>Pulse aquí para revisar la síntaxis completa de <b>mathjs</b></a></li>
+                          </ol>
+                        </div>
+                      </li>
+                      <li>
+                          Antes de enviar verifique que la respuesta proyectada es la correcta.
+                      </li>                          
+                    </ul>
+                  </small>
+                </span>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
 
-      <!-- Campos de mensajes -->
-      <div class="col-md-6 col-sm-6 col-xs-6">
-        <p id=mensajeRespuesta class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
-        <p id=mensajeEcuacion math-jax-bind="respuesta"></p>
-      </div>
+          <!-- Campos de mensajes -->
+          <div class="col-md-6 col-sm-6 col-xs-6">
+            <p id=mensajeRespuesta class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+            <p id=mensajeEcuacion math-jax-bind="respuesta"></p>
+          </div>
 
 
-      <!-- Botón de envío -->
-      <div class="form-group col-md-12 col-sm-12 col-xs-12">
-        <div class="btn-group">
-          <button id=botonEnviar type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
-          <span class="caret"></span>
-          <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a id="botonAyudameAResolverlo"  ng-click="ayudameAResolverlo()">Ayúdame a resolverlo</a></li>
-            <li><a id="botonIntentarNuevamente" ng-click="iniciar(true)">Intentar con otros valores</a></li>
-          </ul>
+          <!-- Botón de envío -->
+          <div class="form-group col-md-12 col-sm-12 col-xs-12">
+            <div class="btn-group">
+              <button id=botonEnviar type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a id="botonAyudameAResolverlo"  ng-click="ayudameAResolverlo()">Ayúdame a resolverlo</a></li>
+                <li><a id="botonIntentarNuevamente" ng-click="$parent.$eval('variables_'+ exerciseUnder + '(true)')">Intentar con otros valores</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </div>  
   </div>
-</div>  
-</div>
 </section>

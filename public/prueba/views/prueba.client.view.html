@@ -1,0 +1,23 @@
+<section ng-controller="MyCtrl">
+  
+<div>
+    <input type="text" ng-model="html"/><br/>
+    
+    <input type="text" ng-model="variables.a"/><br/>
+    <!--<span mathjax-bind="expression"></span>-->
+<div dynamic="html"></div>
+
+<script type="text/ng-template" id="prueba-enunciado">
+
+<p>Determine los valores de $m$ para los que la función $ \phi \left( x \right) = { e }^{ mx } $ es una solución de la ecuación:</p>
+  <div>
+    $$ \frac{ { d }^{ 2 }y }{ d{ x }^{ 2 } } {{ ( variables.a < 0 ? ' ' : '+') }} {{variables.a}}  \frac{ dy }{ dx } {{( variables.b < 0 ? ' ' : '+')}} {{variables.b}} y = 0 $$
+  </div>
+  <p>Nota: Debe ingresar las respuestas como valores <b>enteros</b> y separado por punto y coma ($;$), por ejemplo, respuestas de la forma $4;5$ o de la forma $3;4;7$.</p>
+  <br>
+</script>
+
+</section>
+
+
+

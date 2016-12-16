@@ -1,0 +1,66 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+  <h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+  <!-- ENUNCIADO -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+        <div class="panel-body" math-jax-bind-compiled='enunciado'></div>
+          <!-- Se define el template para el enunciado del ejercicio -->
+          <script type="text/ng-template" id="1-2-20a-enunciado">
+            <p>Determine los valores de $m$ para los que la función $ \phi \left( x \right) = { e }^{ mx } $ es una solución de la ecuación:</p>
+            <div>
+              $$ \frac{ { d }^{ 2 }y }{ d{ x }^{ 2 } } {{ ( variables.a < 0 ? ' ' : '+') }} {{variables.a}}  \frac{ dy }{ dx } {{( variables.b < 0 ? ' ' : '+')}} {{variables.b}} y = 0 $$
+            </div>
+            <p>Nota: Debe ingresar las respuestas como valores <b>enteros</b> y separado por punto y coma ($;$), por ejemplo, respuestas de la forma $4;5$ o de la forma $3;4;7$.</p>
+            <br>
+          </script>
+        </div>
+      </div>
+    </div>
+    <div data-ng-show="error">
+      <strong data-ng-bind="error"></strong>
+    </div>
+
+<!--    
+{{authentication.user._id}}
+{{assignments}} 
+-->
+{{variables}}
+<input type="text" ng-model="variables.a"></input>
+
+{{enunciadoCompiled}}
+
+  <!-- CONTROLES con campos de entrada, comandos y mensajes -->
+  <div ng-include src="'/assignments/views/controls.client.view.html'"></div>
+
+  <!-- SOLUCIÓN -->
+  <div class="row"> 
+    <div class="col-md-12" math-jax-bind-compiled="solucion"></div>
+    <!-- Se define el template para la solución del ejercicio -->
+    <script type="text/ng-template" id="1-2-20a-solucion">
+      <p>Podemos observar que si reemplazamos la función $\phi \left( x \right) = { e }^{ mx }$ dentro de la ecuación obtenemos</p>
+      <div>
+        $$ { \left( { e }^{ mx } \right) }^{ '' } {{(variables.a < 0 ? "" : "+")}} {{variables.a}} { \left( { e }^{ mx } \right) }^{ ' } {{(variables.b < 0 ? "" : "+")}} {{variables.b}}  \left( { e }^{ mx } \right) = 0$$
+      </div>
+      <div>
+        $$ \left( { m }^{ 2 } { e }^{ mx } \right) {{(variables.a < 0 ? "" : "+")}} {{variables.a}} \left( m { e }^{ mx } \right) {{(variables.b < 0 ? "" : "+")}} {{variables.b}} \left(  { e }^{ mx } \right) = 0$$
+      </div>
+      <div>
+        $$ { e }^{ mx } \left( { m }^{ 2 } {{(variables.a < 0 ? "" : "+")}} {{variables.a}} m {{(variables.b < 0 ? "" : "+")}} {{variables.b}} \right)= 0$$
+      </div>
+      <p>Debido a que ${ e }^{ mx } \ne 0$ para todo valor de $x$ deducimos que</p>
+      <div>$$ { m }^{ 2 } {{(variables.a < 0 ? "" : "+")}} {{variables.a}} m {{(variables.b < 0 ? "" : "+")}} {{variables.b}} = 0$$</div>
+      <p>Factorizando obtenemos</p>
+      <div>$$ \left( m {{(variables.raiz1 < 0 ? "" : "+")}} {{variables.raiz1}} \right) \left( m  {{(variables.raiz2 < 0 ? "" : "+")}} {{variables.raiz2}} \right) = 0$$</div>
+    </script>
+
+
+  </div>
+  <!-- RESPUESTA SOLUCIÓN -->
+  <div class="row"> 
+    <div id="respuetaSolucion" class="col-md-12" ng-bind-html="respuestaSolucion">
+    </div>
+  </div>
+</section>

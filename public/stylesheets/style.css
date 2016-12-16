@@ -86,3 +86,18 @@ body {
     border-bottom: 0;
   }
 }
+
+textarea {
+    width: 800px;
+    height: 200px;
+}
+.inline-formula{
+    /*color:red;*/
+    display:inline-block;
+}
+.formula{
+    /*color:blue;*/
+    display:block;
+    text-align: center;
+    line-height: 200%;
+}

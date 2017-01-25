@@ -6,21 +6,23 @@ angular.module('example').controller('ExampleController', ['$scope', '$window', 
 
     // Se definen las asignaciones, con sus respectivos "tipos"
 $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'muestraSolucion':true,
-                          'ejercicios':[{'nombre':'1-2-20a','tipoRespuesta':'valores'},
-                                        {'nombre':'1-2-20b','tipoRespuesta':'valores'},
-                                        {'nombre':'1-4-8','tipoRespuesta':'valores'},
-                                        {'nombre':'1-4-15','tipoRespuesta':'valores'},
-                                        {'nombre':'2-3-17','tipoRespuesta':'funcion'},
-                                        {'nombre':'2-3-30','tipoRespuesta':'funcion'},
-                                        {'nombre':'2-5-9','tipoRespuesta':'funcion'}]},
+                          'ejercicios':[{'guia':1, 'enabled': true,'nombre':'1-2-20a','tipoRespuesta':'valores'},
+                                        {'guia':1, 'enabled': true,'nombre':'1-2-20b','tipoRespuesta':'valores'},
+                                        {'guia':1, 'enabled': true,'nombre':'1-4-8','tipoRespuesta':'valores'},
+                                        {'guia':1, 'enabled': true,'nombre':'1-4-15','tipoRespuesta':'valores'},
+                                        {'guia':1, 'enabled': true,'nombre':'2-3-17','tipoRespuesta':'funcion'},
+                                        {'guia':1, 'enabled': true,'nombre':'2-3-30','tipoRespuesta':'funcion'},
+                                        {'guia':1, 'enabled': true,'nombre':'2-5-9','tipoRespuesta':'funcion'},
+                                        {'guia':2, 'enabled': false,'nombre':'3-2-2','tipoRespuesta':'valores'}]},
                          {'tipo':'Quices','numeroIntentos':1,'ayudas':false, 'muestraSolucion':false,
-                          'ejercicios':[{'nombre':'1-2-20a','tipoRespuesta':'valores'},
-                                        {'nombre':'1-2-20b','tipoRespuesta':'valores'},
-                                        {'nombre':'1-4-8','tipoRespuesta':'valores'},
-                                        {'nombre':'1-4-15','tipoRespuesta':'valores'},
-                                        {'nombre':'2-3-17','tipoRespuesta':'funcion'},
-                                        {'nombre':'2-3-30','tipoRespuesta':'funcion'},
-                                        {'nombre':'2-5-9','tipoRespuesta':'funcion'}]}];
+                          'ejercicios':[{'guia':1, 'enabled': true,'nombre':'1-2-20a','tipoRespuesta':'valores'},
+                                        {'guia':1, 'enabled': true,'nombre':'1-2-20b','tipoRespuesta':'valores'},
+                                        {'guia':1, 'enabled': true,'nombre':'1-4-8','tipoRespuesta':'valores'},
+                                        {'guia':1, 'enabled': true,'nombre':'1-4-15','tipoRespuesta':'valores'},
+                                        {'guia':1, 'enabled': true,'nombre':'2-3-17','tipoRespuesta':'funcion'},
+                                        {'guia':1, 'enabled': true,'nombre':'2-3-30','tipoRespuesta':'funcion'},
+                                        {'guia':1, 'enabled': true,'nombre':'2-5-9','tipoRespuesta':'funcion'},
+                                        {'guia':2, 'enabled': false,'nombre':'3-2-2','tipoRespuesta':'valores'}]}];
   
   // Variable asociada a la asignación que contiene el grupo de ejercicios que se están realizando (talleres, quices, etc.). La variables cambia con el menú.
   $scope.asignacion = $scope.asignaciones[0];
@@ -76,6 +78,9 @@ $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'mu
   $scope.asignacionSeleccionada = function(asignacion){
     $scope.asignacion = asignacion;
     $scope.infoAssignment.type = $scope.asignacion.tipo;
+    $scope.infoAssignment.attempts = $scope.asignacion.numeroIntentos;
+    $scope.infoAssignment.help = $scope.asignacion.ayudas;
+    $scope.infoAssignment.showSolution = $scope.asignacion.muestraSolucion;
 
     $scope.ejercicio = {};
     $scope.indice = null;
@@ -235,7 +240,7 @@ $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'mu
   
   function limiteIntentos()
   {
-    return (($scope.asignacion.numeroIntentos != null) && ((erradas == null ? 0 : erradas.length) >= $scope.asignacion.numeroIntentos || correctas != null));
+    return (($scope.infoAssignment.attempts != null) && ((erradas == null ? 0 : erradas.length) >= $scope.infoAssignment.attempts || correctas != null));
   }
   
   

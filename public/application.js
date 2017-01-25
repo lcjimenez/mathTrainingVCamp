@@ -1,6 +1,6 @@
 var mainApplicationModuleName = 'mean';
 
-var mainApplicationModule = angular.module(mainApplicationModuleName, ['googlechart','ngSanitize','ngResource','ngRoute','users','example', 'assignments', 'articles']);
+var mainApplicationModule = angular.module(mainApplicationModuleName, ['googlechart','ngSanitize','ngResource','ngRoute','users','example', 'assignments', 'attempts', 'articles']);
 
 mainApplicationModule.config(['$locationProvider',
   function($locationProvider) {

@@ -17,6 +17,9 @@ module.exports = function(){
 		// Cargar el modelo 'Assignment'
 	require('../app/models/assignment.server.model');
 
+		// Cargar el modelo 'Attempt'
+	require('../app/models/attempt.server.model');
+
 		// Cargar el modelo 'Article'
 	require('../app/models/article.server.model');
 

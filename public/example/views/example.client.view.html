@@ -20,7 +20,7 @@
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-          <li ng-class="{ active: estaEjercicioActivo(a)}" ng-repeat="a in asignacion.ejercicios"><a ng-click="ejercicioSeleccionado(a,$index)">{{$index+1}}</a></li>
+          <li ng-class="{ active: estaEjercicioActivo(a)}" ng-repeat="a in asignacion.ejercicios | filter: {enabled: true}"><a ng-click="ejercicioSeleccionado(a,$index)"> G{{a.guia}}.{{a.nombre}}</a></li>
         <li ng-class="{disabled:indice === asignacion.ejercicios.length-1}">
           <a ng-click="siguiente()" aria-label="Siguiente">
             <span aria-hidden="true">&raquo;</span>

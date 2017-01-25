@@ -1,0 +1,151 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+		<!-- NoMBRE -->
+	<div class="row">
+		<div class="col-md-10">
+			<h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+		</div>
+		<div class="col-md-2">
+			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
+		</div>
+	</div>
+
+	
+
+
+	<!-- ENUNCIADO -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
+				<!-- Se define el template para el enunciado del ejercicio -->
+				<script type="text/ng-template" id="2-5-9-enunciado">
+					<p>Obtenga $F\left( x,y \right)$ de la solución implicita de</p>
+					<div> $$\left( {{ variables.A }} \cdot y^2 + {{ (2*variables.b) }} \cdot y + {{ variables.D }} \cdot x^{ {{ variables.N }} } \right) dx = \left( {{ variables.A }} \cdot x \cdot y + {{ variables.b }} \cdot x \right) dy = 0 $$ </div>
+				</script>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Enunciado-->
+
+	<!-- ERRORES -->
+	<div data-ng-show="error">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	<!-- FIN Errores -->
+
+	<!--
+	<p>Asignaciones</p>
+	<p>{{assignments}}</p>
+	-->
+	<!--
+	<p>Intentos</p>
+	<p>{{attempts}}</p>
+	-->
+
+	<!-- CONTROLES con campos de entrada, comandos y mensajes -->
+	<div class="row"> 
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<!-- INSTRUCCIONES para diligencia la respuesta -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+						<small>
+							 <ul>
+							 	<li>
+							 		Si la solución implicita es $F\left(x,y\right) = C $, en la respuesta sólo incluya $F \left( x,y \right)$. Recuerde ingresar la respuesta en función de las variables $x$ y $y$, por ejemplo, respuestas de la forma $x \cdot y + y^2$ o de la forma $\frac{x}{y}$
+							 	</li>
+							 	<li>
+							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
+							 	</li>
+							 	<li>
+							 		Antes de enviar verifique que la respuesta proyectada es la correcta.
+							 	</li>                          
+					        </ul>
+						</small>
+					</div>
+					<!-- /FIN Instrucciones -->
+
+					<!-- FORMULARIO -->
+					<form>
+
+						<!-- Campo de entrada -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="row form-group">
+								<label for="respuesta" class="control-label">Respuesta</label>
+								<input type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+							</div>
+						</div>
+
+						<!-- Campos de mensajes -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+							<p math-jax-bind-math-to-tex="respuesta"></p>
+						</div>
+
+						<!-- Botón de envío -->
+						<div class="form-group col-md-12 col-sm-12 col-xs-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="botonAyudameAResolverlo"  ng-click="resolver()">Ayúdame a resolverlo</a></li>
+									<li><a id="botonIntentarNuevamente" ng-click="generarEjercicio(true)">Intentar con otros valores</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<!-- /FIN Formulario -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FIN Controles -->
+
+	<!-- SOLUCIÓN -->
+	<div class="row">
+		<div class="col-md-12" dynamic="solucion"></div>
+		<!-- Se define el template para la solución del ejercicio -->
+		<script type="text/ng-template" id="2-5-9-solucion">
+			<p>Se debe calcular la derivada de $ M \left( x \right) $ y $ N \left( x \right) $ </p>
+			<div> $$ M \left( x,y \right) = {{ variables.A }} \cdot y^2 + {{ ( 2 * variables.b ) }} \cdot y + {{ variables.D }} \cdot x^{ {{ variables.N }} } $$ </div>
+			<div> $$ N \left( x,y \right) = {{ variables.A }} \cdot x \cdot y + {{ (variables.b) }} \cdot x $$ </div>
+			<div> $$ \frac{ \partial M}{ \partial y} = {{ ( 2 * variables.A ) }} \cdot y + {{ ( 2 * variables.b ) }} $$ </div>
+			<div> $$ \frac{ \partial N}{ \partial x} = {{ ( variables.A ) }} \cdot y + {{ ( variables.b ) }} $$ </div>
+			<p>Se puede observar que la ecuación no es exacta dado que $M \left( x,y \right) \neq N \left( x,y \right)$, de esta manera se debe calcular el cociente</p>
+			<div> $$ \frac{ \frac{ \partial M }{ \partial y } - \frac{ \partial N}{ \partial x } }{N} = \frac{ \left( {{ ( 2 * variables.A ) }} \cdot y + {{ ( 2 * variables.b ) }} \right) - \left( {{ ( variables.A ) }} \cdot y + {{ ( variables.b )}} \right) }{ {{ variables.A }} \cdot x \cdot y + {{ ( variables.b ) }} \cdot x } = \frac{ {{ variables.A }} \cdot y + {{ ( variables.b ) }} }{ x \cdot \left( {{ variables.A }} \cdot y + {{ ( variables.b ) }} \right)} = \frac{ 1 }{ x } $$ </div>
+			<p>cuyo resultado depende únicamente de $x$, de tal manera que de la ecuación se puede obtener un factor integrante </p>
+			<div> $$ \mu \left( x \right) = e^\left( \int{ \frac{ 1 }{ x } dx } \right) = e^{ \left( \ln \left| x \right| \right) } = \left| x \right|  $$ </div>
+
+			<p>Se puede observar que si $\mu$ es un factor integrante $ - \mu $ también lo es.</p>
+			<div> $$ \mu \left( x \right) = x $$ </div>
+			<p>De esta manera si se multiplica la ecuación diferencia por $x$ se obtendrá la ecuación exacta</p>
+
+			<div> $$\left( {{ variables.A }} \cdot y^2 + {{ ( 2 * variables.b ) }} \cdot y + {{ variables.D }} \cdot x^{ {{ variables.N }} } \right) x dx + x^2 \left( {{ variables.A }} \cdot y + {{ variables.b }} \right) dy = 0 $$ </div>
+			<p>De lo cual se puede obtener</p>
+			<div> $$ F \left( x , y \right) = \int{ x^2 \left( {{ variables.A }} \cdot y + {{ variables.b }} \right) dy } = x^2 \left( {{ (variables.A / 2) }} \cdot y^2 + {{ variables.b }} \cdot y \right) + h \left( x \right) $$ </div>
+			<p>Despejando</p>
+
+			<div> $$ \frac{ \partial F }{ \partial x} = 2 \cdot x \left( {{ ( variables.A / 2 ) }}  \cdot y^2 + {{ variables.b }} \cdot y \right) + \frac{ \partial h \left( x \right) }{ \partial x } = \left( {{ variables.A }} \cdot y^2 + {{ (2*variables.b) }} \cdot y + {{ variables.D }} \cdot x^{ {{ variables.N }} } \right) x $$ </div>
+			<div> $$ \frac{ \partial h \left( x \right)}{ \partial x} = {{ variables.D }} \cdot x^{ {{ (variables.N + 1) }} } $$ </div>
+			<div> $$ h \left( x \right) = \int{ {{ variables.D }} \cdot x^{ {{ (variables.N + 1) }} } dx} =  {{ ( variables.D / ( variables.N + 2) ) }} \cdot x^{ {{ ( variables.N + 2 ) }} } $$ </div>
+			<div> $$ F \left( x , y \right) = x^2 \left( {{ ( variables.A / 2 ) }} \cdot y^2 + {{ variables.b }} \cdot y \right) + {{ ( variables.D / ( variables.N + 2 ) ) }} \cdot x^{ {{ ( variables.N + 2 ) }} } $$ </div>
+          <div> $$ F \left( x , y \right) = {{ ( variables.A / 2 ) }} \cdot x^2 \cdot y^2 + {{ variables.b }} \cdot x^2 \cdot y + {{ ( variables.D / ( variables.N + 2 ) ) }} \cdot x^{ {{ ( variables.N + 2 ) }} } $$ </div>
+		</script>
+	</div>
+	<!-- FIN Solución -->
+
+	<!-- RESPUESTA Solución -->
+	<div class="row">
+		<div class="col-md-12" dynamic="respuestaSolucion"></div>
+		<script type="text/ng-template" id="2-5-9-respuestaSolucion">
+			<p> Obteniendo como respuesta es $ {{variables.respuestaTex}} $.</p>
+		</script>
+	</div>
+</section>

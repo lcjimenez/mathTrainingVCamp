@@ -3,7 +3,7 @@
 
 // Cargar las dependencias del módulo
 var mongoose = require('mongoose'),
-	Assignment = mongoose.model('Assignment');
+	Attempt = mongoose.model('Attempt');
 
 // Crear un nuevo método controller para el manejo de errores
 var getErrorMessage = function(err) {
@@ -19,13 +19,13 @@ var getErrorMessage = function(err) {
 // Crear un nuevo método controller para crear nuevos artículos
 exports.create = function(req, res) {
 	// Crear un nuevo objeto artículo
-	var assignment = new Assignment(req.body);
+	var attempt = new Attempt(req.body);
 
 	// Configurar la propiedad 'creador' del artículo
-	assignment.creador = req.user;
+	// attempt.creador = req.user;
 
 	// Intentar salvar el artículo
-	assignment.save(function(err) {
+	attempt.save(function(err) {
 		if (err) {
 			// Si ocurre algún error enviar el mensaje de error
 			return res.status(400).send({
@@ -33,7 +33,7 @@ exports.create = function(req, res) {
 			});
 		} else {
 			// Enviar una representación JSON del artículo 
-			res.json(assignment);
+			res.json(attempt);
 		}
 	});
 };
@@ -41,8 +41,7 @@ exports.create = function(req, res) {
 // Crear un nuevo método controller que recupera una lista de artículos
 exports.list = function(req, res) {
 	// Usar el método model 'find' para obtener una lista de artículos
-	//Assignment.find(req.query.assignments).sort('-creado').populate('creador', req.query.selectUser).exec(function(err, assignments) {
-	Assignment.find(req.query).sort('-creado').populate('creador', 'username firstName lastName fullName').exec(function(err, assignments) {
+	Attempt.find({'creador': req.query.creador}).sort('-creado').populate({path:'asignacion', match: req.query , populate:{path: 'creador', select: 'username firstName lastName fullName'}}).exec(function(err, attempts) {
 		if (err) {
 			// Si un error ocurre enviar un mensaje de error
 			return res.status(400).send({
@@ -50,28 +49,28 @@ exports.list = function(req, res) {
 			});
 		} else {
 			// Enviar una representación JSON del artículo 
-			res.json(assignments);
+			res.json(attempts);
 		}
 	});
 };
 
 // Crear un nuevo método controller que devuelve un artículo existente
 exports.read = function(req, res) {
-	res.json(req.assignment);
+	res.json(req.attempt);
 };
 
 // Crear un nuevo método controller que actualiza un artículo existente
 exports.update = function(req, res) {
 	// Obtener el artículo usando el objeto 'request'
-	var assignment = req.assignment;
+	var attempt = req.attempt;
 
 	// Actualizar los campos artículo
-	assignment.tipo = req.body.tipo;
-	assignment.ejercicio = req.body.ejercicio;
-	assignment.variables = req.body.variables;
+	attempt.tipo = req.body.tipo;
+	attempt.ejercicio = req.body.ejercicio;
+	attempt.variables = req.body.variables;
 
 	// Intentar salvar el artículo actualizado
-	assignment.save(function(err) {
+	attempt.save(function(err) {
 		if (err) {
 			// si ocurre un error enviar el mensaje de error
 			return res.status(400).send({
@@ -79,7 +78,7 @@ exports.update = function(req, res) {
 			});
 		} else {
 			// Enviar una representación JSON del artículo 
-			res.json(assignment);
+			res.json(attempt);
 		}
 	});
 };
@@ -87,10 +86,10 @@ exports.update = function(req, res) {
 // Crear un nuevo método controller que borre un artículo existente
 exports.delete = function(req, res) {
 	// Obtener el artículo usando el objeto 'request'
-	var assignment = req.assignment;
+	var attempt = req.attempt;
 
 	// Usar el método model 'remove' para borrar el artículo
-	assignment.remove(function(err) {
+	attempt.remove(function(err) {
 		if (err) {
 			// Si ocurre un error enviar el mensaje de error
 			return res.status(400).send({
@@ -98,20 +97,20 @@ exports.delete = function(req, res) {
 			});
 		} else {
 			// Enviar una representación JSON del artículo 
-			res.json(assignment);
+			res.json(attempt);
 		}
 	});
 };
 
 // Crear un nuevo controller middleware que recupera un único artículo existente
-exports.assignmentByID = function(req, res, next, id) {
+exports.attemptByID = function(req, res, next, id) {
 	// Usar el método model 'findById' para encontrar un único artículo 
-	Assignment.findById(id).populate('creador', 'username firstName lastName fullName').exec(function(err, assignment) {
+	Attempt.findById(id).populate({path: 'asignacion', populate: {path: 'creador', select: 'username firstName lastName fullName'}}).exec(function(err, attempt) {
 		if (err) return next(err);
-		if (!assignment) return next(new Error('Fallo al cargar la asignación ' + id));
+		if (!attempt) return next(new Error('Fallo al cargar el intento ' + id));
 
 		// Si un artículo es encontrado usar el objeto 'request' para pasarlo al siguietne middleware
-		req.assignment = assignment;
+		req.attempt = attempt;
 
 		// Llamar al siguiente middleware
 		next();
@@ -121,7 +120,7 @@ exports.assignmentByID = function(req, res, next, id) {
 // Crear un nuevo controller middleware que es usado para autorizar una operación article 
 exports.hasAuthorization = function(req, res, next) {
 	// si el usuario actual no es el creador del artículo, enviar el mensaje de error apropiado
-	if (req.attempt.assignment.creador.id !== req.user.id) {
+	if (req.attempt.creador.id !== req.user.id) {
 		return res.status(403).send({
 			message: 'Usuario no está autorizado'
 		});

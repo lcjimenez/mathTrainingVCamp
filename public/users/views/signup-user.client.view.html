@@ -1,10 +1,11 @@
 <!-- Crear la View Signup -->
 <section data-ng-controller="UsersController">
+	<!-- El formulario signup -->
+	<!-- Cuando se registra la información, ésta modifica el modelo $scope.user del controlador UsersController -->
+	<!-- Al pulsar enviar se llama al método $scope.signup del controlador UsersController -->
+	<!-- Consultar el archivo authentication.client.controller.js -->
+	<!--
 	<div>
-		<!-- El formulario signup -->
-		<!-- Cuando se registra la información, ésta modifica el modelo $scope.user del controlador UsersController -->
-		<!-- Al pulsar enviar se llama al método $scope.signup del controlador UsersController -->
-		<!-- Consultar el archivo authentication.client.controller.js -->
 		<form class="form-auth" ng-submit="register()">
 			<h2>Registrarse</h2>
 			<p class="text-warning">{{error_message}}</p>
@@ -18,13 +19,17 @@
 		    <input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
 		    Contraseña: <br>
 		    <input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
+		    -->
 		    <!--
 			Confirmar contraseña: <br>
 		    <input type="password" ng-model="user.password2" placeholder="Password" class="form-control"><br>
 			-->
+			<!--
 			<input type="submit" value="Registrarse" class="btn btn-primary" />
 		</form>
+	</div>
 	<br>
+	-->
 	<div>
 		<a href="/oauth/google" class="btn btn-block btn-social btn-google">
 	    	<span class="fa fa-google"></span> Registrarse usando Google

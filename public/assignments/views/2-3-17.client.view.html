@@ -1,0 +1,156 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+		<!-- NoMBRE -->
+	<div class="row">
+		<div class="col-md-10">
+			<h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+		</div>
+		<div class="col-md-2">
+			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
+		</div>
+	</div>
+
+	
+
+
+	<!-- ENUNCIADO -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
+				<!-- Se define el template para el enunciado del ejercicio -->
+				<script type="text/ng-template" id="2-3-17-enunciado">
+					<p>Para la siguiente ecuación diferencial</p>
+					<div> $$\frac { dy }{ dx } - \frac { y }{ x } = {{ (variables.A * variables.b) }} x { e }^{ {{ variables.b }} x } $$ </div>
+					<p>suponiendo las siguientes condiciones iniciales</p>
+					<div> $$ y\left( {{ variables.x0 }} \right) = {{ ( variables.A * variables.x0) }} { e }^{ {{ (variables.b * variables.x0) }} } + {{ ( variables.A * variables.C * variables.x0 ) }} $$ </div>
+					<p>Encuentre la función $ y \left( x \right) = ? $ que es solución.</p>
+				</script>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Enunciado-->
+
+	<!-- ERRORES -->
+	<div data-ng-show="error">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	<!-- FIN Errores -->
+
+	<!--
+	<p>Asignaciones</p>
+	<p>{{assignments}}</p>
+	-->
+	<!--
+	<p>Intentos</p>
+	<p>{{attempts}}</p>
+	-->
+
+	<!-- CONTROLES con campos de entrada, comandos y mensajes -->
+	<div class="row"> 
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<!-- INSTRUCCIONES para diligencia la respuesta -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+						<small>
+							 <ul>
+							 	<li>
+							 		Recuerde ingresar la respuesta en función de la variable $x$, por ejemplo, respuestas de la forma $4+5 \cdot x$ o de la forma $x \cdot e^{ \left( 2 \cdot x \right) }$
+							 	</li>
+							 	<li>
+							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
+							 	</li>
+							 	<li>
+							 		Antes de enviar verifique que la respuesta proyectada es la correcta.
+							 	</li>                          
+					        </ul>
+						</small>
+					</div>
+					<!-- /FIN Instrucciones -->
+
+					<!-- FORMULARIO -->
+					<form>
+
+						<!-- Campo de entrada -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="row form-group">
+								<label for="respuesta" class="control-label">Respuesta</label>
+								<input type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+							</div>
+						</div>
+
+						<!-- Campos de mensajes -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+							<p math-jax-bind-math-to-tex="respuesta"></p>
+						</div>
+
+						<!-- Botón de envío -->
+						<div class="form-group col-md-12 col-sm-12 col-xs-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="botonAyudameAResolverlo"  ng-click="resolver()">Ayúdame a resolverlo</a></li>
+									<li><a id="botonIntentarNuevamente" ng-click="generarEjercicio(true)">Intentar con otros valores</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<!-- /FIN Formulario -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FIN Controles -->
+
+	<!-- SOLUCIÓN -->
+	<div class="row">
+		<div class="col-md-12" dynamic="solucion"></div>
+		<!-- Se define el template para la solución del ejercicio -->
+		<script type="text/ng-template" id="2-3-17-solucion">
+			<p>Recordemos que si podemos representar la ecuación diferencial en su forma canónica </p>
+			<div> $$ \frac { dy }{ dx } +P \left( x \right) y = Q \left( x \right)  $$ </div>
+			<p>Podemos calcular el factor integrante $ \mu \left( x \right)  $ mediante la fórmula </p>
+			<div> $$ \mu \left( x \right) = { e }^{ \int { P \left( x \right) dx }  } $$ </div>
+			<p>Multiplicando la ecuación en su forma canónica por $ \mu \left( x \right)  $ tenemos </p>
+			<div> $$ \mu \left( x \right) \frac { dy }{ dx } +P \left( x \right) \mu \left( x \right) y = \mu \left( x \right) Q \left( x \right)  $$ </div>
+			<p>Y teniendo en cuenta que el lado izquierdo es precisamente $ \frac { d }{ dx } \left[ \mu \left( x \right) y \right] $ tenemos que </p>
+			<div> $$ \frac { d }{ dx } \left( \mu \left( x \right) y \right)  = \mu \left( x \right) Q \left( x \right)  $$ </div>
+			<p>De lo cual podemos despejar $ y \left( x \right) $ como </p>
+			<div> $$ y \left( x \right)  = \frac{ 1 }{ \mu \left( x \right) } \int { \mu \left( x \right) Q \left( x \right) dx }  $$ </div>
+			<p>Reemplazando los valores del ejercicio tenemos </p>
+			<div> $$ P \left( x \right)  = - \frac{ 1 }{ x } $$ </div>
+			<p>Y </p>
+			<div> $$ Q \left( x \right)  =  {{(variables.A * variables.b)}}  x { e }^{  {{variables.b}}  x } $$ </div>
+			<p>Por consiguiente </p>
+			<div> $$ \mu \left( x \right) = { e }^{ - \int { \frac{ 1 }{ x } dx }  } = { e }^{ -\ln { \left( x \right)  }  } = { e }^{ \ln { \left( { x }^{ -1 } \right)  }  } = { x }^{ -1 } = \frac { 1 }{ x }  $$ </div>
+			<p>Reemplazando tenemos </p>
+			<div> $$ y \left( x \right)  = \frac{ 1 }{ { 1 }/{ x } } \int { \left( \frac { 1 }{ x } \right) \left(  {{(variables.A * variables.b)}}  x { e }^{  {{variables.b}}  x }  \right) dx } = x \int { {{ (variables.A * variables.b) }} { e }^{ {{ variables.b }} x } dx } = x \left( \frac{ {{ (variables.A * variables.b) }} }{ {{ variables.b }} } { e }^{ {{ variables.b }} x } + C \right) = {{ variables.A }}  x { e }^{ {{ variables.b }} x } + C x $$ </div>
+			<p>Evaluando la función en las condiciones iniciales tenemos </p>
+			<div> $$ y \left( {{ variables.x0 }} \right)  = {{ variables.A }}  \left( {{ variables.x0 }} \right) { e }^{ {{ variables.b }} \left( {{ variables.x0 }} \right) } + \left( {{ variables.x0 }} \right) C = {{ (variables.A  * variables.x0) }} { e }^{ {{ (variables.b * variables.x0) }} } + {{ variables.x0 }}  C  $$ </div>
+			<p>De acuerdo al enunciado del problema tenemos </p>
+			<div> $$ {{ (variables.A  * variables.x0) }} { e }^{ {{ (variables.b * variables.x0) }} } + {{ variables.x0 }}  C = {{ (variables.A * variables.x0) }} { e }^{ {{ (variables.b * variables.x0) }} } + {{ ( variables.A * variables.C * variables.x0 ) }} $$ </div>
+			<p>Despejando $ C $ tenemos </p>
+			<div> $$ C = \frac{ {{ ( variables.A * variables.C * variables.x0 ) }} }{ {{ variables.x0 }} } = {{ (variables.A * variables.C ) }} $$ </div>
+			<p>Reemplazando el resultado en la ecuación obtenemos finalmente $ y \left( x \right) $ como</p>
+			<div> $$ y \left( x \right) = {{ variables.respuestaTex }} $$ </div>
+		</script>
+	</div>
+	<!-- FIN Solución -->
+
+	<!-- RESPUESTA Solución -->
+	<div class="row">
+		<div class="col-md-12" dynamic="respuestaSolucion"></div>
+		<script type="text/ng-template" id="2-3-17-respuestaSolucion">
+			<p> La respuesta es $ {{ variables.respuestaTex }} $.</p>
+		</script>
+	</div>
+</section>

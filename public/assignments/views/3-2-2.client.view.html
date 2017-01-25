@@ -1,0 +1,204 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+		<!-- NoMBRE -->
+	<div class="row">
+		<div class="col-md-10">
+			<h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+		</div>
+		<div class="col-md-2">
+			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
+		</div>
+	</div>
+
+	
+
+
+	<!-- ENUNCIADO -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
+				<!-- Se define el template para el enunciado del ejercicio -->
+				<script type="text/ng-template" id="3-2-2-enunciado">
+					<p>Una solución salina entra a una razón constante de $ {{variables.R}} $ litros/minuto en un tanque de gran tamaño que en un principio contenía $ {{variables.V}} $ litros de solución salina en que se habían disuelto $ {{variables.S}} $ kg de sal. La solución dentro del tanque se mantiene  bien revuelta y sale del tanque a la misma razón. Si la concentración de sal en la solución que entra al tanque es de $ {{variables.K}} $ kg/litros, determine:</p>
+					<ol type="a">
+					  <li>La masa de sal en el tanque después de $ {{variables.T}} $ minutos. </li>
+					  <li>Tiempo que tarda en llegar la concentración de sal dentro del tanque a $ {{variables.Kf}} $ kg/litro </li>
+					</ol>				
+				</script>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Enunciado-->
+
+	<!-- ERRORES -->
+	<div data-ng-show="error">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	<!-- FIN Errores -->
+
+	<!--
+	<p>Asignaciones</p>
+	<p>{{assignments}}</p>
+	-->
+	<!--
+	<p>Intentos</p>
+	<p>{{attempts}}</p>
+	-->
+
+	<!-- CONTROLES con campos de entrada, comandos y mensajes -->
+	<div class="row"> 
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<!-- INSTRUCCIONES para diligencia la respuesta -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+						<small>
+							 <ul>
+							 	<li>
+							 		Debe ingresar las respuestas como valores enteros y separado por punto y coma (;), por ejemplo, respuestas de la forma $4;5$ o de la forma $3;4;7$.
+							 	</li>
+							 	<li>
+							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
+							 	</li>
+							 	<li>
+							 		Antes de enviar verifique que la respuesta proyectada es la correcta.
+							 	</li>                          
+					        </ul>
+						</small>
+					</div>
+					<!-- /FIN Instrucciones -->
+
+					<!-- FORMULARIO -->
+					<form>
+
+						<!-- Campo de entrada -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="row form-group">
+								<label for="respuesta" class="control-label">Respuesta</label>
+								<input type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+							</div>
+						</div>
+
+						<!-- Campos de mensajes -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+							<p math-jax-bind-math-to-tex="respuesta"></p>
+						</div>
+
+						<!-- Botón de envío -->
+						<div class="form-group col-md-12 col-sm-12 col-xs-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="botonAyudameAResolverlo"  ng-click="resolver()">Ayúdame a resolverlo</a></li>
+									<li><a id="botonIntentarNuevamente" ng-click="generarEjercicio(true)">Intentar con otros valores</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<!-- /FIN Formulario -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FIN Controles -->
+
+	<!-- SOLUCIÓN -->
+	<div class="row">
+		<div class="col-md-12" dynamic="solucion"></div>
+		<!-- Se define el template para la solución del ejercicio -->
+		<script type="text/ng-template" id="3-2-2-solucion">
+			<h4>Parte a</h4>
+			<p>Si se define $ x( t ) $ como la masa de sal en el tanque después de $t$ minutos se tiene que
+$ \dfrac{ dx }{ dt } $ es la razón de cambio en la cantidad de sal con respecto al tiempo y está dada por:
+</p>
+			<div>
+				$$ \dfrac{dx}{dt} = razónDeEntradaDeSal – razónDeSalidaDeSal $$ 
+			</div>
+			<p>Es decir,</p>
+			<div>
+				$$ \dfrac{ dx }{ dt }= ( {{ variables.K }} )( {{variables.R}} )- x \left( t \right) \dfrac{ {{ variables.R }} }{ {{ variables.V }} } $$
+			</div>
+			<p>La anterior es una ecuación lineal y separable por tanto puede resolverse por cualquiera de estos dos métodos, si por ejemplo se resuelve como ecuación separable se tiene:</p>
+			<div>
+				$$ \dfrac{dx}{ {{variables.R1}} - {{variables.R2}} x} = dt $$
+			</div>
+			<div>
+				$$ \int{ \dfrac{dx}{ {{variables.R1}} - {{variables.R2}} x } } = \int{ dt } $$
+			</div>
+			<p>De donde</p>
+			<div>
+				$$ \int{ \dfrac{ dx }{ {{variables.R1}} - {{variables.R2}} x } } = \dfrac{ -1 }{ {{variables.R2}} } \ln \left| {{variables.R1}} - {{variables.R2}} x \right| + c_{1} $$
+			</div>
+			<p>Y</p>
+			<div>
+				$$ \int{ dt } = t + c_{2} $$
+			</div>
+			<p>Por lo tanto</p>
+			<div>
+				$$\dfrac{ -1 }{ {{variables.R2}} } \ln \left| {{variables.R1}} - {{variables.R2}} x \right| + c_{3} = t $$
+			</div>
+			<p>Al despejar $ x $ se tiene</p>
+			<div>
+				$$ x = \dfrac{ {{variables.R1}} - e^{ - {{variables.R2}} t - c_{3} } }{ {{variables.R2}} } $$ 
+			</div>
+			<div>
+				$$ x = {{variables.R3}} - \dfrac{ 1 }{ {{variables.R2}} } e^{ - {{variables.R2}} t - c_{3}} $$
+			</div>
+			<p>Dada la condición inicial $ x( 0 ) = {{variables.S}} $ se tiene que</p>
+			<div>
+				$$ {{variables.S}} = {{variables.R3}} - \dfrac{ 1 }{ {{variables.R2}} } e^{- c_{3}} $$ 
+			</div>
+			<div>
+				$$ e^{ - c_{3} } = - \left( {{variables.S}} - {{variables.R3}} \right) {{variables.R2}} $$
+			</div>
+			<p>Y por consiguiente</p>
+			<div>
+				$$ x(t) = {{variables.R3}}  + \left( {{variables.S}} - {{variables.R3}} \right) e^{- {{variables.R2}} t} $$
+			</div>
+			<p>De esta manera, para saber la masa de sal después de $ {{variables.T}} $ minutos se remplaza $t$ por $ {{variables.T}} $ en la ecuación $x(t)$ hallada y se obtiene</p>
+			<div>
+				$$ x( {{variables.T}} ) = {{variables.R3}} + \left( {{variables.S}} - {{variables.R3}} \right) e^{- {{variables.R2}} \times {{variables.T}} } $$
+			</div>
+			<div>
+				$$ x( {{variables.T}} ) = 
+				{{variables.Rfinal}} $$
+			</div>
+			<p>Es decir pasados $ {{variables.T}} $ minutos se tendrá en el tanque una masa de $ {{variables.Rfinal}} $ kg de sal</p>
+			<h4>Parte b</h4>
+			<p>Dado que</p>
+			<div>
+				$$ x(t) = {{variables.R3}} + \left( {{variables.S}} - {{variables.R3}} \right)e^{- {{variables.R2}} t} $$
+			</div>
+			<p>Para saber el tiempo que tarda en llegar la concentración de sal dentro del tanque a $ {{variables.Kf}} $ kg/litro se debe despejar $ {{variables.t}} $ de la siguiente ecuación</p>
+			<div>
+				$$ \left( {{variables.Kf}} \cdot {{variables.V}} \right) = {{variables.R3}} + \left( {{variables.S}} - {{variables.R3}} \right) e^{- {{variables.R2}} t} $$
+			</div>
+			<div>
+				$$ t = \dfrac{ \ln \left( \dfrac{ \left( {{variables.Kf}} \cdot {{variables.V}} \right) - {{variables.R3}} } { {{variables.S}} - {{variables.R3}} }\right) } {- {{variables.R2}} }$$
+			</div>
+			<div>
+				$$ t = {{variables.Tfinal}} $$
+			</div>
+
+		</script>
+	</div>
+	<!-- FIN Solución -->
+
+	<!-- RESPUESTA Solución -->
+	<div class="row">
+		<div class="col-md-12" dynamic="respuestaSolucion"></div>
+		<script type="text/ng-template" id="3-2-2-respuestaSolucion">
+			<p>La solución es $ R_{ final } = {{variables.respuesta[0][0]}} $ y $ t_{ final } = {{variables.respuesta[0][1]}} $.</p>
+		</script>
+	</div>
+</section>
+

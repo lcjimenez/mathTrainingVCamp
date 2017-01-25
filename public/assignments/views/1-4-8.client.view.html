@@ -1,0 +1,174 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+		<!-- NoMBRE -->
+	<div class="row">
+		<div class="col-md-10">
+			<h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+		</div>
+		<div class="col-md-2">
+			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
+		</div>
+	</div>
+
+	
+
+
+	<!-- ENUNCIADO -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
+				<!-- Se define el template para el enunciado del ejercicio -->
+				<script type="text/ng-template" id="1-4-8-enunciado">
+					<p>Utilice el método de Euler para aproximar la solución del problema</p>
+					<div>
+						$$ \frac { dy }{ dx } = 1 - \sin \left( {{ variables.a }} \cdot y \right) $$
+					</div>
+					<p>con condición inicial</p>
+					<div>
+						$$ y \left( 0 \right) = 0 $$
+					</div>
+					<p>en $ x = \pi $ usando $1$, $2$, $4$ y $8$ pasos.</p>
+				</script>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Enunciado-->
+
+	<!-- ERRORES -->
+	<div data-ng-show="error">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	<!-- FIN Errores -->
+
+	<!--
+	<p>Asignaciones</p>
+	<p>{{assignments}}</p>
+	-->
+	<!--
+	<p>Intentos</p>
+	<p>{{attempts}}</p>
+	-->
+
+	<!-- CONTROLES con campos de entrada, comandos y mensajes -->
+	<div class="row"> 
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<!-- INSTRUCCIONES para diligencia la respuesta -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+						<small>
+							 <ul>
+							 	<li>
+							 		Debe ingresar las respuestas como valores con <b>tres decimales</b> y separado por punto y coma ($;$), por ejemplo, respuestas de la forma $1.234;2.546$ o de la forma $1.208;6.405;2.388$.
+							 	</li>
+							 	<li>
+							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
+							 	</li>
+							 	<li>
+							 		Antes de enviar verifique que la respuesta proyectada es la correcta.
+							 	</li>                          
+					        </ul>
+						</small>
+					</div>
+					<!-- /FIN Instrucciones -->
+
+					<!-- FORMULARIO -->
+					<form>
+
+						<!-- Campo de entrada -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="row form-group">
+								<label for="respuesta" class="control-label">Respuesta</label>
+								<input type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+							</div>
+						</div>
+
+						<!-- Campos de mensajes -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+							<p math-jax-bind-math-to-tex="respuesta"></p>
+						</div>
+
+						<!-- Botón de envío -->
+						<div class="form-group col-md-12 col-sm-12 col-xs-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="botonAyudameAResolverlo"  ng-click="resolver()">Ayúdame a resolverlo</a></li>
+									<li><a id="botonIntentarNuevamente" ng-click="generarEjercicio(true)">Intentar con otros valores</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<!-- /FIN Formulario -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FIN Controles -->
+
+	<!-- SOLUCIÓN -->
+	<div class="row">
+		<div class="col-md-12" dynamic="solucion"></div>
+		<!-- Se define el template para la solución del ejercicio -->
+		<script type="text/ng-template" id="1-4-8-solucion">
+			<p>Los valores iniciales son $x_0 = y_0 = 0$ y $ f\left( x, y \right) = 1 - \sin \left( {{variables.a}} \cdot y \right) $. Si el número de pasos es $N$, entonces cada paso sería </p>
+			<div>$$ h = \frac{ \left( \pi - x_0 \right)}{ N } = \frac{ \pi }{ N } $$</div>
+			<p>Recordemos que la formula recursiva del método de Euler es, para $n = 0, 1,..., N$,</p>
+			<div>$$ x_{n+1} = x_n + h $$</div>
+			<div>$$ y_{n+1} = y_n + h \cdot f \left( x_n , y_n \right) = y_n + h \cdot \left( 1 - \sin \left( {{variables.a}} \cdot y_n \right) \right) $$</div>
+			<p>Para $N = 1$, $h = \pi$,</p>
+			<div>$$ x_1 = x_0 + h = 0 + \pi = \pi $$</div>
+			<div>$$ y_1 = y_0 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_0 \right) \right) = 0 + \pi \left( 1 - \sin \left( {{variables.a}} \cdot  0 \right) \right) = \pi \cdot {{variables.Fy[0][0]}} \approx {{variables.Y[0][1]}} $$</div>
+			<p>Para $N = 2$, $h = \frac{\pi}{2}$,</p>
+			<div>$$ x_1 = x_0 + h = 0 + \frac{\pi}{2} = \frac{\pi}{2} $$</div>
+			<div>$$ y_1 = y_0 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_0 \right) \right) = 0 + \frac{\pi}{2} \left( 1 - \sin \left( {{variables.a}} \cdot  0 \right) \right) = \frac{\pi}{2}  \cdot {{variables.Fy[1][0]}} \approx {{variables.Y[1][1]}} $$</div>
+			<div>$$ x_2 = x_1 + h = \frac{\pi}{2} + \frac{\pi}{2} = \pi $$</div>
+			<div>$$ y_2 = y_1 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_1 \right) \right) =  {{variables.Y[1][1]}} + \frac{\pi}{2} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[1][1]}} \right) \right) = {{variables.Y[1][1]}} + \frac{\pi}{2}  \cdot {{variables.Fy[1][1]}} \approx {{variables.Y[1][2]}} $$</div>
+			<p>Para $N = 4$, $h = \frac{\pi}{4}$,</p>
+			<div>$$ x_1 = x_0 + h = 0 + \frac{\pi}{4} = \frac{\pi}{4} $$</div>
+			<div>$$ y_1 = y_0 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_0 \right) \right) = 0 + \frac{\pi}{4} \left( 1 - \sin \left( {{variables.a}} \cdot  0 \right) \right) = \frac{\pi}{4}  \cdot {{variables.Fy[2][0]}} \approx {{variables.Y[2][1]}} $$</div>
+			<div>$$ x_2 = x_1 + h = \frac{\pi}{4} + \frac{\pi}{4} = \frac{\pi}{2} $$</div>
+			<div>$$ y_2 = y_1 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_1 \right) \right) = {{variables.Y[2][1]}} + \frac{\pi}{4} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[2][1]}} \right) \right) = {{variables.Y[2][1]}} + \frac{\pi}{4}  \cdot {{variables.Fy[2][1]}} \approx {{variables.Y[2][2]}} $$</div>
+			<div>$$ x_3 = x_2 + h = \frac{\pi}{2} + \frac{\pi}{4} = \frac{3 \cdot \pi}{4} $$</div>
+			<div>$$ y_3 = y_2 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_2 \right) \right) = {{variables.Y[2][2]}} + \frac{\pi}{4} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[2][2]}} \right) \right) = {{variables.Y[2][2]}} + \frac{\pi}{4}  \cdot {{variables.Fy[2][2]}} \approx {{variables.Y[2][3]}} $$</div>
+			<div>$$ x_4 = x_3 + h = \frac{ 3 \cdot \pi }{4} + \frac{\pi}{4} = \pi $$</div>
+			<div>$$ y_4 = y_3 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_3 \right) \right) = {{variables.Y[2][3]}} + \frac{\pi}{4} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[2][3]}} \right) \right) = {{variables.Y[2][3]}} + \frac{\pi}{4}  \cdot {{variables.Fy[2][3]}} \approx {{variables.Y[2][4]}} $$</div>
+			<p>Para $N = 8$, $h = \frac{\pi}{8}$,</p>
+			<div>$$ x_1 = x_0 + h = 0 + \frac{\pi}{8} = \frac{\pi}{8} $$</div>
+			<div>$$ y_1 = y_0 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_0 \right) \right) = 0 + \frac{\pi}{8} \left( 1 - \sin \left( {{variables.a}} \cdot  0 \right) \right) = \frac{\pi}{8}  \cdot {{variables.Fy[3][0]}} \approx {{variables.Y[3][1]}} $$</div>
+			<div>$$ x_2 = x_1 + h = \frac{\pi}{8} + \frac{\pi}{8} = \frac{\pi}{4} $$</div>
+			<div>$$ y_2 = y_1 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_1 \right) \right) = {{variables.Y[3][1]}} + \frac{\pi}{8} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[3][1]}} \right) \right) = {{variables.Y[3][1]}} + \frac{\pi}{8}  \cdot {{variables.Fy[3][1]}} \approx {{variables.Y[3][2]}} $$</div>
+			<div>$$ x_3 = x_2 + h = \frac{\pi}{4} + \frac{\pi}{8} = \frac{3 \cdot \pi}{8} $$</div>
+			<div>$$ y_3 = y_2 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_2 \right) \right) = {{variables.Y[3][2]}} + \frac{\pi}{8} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[3][2]}} \right) \right) = {{variables.Y[3][2]}} + \frac{\pi}{8}  \cdot {{variables.Fy[3][2]}} \approx {{variables.Y[3][3]}} $$</div>
+			<div>$$ x_4 = x_3 + h = \frac{ 3 \cdot \pi }{8} + \frac{\pi}{8} = \frac{\pi}{2} $$</div>
+			<div>$$ y_4 = y_3 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_3 \right) \right) = {{variables.Y[3][3]}} + \frac{\pi}{8} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[3][3]}} \right) \right) = {{variables.Y[3][3]}} + \frac{\pi}{8}  \cdot {{variables.Fy[3][3]}} \approx {{variables.Y[3][4]}} $$</div>
+			<div>$$ x_5 = x_4 + h = \frac{ \pi }{2} + \frac{\pi}{8} = \frac{ 5 \cdot \pi }{8} $$</div>
+			<div>$$ y_5 = y_4 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_4 \right) \right) = {{variables.Y[3][4]}} + \frac{\pi}{8} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[3][4]}} \right) \right) = {{variables.Y[3][4]}} + \frac{\pi}{8}  \cdot {{variables.Fy[3][4]}} \approx {{variables.Y[3][5]}} $$</div>
+			<div>$$ x_6 = x_5 + h = \frac{ 5 \cdot \pi }{8} + \frac{\pi}{8} = \frac{ 3 \cdot \pi}{4} $$</div>
+			<div>$$ y_6 = y_5 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_5 \right) \right) = {{variables.Y[3][5]}} + \frac{\pi}{8} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[3][5]}} \right) \right) = {{variables.Y[3][5]}} + \frac{\pi}{8}  \cdot {{variables.Fy[3][5]}} \approx {{variables.Y[3][6]}} $$</div>
+			<div>$$ x_7 = x_6 + h = \frac{ 3 \cdot \pi}{4} + \frac{\pi}{8} = \frac{7 \cdot \pi}{8} $$</div>
+			<div>$$ y_7 = y_6 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_6 \right) \right) = {{variables.Y[3][6]}} + \frac{\pi}{8} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[3][6]}} \right) \right) = {{variables.Y[3][6]}} + \frac{\pi}{8}  \cdot {{variables.Fy[3][6]}} \approx {{variables.Y[3][7]}} $$</div>
+			<div>$$ x_8 = x_7 + h = \frac{ 7 \cdot \pi }{8} + \frac{\pi}{8} = \pi $$</div>
+			<div>$$ y_8 = y_7 + h \left( 1 - \sin \left( {{variables.a}} \cdot  y_7 \right) \right) = {{variables.Y[3][7]}} + \frac{\pi}{8} \left( 1 - \sin \left( {{variables.a}} \cdot  {{variables.Y[3][7]}} \right) \right) = {{variables.Y[3][7]}} + \frac{\pi}{8}  \cdot {{variables.Fy[3][7]}} \approx {{variables.Y[3][8]}}$$</div>
+		</script>
+	</div>
+	<!-- FIN Solución -->
+
+	<!-- RESPUESTA Solución -->
+	<div class="row">
+		<div class="col-md-12" dynamic="respuestaSolucion"></div>
+		<script type="text/ng-template" id="1-4-8-respuestaSolucion">
+			<p>Las aproximaciones para la solución evaluada en $ \pi $ serían: $ y \left( \pi \right) = {{variables.respuesta[0][0]}} $, para $N = 1$, $ y \left( \pi \right) = {{variables.respuesta[0][1]}} $, para $N = 2$, $ y \left( \pi \right) = {{variables.respuesta[0][2]}} $, para $N = 4$ y $ y \left( \pi \right) = {{variables.respuesta[0][3]}} $, para $N = 8$.</p>
+		</script>
+	</div>
+</section>
+

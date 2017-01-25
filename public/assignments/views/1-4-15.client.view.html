@@ -9,6 +9,7 @@
 			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
 		</div>
 	</div>
+
 	
 
 
@@ -19,11 +20,20 @@
 				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
 				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
 				<!-- Se define el template para el enunciado del ejercicio -->
-				<script type="text/ng-template" id="1-2-20a-enunciado">
-					<p>Determine los valores de $m$ para los que la función $ \phi \left( x \right) = { e }^{ mx } $ es una solución de la ecuación:</p>
+				<script type="text/ng-template" id="1-4-15-enunciado">
+					<p>La ley de enfriamiento de Newton establece que la razón de cambio de la termperatura $T \left( t \right)$ de un cuerpo es proporcional a la diferencia entre la termperatura del medio $M \left( t \right)$ y la termperatrura del cuerpo. Es decir,</p>
 					<div>
-						$$ \frac{ { d }^{ 2 }y }{ d{ x }^{ 2 } } {{ ( variables.a < 0 ? ' ' : '+') }} {{variables.a}}  \frac{ dy }{ dx } {{( variables.b < 0 ? ' ' : '+')}} {{variables.b}} y = 0 $$
+						$$ \frac { dT }{ dt } = K \left[ M \left( t \right) - T \left( t \right) \right] $$
 					</div>
+					<p>donde $K$ es una constante. Sea $K = {{variables.K}} \left( minutos \right)^{-1} $ y consideremos una temperatura del medio constante $M \left( t \right) = {{variables.M}} °F $. Si el cuerpo tiene un temperatura inicial de $ {{variables.T0}} °F$, utilice el método de Euler con $h = {{variables.h[0]}} $ para aproximar la termperatura del cuerpo después de:</p>
+					<ol type='a'>
+						<li>
+							{{(variables.h[0] * variables.N[0])}} minutos.
+						</li>
+						<li>
+							{{(variables.h[1] * variables.N[1])}} minutos.
+						</li>
+					</ol>
 				</script>
 			</div>
 		</div>
@@ -57,7 +67,7 @@
 						<small>
 							 <ul>
 							 	<li>
-							 		Debe ingresar las respuestas como valores enteros y separado por punto y coma (;), por ejemplo, respuestas de la forma $4;5$ o de la forma $3;4;7$.
+							 		Debe ingresar las respuestas como valores <b>enteros</b> y separado por punto y coma ($;$), por ejemplo, respuestas de la forma $155;152$ o de la forma $126;119$.
 							 	</li>
 							 	<li>
 							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
@@ -113,21 +123,21 @@
 	<div class="row">
 		<div class="col-md-12" dynamic="solucion"></div>
 		<!-- Se define el template para la solución del ejercicio -->
-		<script type="text/ng-template" id="1-2-20a-solucion">
-			<p>Podemos observar que si reemplazamos la función $\phi \left( x \right) = { e }^{ mx }$ dentro de la ecuación obtenemos</p>
-			<div>
-				$$ { \left( { e }^{ mx } \right) }^{ '' } {{(variables.a < 0 ? '' : '+')}} {{variables.a}} { \left( { e }^{ mx } \right) }^{ ' } {{(variables.b < 0 ? '' : '+')}} {{variables.b}}  \left( { e }^{ mx } \right) = 0$$
+		<script type="text/ng-template" id="1-4-15-solucion">
+			<p>Para el ejercicio tenemos que la variable independiente es $t$ y la variable dependiente es la temperatura del cuerpo $T\left( t \right)$.</p>
+			<p>Adicionalmente, los valores iniciales son $t_0 = 0$ y $T_0 = {{variables.T0}} °F $ y $ f\left( t, T \right) = K \left( M - T \right) $.</p>
+			<p>De la formula recursiva del método de Euler para $n = 0, 1,..., N$, donde $N$ es el número de pasos, tenemos que</p>
+			<div>$$ t_{n+1} = t_n + h  = t_n + {{variables.h[0]}} $$</div>
+			<div>$$ T_{n+1} = T_n + h \cdot f \left( t_n , T_n \right) = T_n + h \cdot \left( K \cdot \left( M - T_n \right) \right) = T_n + {{variables.h[0]}} \cdot  \left(  {{variables.M}} - T_n \right) $$</div>
+			<p>De esta manera calculamos los valores de $T$ para los diferentes valores de $n$:</p>
+			<div ng-repeat="i in getNumber(variables.N[1])">
+				<div>
+					$$ t_{ {{ (i+1) }} } = t_{ {{ (i) }} } + h = {{ (i*variables.h[1]) | number : 1 }} + {{variables.h[1]}} = {{ ((i+1)*variables.h[1]) | number : 1 }} $$
+				</div>
+				<div>
+					$$ T_{ {{ (i+1) }} } =  {{ variables.T[1][i] }}  + {{ variables.h[1] }} \cdot  \left( {{ variables.M }} - {{ variables.T[1][i] }} \right) = {{ variables.T[1][i] }} + {{ variables.h[1] }} \cdot \left( {{ variables.Ft[1][i] }} \right) \approx {{ variables.T[1][i+1] }} $$
+				</div>
 			</div>
-			<div>
-				$$ \left( { m }^{ 2 } { e }^{ mx } \right) {{(variables.a < 0 ? '' : '+')}} {{variables.a}} \left( m { e }^{ mx } \right) {{(variables.b < 0 ? '' : '+')}} {{variables.b}} \left(  { e }^{ mx } \right) = 0$$
-			</div>
-			<div>
-				$$ { e }^{ mx } \left( { m }^{ 2 } {{(variables.a < 0 ? '' : '+')}} {{variables.a}} m {{(variables.b < 0 ? '' : '+')}} {{variables.b}} \right)= 0$$
-			</div>
-			<p>Debido a que ${ e }^{ mx } \ne 0$ para todo valor de $x$ deducimos que</p>
-			<div>$$ { m }^{ 2 } {{(variables.a < 0 ? '' : '+')}} {{variables.a}} m {{(variables.b < 0 ? '' : '+')}} {{variables.b}} = 0$$</div>
-			<p>Factorizando obtenemos</p>
-			<div>$$ \left( m {{(variables.raiz1 < 0 ? '' : '+')}} {{variables.raiz1}} \right) \left( m  {{(variables.raiz2 < 0 ? '' : '+')}} {{variables.raiz2}} \right) = 0$$</div>
 		</script>
 	</div>
 	<!-- FIN Solución -->
@@ -135,9 +145,10 @@
 	<!-- RESPUESTA Solución -->
 	<div class="row">
 		<div class="col-md-12" dynamic="respuestaSolucion"></div>
-		<script type="text/ng-template" id="1-2-20a-respuestaSolucion">
-			<p>La función es solución para $ m = {{variables.respuesta[0][0]}} $ y para $ m = {{variables.respuesta[0][1]}} $.</p>
+		<script type="text/ng-template" id="1-4-15-respuestaSolucion">
+			<p>
+				Las aproximaciones para la temperatura serían $ T = {{ variables.respuesta[0][0] }} °F $ en ${{ (variables.h[0] * variables.N[0]) }}$ minutos y $ T = {{ variables.respuesta[0][1] }} °F $ en $ {{ (variables.h[1] * variables.N[1]) }}$ minutos.
+			</p>
 		</script>
 	</div>
 </section>
-

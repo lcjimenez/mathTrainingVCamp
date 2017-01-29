@@ -59,8 +59,8 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
                 if($scope.assignments.length >= 1)
                 {
                     $scope.findAttempts();
-                    console.log('Asignaciones');
-                    console.log($scope.assignments);
+                    //console.log('Asignaciones');
+                    //console.log($scope.assignments);
                     //$scope.deshabilitado = false;
                 }
 
@@ -157,8 +157,8 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
                         $scope.visualizarPlantilla();
                     }
 
-                    console.log('Todos Intentos');
-                    console.log(allAttempts);
+                    // console.log('Todos Intentos');
+                    // console.log(allAttempts);
                     // console.log('Errores:');
                     // console.log($scope.wrongAttempts);
                     // console.log('Aciertos:');

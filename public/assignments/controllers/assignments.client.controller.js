@@ -58,9 +58,16 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
 
                 if($scope.assignments.length >= 1)
                 {
+                    // $scope.assignments2 = $scope.assignments.filter(function (el) {
+                    //     return el.tipo == $scope.infoAssignment.type && el.ejercicio == $scope.infoAssignment.exercise && el.creador._id == $scope.authentication.user._id;
+                    // });
+                    // $scope.assignments2.$promise = $scope.assignments.$promise;
+                    // $scope.assignments2.$resolved = $scope.assignments.$resolved;
                     $scope.findAttempts();
-                    //console.log('Asignaciones');
-                    //console.log($scope.assignments);
+                    console.log('Asignaciones');
+                    console.log($scope.assignments);
+                    // console.log('Asignaciones2');
+                    // console.log($scope.assignments2);
                     //$scope.deshabilitado = false;
                 }
 
@@ -89,11 +96,17 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
 
         // Crear un nuevo método controller para recuperar una lista de asignaciones
         $scope.findAttempts = function() {
-            $scope.allAttempts = Attempts.query({
-                'tipo': $scope.infoAssignment.type,
-                'ejercicio': $scope.infoAssignment.exercise,
+            $scope.allAttempts = Attempts.query(
+            // {
+            //     'tipo': $scope.infoAssignment.type,
+            //     'ejercicio': $scope.infoAssignment.exercise,
+            //     'creador' : $scope.authentication.user._id
+            // }
+
+            {
                 'creador' : $scope.authentication.user._id
-            }, function() {
+            }
+            , function() {
                 // Se realiza un filtro para incluir sólo los intentos que pertenencen al ejercicio.
                 //$scope.attempts = $scope.allAttempts.filter(function (el) {
                 //   return el.asignacion != null;
@@ -139,9 +152,10 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             // Si aún no se han generado intentos, genera un error, y por lo tanto llama al "catch"
             try {
                 $scope.allAttempts.$promise.then(function(allAttempts){
-                    $scope.attempts = allAttempts.filter(function (el) {
-                        return el.asignacion != null;
-                    });
+                     $scope.attempts = allAttempts.filter(function (el) {
+                        return (el.asignacion.tipo == $scope.infoAssignment.type && el.asignacion.ejercicio == $scope.infoAssignment.exercise && el.asignacion.creador._id == $scope.authentication.user._id);
+                    //     return el.asignacion != null;
+                     });
 
                     $scope.wrongAttempts = $scope.attempts.filter(function (el) {
                         return !(el.respuestaCorrecta) ;
@@ -157,8 +171,10 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
                         $scope.visualizarPlantilla();
                     }
 
-                    // console.log('Todos Intentos');
-                    // console.log(allAttempts);
+                     console.log('Todos Intentos');
+                     console.log(allAttempts);
+                     console.log('Intentos');
+                     console.log($scope.attempts);
                     // console.log('Errores:');
                     // console.log($scope.wrongAttempts);
                     // console.log('Aciertos:');

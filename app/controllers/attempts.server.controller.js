@@ -41,7 +41,8 @@ exports.create = function(req, res) {
 // Crear un nuevo método controller que recupera una lista de artículos
 exports.list = function(req, res) {
 	// Usar el método model 'find' para obtener una lista de artículos
-	Attempt.find({'creador': req.query.creador}).sort('-creado').populate({path:'asignacion', match: req.query , populate:{path: 'creador', select: 'username firstName lastName fullName'}}).exec(function(err, attempts) {
+	Attempt.find(req.query).sort('-creado').populate({path:'asignacion', populate:{path: 'creador', select: 'username firstName lastName fullName'}}).exec(function(err, attempts) {
+	// Attempt.find({'creador': req.query.creador}).sort('-creado').populate({path:'asignacion', match: req.query , populate:{path: 'creador', select: 'username firstName lastName fullName'}}).exec(function(err, attempts) {
 		if (err) {
 			// Si un error ocurre enviar un mensaje de error
 			return res.status(400).send({

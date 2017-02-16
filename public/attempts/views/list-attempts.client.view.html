@@ -1,0 +1,43 @@
+<!-- La view listar artículos -->
+<section data-ng-controller="AttemptsController" data-ng-init="find()">
+	<h1>Intentos</h1>
+	<div data-ng-show = "esAdmin">
+		<table style="width:100%">
+			<tr>
+				<th>Usuario</th>
+				<th>Correcta</th>
+				<th>Taller/Quiz</th>
+				<th>Ejercicio</th>
+				<th>Respuesta</th>
+				<th>Respuesta Estudiante</th>
+				<!--<th>Fecha</th> -->
+			</tr>
+			<!-- La lista de artículos -->
+			<tr data-ng-repeat="attempt in attempts | orderBy: ['asignacion.creador.username', '-respuestaCorrecta', 'asignacion.tipo', 'asignacion.ejercicio','-creado']">
+				<td>{{attempt.asignacion.creador.username}}</td>
+				<td>{{attempt.respuestaCorrecta}}</td>
+				<td>{{attempt.asignacion.tipo}}</td>
+				<td>{{attempt.asignacion.ejercicio}}</td>
+				<td>{{attempt.asignacion.variables.respuesta}}</td>
+				<td>{{attempt.respuestaEstudiante}}</td>
+				<!-- <td>{{attempt.creado}}</td> -->
+	<!-- 			<a data-ng-href="#!/attempts/{{attempt._id}}" data-ng-bind="attempt.creador"></a>
+				<br>
+				<small data-ng-bind="attempt.creado | date:'medium'"></small>
+				<small>/</small>
+				<small data-ng-bind="attempt.creador.fullName"></small>
+				<p data-ng-bind="attempt.asignacion"></p> -->
+
+				<!-- Mostrar los botones de edición para artículo creado -->
+	<!--     <p data-ng-show="authentication.user._id == attempt.creador._id">
+	        <a href="/#!/attempts/{{attempt._id}}/edit">editar</a>
+	        <a href="/#!/attempts/{{attempt._id}}" data-ng-click="delete();">borrar</a>
+	    </p> -->
+			</tr>
+		</table>
+	</div>
+	<!-- Si no hay artículos en la lista, sugire al usuario que cree un nuevo artículo -->
+<!-- 	<div data-ng-hide="!attempts || attempts.length">
+		Aún no hay artículos, porque no creas <a href="/#!/attempts/create">el primero</a>?
+	</div> -->
+</section>

@@ -12,26 +12,26 @@
 
   <!-- PAGINACIÓN para elegir el ejercicio -->
   <div class="row">
-  <div class="col-md-10">
-    <nav>
-      <ul class="pagination">
-        <li ng-class="{disabled:indice === 0}">
-          <a ng-click="previo()" aria-label="Previo">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-          <li ng-class="{ active: estaEjercicioActivo(a)}" ng-repeat="a in asignacion.ejercicios | filter: {enabled: true}"><a ng-click="ejercicioSeleccionado(a,$index)"> G{{a.guia}}.{{a.nombre}}</a></li>
-        <li ng-class="{disabled:indice === asignacion.ejercicios.length-1}">
-          <a ng-click="siguiente()" aria-label="Siguiente">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-  <div class="col-md-2">
-  {{intentos}}
+    <div class="col-md-10">
+      <nav>
+        <ul class="pagination">
+          <li ng-class="{disabled:indice === 0}">
+            <a ng-click="previo()" aria-label="Previo">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+            <li ng-class="{ active: estaEjercicioActivo(a)}" ng-repeat="a in asignacion.ejercicios | filter: {enabled: true}"><a ng-click="ejercicioSeleccionado(a,$index)"> G{{a.guia}}.{{a.nombre}}</a></li>
+          <li ng-class="{disabled:indice === asignacion.ejercicios.length-1}">
+            <a ng-click="siguiente()" aria-label="Siguiente">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
-  </div>
+    <div  data-ng-show = "esAdmin">
+      <a data-ng-href="#!/attempts"> Intentos </a>
+    </div>
   </div>
 </section>

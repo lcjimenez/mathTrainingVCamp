@@ -2,6 +2,8 @@ angular.module('example').controller('ExampleController', ['$scope', '$window', 
   function($scope, $window, $timeout, $location, Authentication, InfoAssignment) {
     $scope.authentication = Authentication;
     $scope.infoAssignment = InfoAssignment;
+    // Revisa si el usuario es el administrador
+    $scope.esAdmin = ($scope.authentication.user == null ? false : $scope.authentication.user.username == 'lcjimenez');
     //setTimeout(function() {MathJax.Hub.Queue(["Typeset",MathJax.Hub]);});
 
     // Se definen las asignaciones, con sus respectivos "tipos"

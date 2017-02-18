@@ -59,7 +59,7 @@
 						<small>
 							 <ul>
 							 	<li>
-							 		Debe ingresar las respuestas como valores enteros y separado por punto y coma (;), por ejemplo, respuestas de la forma $4;5$ o de la forma $3;4;7$.
+							 		Debe ingresar las respuestas como valores con <b>cuatro decimales</b> y separado por punto y coma ($;$), por ejemplo, respuestas de la forma $1.2345;0.1464$.
 							 	</li>
 							 	<li>
 							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
@@ -129,14 +129,14 @@ $ \dfrac{ dx }{ dt } $ es la razón de cambio en la cantidad de sal con respecto
 			</div>
 			<p>La anterior es una ecuación lineal y separable por tanto puede resolverse por cualquiera de estos dos métodos, si por ejemplo se resuelve como ecuación separable se tiene:</p>
 			<div>
-				$$ \dfrac{dx}{ {{variables.R1}} - {{variables.R2}} x} = dt $$
+				$$ \dfrac{dx}{ {{variables.R1 | number}} - {{variables.R2 | number}} x} = dt $$
 			</div>
 			<div>
-				$$ \int{ \dfrac{dx}{ {{variables.R1}} - {{variables.R2}} x } } = \int{ dt } $$
+				$$ \int{ \dfrac{dx}{ {{variables.R1 | number}} - {{variables.R2 | number}} x } } = \int{ dt } $$
 			</div>
 			<p>De donde</p>
 			<div>
-				$$ \int{ \dfrac{ dx }{ {{variables.R1}} - {{variables.R2}} x } } = \dfrac{ -1 }{ {{variables.R2}} } \ln \left| {{variables.R1}} - {{variables.R2}} x \right| + c_{1} $$
+				$$ \int{ \dfrac{ dx }{ {{variables.R1 | number}} - {{variables.R2 | number}} x } } = \dfrac{ -1 }{ {{variables.R2 | number}} } \ln \left| {{variables.R1 | number}} - {{variables.R2 | number}} x \right| + c_{1} $$
 			</div>
 			<p>Y</p>
 			<div>
@@ -144,46 +144,51 @@ $ \dfrac{ dx }{ dt } $ es la razón de cambio en la cantidad de sal con respecto
 			</div>
 			<p>Por lo tanto</p>
 			<div>
-				$$\dfrac{ -1 }{ {{variables.R2}} } \ln \left| {{variables.R1}} - {{variables.R2}} x \right| + c_{3} = t $$
+				$$\dfrac{ -1 }{ {{variables.R2 | number}} } \ln \left| {{variables.R1 | number}} - {{variables.R2 | number}} x \right| + c_{1} = t + c_{2} $$
+			</div>
+			<p>
+				Definiendo una variable $c_3 = c_1 - c_2$ tenemos
+			</p>
+			<div>
+				$$\dfrac{ -1 }{ {{variables.R2 | number}} } \ln \left| {{variables.R1 | number}} - {{variables.R2 | number}} x \right| + c_{3} = t $$
 			</div>
 			<p>Al despejar $ x $ se tiene</p>
 			<div>
-				$$ x = \dfrac{ {{variables.R1}} - e^{ - {{variables.R2}} t - c_{3} } }{ {{variables.R2}} } $$ 
+				$$ x = \dfrac{ {{variables.R1 | number}} - e^{ - {{variables.R2 | number}} t - c_{3} } }{ {{variables.R2 | number}} } $$ 
 			</div>
 			<div>
-				$$ x = {{variables.R3}} - \dfrac{ 1 }{ {{variables.R2}} } e^{ - {{variables.R2}} t - c_{3}} $$
+				$$ x = {{variables.R3 | number}} - \dfrac{ 1 }{ {{variables.R2 | number}} } e^{ - {{variables.R2 | number}} t - c_{3}} $$
 			</div>
 			<p>Dada la condición inicial $ x( 0 ) = {{variables.S}} $ se tiene que</p>
 			<div>
-				$$ {{variables.S}} = {{variables.R3}} - \dfrac{ 1 }{ {{variables.R2}} } e^{- c_{3}} $$ 
+				$$ {{variables.S}} = {{variables.R3 | number}} - \dfrac{ 1 }{ {{variables.R2 | number}} } e^{- c_{3}} $$ 
 			</div>
 			<div>
-				$$ e^{ - c_{3} } = - \left( {{variables.S}} - {{variables.R3}} \right) {{variables.R2}} $$
+				$$ e^{ - c_{3} } = - \left( {{variables.S}} - {{variables.R3 | number}} \right) {{variables.R2 | number}} $$
 			</div>
 			<p>Y por consiguiente</p>
 			<div>
-				$$ x(t) = {{variables.R3}}  + \left( {{variables.S}} - {{variables.R3}} \right) e^{- {{variables.R2}} t} $$
+				$$ x(t) = {{variables.R3 | number}}  + \left( {{variables.S}} - {{variables.R3 | number}} \right) e^{- {{variables.R2 | number}} t} $$
 			</div>
 			<p>De esta manera, para saber la masa de sal después de $ {{variables.T}} $ minutos se remplaza $t$ por $ {{variables.T}} $ en la ecuación $x(t)$ hallada y se obtiene</p>
 			<div>
-				$$ x( {{variables.T}} ) = {{variables.R3}} + \left( {{variables.S}} - {{variables.R3}} \right) e^{- {{variables.R2}} \times {{variables.T}} } $$
+				$$ x( {{variables.T}} ) = {{variables.R3 | number}} + \left( {{variables.S}} - {{variables.R3 | number}} \right) e^{- {{variables.R2 | number}} \cdot {{variables.T}} } $$
 			</div>
 			<div>
-				$$ x( {{variables.T}} ) = 
-				{{variables.Rfinal}} $$
+				$$ x( {{variables.T}} ) = {{variables.Rfinal}} $$
 			</div>
 			<p>Es decir pasados $ {{variables.T}} $ minutos se tendrá en el tanque una masa de $ {{variables.Rfinal}} $ kg de sal</p>
 			<h4>Parte b</h4>
 			<p>Dado que</p>
 			<div>
-				$$ x(t) = {{variables.R3}} + \left( {{variables.S}} - {{variables.R3}} \right)e^{- {{variables.R2}} t} $$
+				$$ x(t) = {{variables.R3 | number}} + \left( {{variables.S}} - {{variables.R3 | number}} \right)e^{- {{variables.R2 | number}} t} $$
 			</div>
-			<p>Para saber el tiempo que tarda en llegar la concentración de sal dentro del tanque a $ {{variables.Kf}} $ kg/litro se debe despejar $ {{variables.t}} $ de la siguiente ecuación</p>
+			<p>Para saber el tiempo que tarda en llegar la concentración de sal dentro del tanque a $ {{variables.Kf}} $ kg/litro se debe despejar $ t $ de la siguiente ecuación</p>
 			<div>
-				$$ \left( {{variables.Kf}} \cdot {{variables.V}} \right) = {{variables.R3}} + \left( {{variables.S}} - {{variables.R3}} \right) e^{- {{variables.R2}} t} $$
+				$$ \left( {{variables.Kf}} \cdot {{variables.V}} \right) = {{variables.R3 | number}} + \left( {{variables.S}} - {{variables.R3 | number}} \right) e^{- {{variables.R2 | number}} t} $$
 			</div>
 			<div>
-				$$ t = \dfrac{ \ln \left( \dfrac{ \left( {{variables.Kf}} \cdot {{variables.V}} \right) - {{variables.R3}} } { {{variables.S}} - {{variables.R3}} }\right) } {- {{variables.R2}} }$$
+				$$ t = \dfrac{ \ln \left( \dfrac{ \left( {{variables.Kf}} \cdot {{variables.V}} \right) - {{variables.R3 | number}} } { {{variables.S}} - {{variables.R3 | number}} }\right) } {- {{variables.R2 | number}} }$$
 			</div>
 			<div>
 				$$ t = {{variables.Tfinal}} $$
@@ -197,7 +202,15 @@ $ \dfrac{ dx }{ dt } $ es la razón de cambio en la cantidad de sal con respecto
 	<div class="row">
 		<div class="col-md-12" dynamic="respuestaSolucion"></div>
 		<script type="text/ng-template" id="3-2-2-respuestaSolucion">
-			<p>La solución es $ R_{ final } = {{variables.respuesta[0][0]}} $ y $ t_{ final } = {{variables.respuesta[0][1]}} $.</p>
+			<p>La solución es :</p>
+			<ol type="a">
+				<li>
+					Al haber transcurrido $ t = {{variables.T}} $ minutos la sal tendrá una masa de $ x = {{variables.respuesta[0][0]}} $ kg.
+				</li>
+				<li>
+					El tiempo necesario para alcanzar una concentración de $ {{variables.Kf}} $ kg/litro es de $ t = {{variables.respuesta[0][1]}} $ minutos.
+				</li>
+			</ol>
 		</script>
 	</div>
 </section>

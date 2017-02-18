@@ -64,8 +64,8 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
                     // $scope.assignments2.$promise = $scope.assignments.$promise;
                     // $scope.assignments2.$resolved = $scope.assignments.$resolved;
                     $scope.findAttempts();
-                    console.log('Asignaciones');
-                    console.log($scope.assignments);
+                    // console.log('Asignaciones');
+                    // console.log($scope.assignments);
                     // console.log('Asignaciones2');
                     // console.log($scope.assignments2);
                     //$scope.deshabilitado = false;
@@ -171,10 +171,10 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
                         $scope.visualizarPlantilla();
                     }
 
-                     console.log('Todos Intentos');
-                     console.log(allAttempts);
-                     console.log('Intentos');
-                     console.log($scope.attempts);
+                     // console.log('Todos Intentos');
+                     // console.log(allAttempts);
+                     // console.log('Intentos');
+                     // console.log($scope.attempts);
                     // console.log('Errores:');
                     // console.log($scope.wrongAttempts);
                     // console.log('Aciertos:');
@@ -496,29 +496,32 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             // Se definen las variables del ejercicio
             variables = {};
             // concentración de sal en la solución que entra (aleatorio entre 0 y 1)
-            variables['K'] = Math.floor(Math.random() * 100 + 1) / 100;
+            variables['K'] = (Math.floor(Math.random() * 100) + 1) / 1000;
             // razón de entrada y salida de solución salina (aleatorio entero de 1 a 10)
             variables['R'] = Math.floor(Math.random() * 10) + 1 ;
-            // volumen inicial dentro del tanque con solución salina (aleatorio entero entre 50 y 1000)
-            variables['V'] = Math.floor(Math.random() * 951) + 50;
+            // volumen inicial dentro del tanque con solución salina (aleatorio entero entre 5 y 50)
+            variables['V'] = Math.floor(Math.random() * 46) + 5;
             // Kg de sal disueltos inicialmente (aleatorio entre 0.3 y 1)
             variables['S'] = (Math.floor(Math.random() * 8) + 3) / 10;
             // concentración final para a que se quiere hallar el tiempo (aleatorio entre 0 y 0.1)
-            variables['Kf'] = (Math.floor(Math.random() * 10) + 1) / 100;
-            // tiempo en que se quiere averiguar la concentración de sal (aleatorio entero entre 1 y 100)
-            variables['T'] = (Math.floor(Math.random() * 100) + 1);
+            variables['Kf'] = (Math.floor((Math.random() * (variables['K'] - (variables['S'] / variables['V'])) + (variables['S'] / variables['V']) ) * 1000) + 1) / 1000;
+            // tiempo en que se quiere averiguar la concentración de sal (aleatorio entero entre  y 30)
+            variables['T'] = (Math.floor(Math.random() * 29) + 2);
             //
-            variables['R1'] = Math.floor(variables['K'] * variables['R'] * 10000) / 10000;
-            variables['R2'] = Math.floor(variables['R'] / variables['V'] * 10000) / 10000;
-            variables['R3'] = Math.floor(variables['R1'] / variables['R2'] * 10000) / 10000;
+            variables['R1'] = variables['K'] * variables['R'];
+            variables['R2'] = variables['R'] / variables['V'];
+            variables['R3'] = variables['R1'] / variables['R2'];
             variables['Rfinal'] = variables['R3'] + (variables['S'] - variables['R3']) * math.exp(-variables['R2']*variables['T']);
-            //variables['Tfinal'] = math.log( ( variables['Kf'] + variables['R3'] ) / ( variables['S'] - variables['R3'] ) ) / (variables['R2']);
             variables['Tfinal'] = math.log( ( variables['Kf'] * variables['V'] - variables['R3'] ) / ( variables['S'] - variables['R3'] ) ) / -(variables['R2']);
+
+            // Queda con cuatro decimales
+            variables['Rfinal'] = parseFloat(variables['Rfinal']).toFixed(3);
+            variables['Tfinal'] = parseFloat(variables['Tfinal']).toFixed(3);
             variables['respuesta'] = [[(variables['Rfinal']).toString(),(variables['Tfinal']).toString()]];
             // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
             variables['tipoRespuesta'] = "valores";
         }
-/*
+
         $scope.variables_3_3_7 = function() {
             // Se definen las variables del ejercicio
             variables = {};
@@ -527,16 +530,46 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             // Temperatura exterior (aleatorio entero entre 31 y 40)
             variables['E'] = Math.floor(Math.random() * 10) + 31;
             // constante del edificio (aleatorio entre 1 y 10)
-            variables['H'] = Math.floor(Math.random() * 10) + 1;
+            variables['H'] = Math.floor(Math.random() * 10) + 2;
             // hora a la que se quiere averiguar la temperatura (aleatorio entero de 2 a 6)
             variables['hora'] = Math.floor(Math.random() * 5) + 2;
             // concentración final para a que se quiere hallar el tiempo (aleatorio entre 0 y 0.1)
             //
-            variables['K'] = Math.floor(1 / variables['H'] * 10000) / 10000;
-            variables['Ce'] = Math.floor( (variables['To'] - variables['V']) * math.exp() * 10000) / 10000;
-            variables['Tfinal'] = math.log( ( variables['Kf'] + variables['R3'] ) / ( variables['S'] - variables['R3'] ) ) / -(variables['R2']);
+            variables['K'] = 1 / variables['H'];
+            variables['Ce'] = (variables['To'] - variables['E']);
+            variables['Tfinal'] = variables['E'] + math.exp( - variables['K'] * variables['hora']) * variables['Ce'];
+
+            // Queda con tres decimales
+            variables['Tfinal'] = parseFloat(variables['Tfinal']).toFixed(1);
             variables['respuesta'] = [[(variables['Tfinal']).toString()]];
             // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
             variables['tipoRespuesta'] = "valores";
-        }*/
+        }
+
+        $scope.variables_3_3_10 = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            // Temperatura inicial de la sala de lectura (aleatorio entero entre 30 y 50)
+            variables['To'] = Math.floor(Math.random() * 21) + 30;
+            // Temperatura del calefactor (aleatorio entero entre 60 y 75)
+            variables['Tc'] = Math.floor(Math.random() * 16) + 60;
+            // tiempo a la que se debe averiguar la temperatura (aleatorio entre 1 y 4)
+            variables['Tiempo'] = Math.floor(Math.random() * 9) + 2;
+            // constante de tiempo para el edificio  (aleatorio entero entre 5 y 10)
+            variables['Ka'] = Math.floor(Math.random() * 6) + 5;
+            // constante de tiempo para el edificio junto con su sistema de calentamiento (1 y ka)
+            variables['Kb'] = Math.floor(Math.random() * (variables['Ka'] - 2) ) + 2;
+            //
+            variables['K'] = 1 / variables['Ka'];
+            variables['K1'] = 1 / variables['Kb'];
+            variables['Ku'] = variables['K1'] - variables['K'];
+            variables['Ra'] = variables['K'] * variables['To'] + variables['Ku'] * variables['Tc'];
+            variables['Tfinal'] = variables['Ra'] / variables['K1'] + (variables['To'] - variables['Ra'] / variables['K1']) * math.exp(- variables['K1'] * variables['Tiempo']) ;
+
+            // Queda con tres decimales
+            variables['Tfinal'] = parseFloat(variables['Tfinal']).toFixed(1);
+            variables['respuesta'] = [[(variables['Tfinal']).toString()]];
+            // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
+            variables['tipoRespuesta'] = "valores";
+        }
 }]);

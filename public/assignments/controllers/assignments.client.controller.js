@@ -514,9 +514,9 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             variables['Rfinal'] = variables['R3'] + (variables['S'] - variables['R3']) * math.exp(-variables['R2']*variables['T']);
             variables['Tfinal'] = math.log( ( variables['Kf'] * variables['V'] - variables['R3'] ) / ( variables['S'] - variables['R3'] ) ) / -(variables['R2']);
 
-            // Queda con cuatro decimales
-            variables['Rfinal'] = parseFloat(variables['Rfinal']).toFixed(3);
-            variables['Tfinal'] = parseFloat(variables['Tfinal']).toFixed(3);
+            // Ajustar decimales
+            variables['Rfinal'] = parseFloat(variables['Rfinal']).toFixed(2);
+            variables['Tfinal'] = parseFloat(variables['Tfinal']).toFixed(1);
             variables['respuesta'] = [[(variables['Rfinal']).toString(),(variables['Tfinal']).toString()]];
             // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
             variables['tipoRespuesta'] = "valores";
@@ -539,7 +539,7 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             variables['Ce'] = (variables['To'] - variables['E']);
             variables['Tfinal'] = variables['E'] + math.exp( - variables['K'] * variables['hora']) * variables['Ce'];
 
-            // Queda con tres decimales
+            // Ajustar decimales
             variables['Tfinal'] = parseFloat(variables['Tfinal']).toFixed(1);
             variables['respuesta'] = [[(variables['Tfinal']).toString()]];
             // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)

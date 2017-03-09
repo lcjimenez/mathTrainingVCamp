@@ -1,0 +1,269 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+		<!-- NoMBRE -->
+	<div class="row">
+		<div class="col-md-10">
+			<h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+		</div>
+		<div class="col-md-2">
+			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
+		</div>
+	</div>
+
+	
+
+
+	<!-- ENUNCIADO -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
+				<!-- Se define el template para el enunciado del ejercicio -->
+				<script type="text/ng-template" id="5-2-19-enunciado">
+					<p>
+						Obtenga $x \left( t \right)$ para el problema con valores iniciales dado.
+					</p>
+					<div>
+						$$ \frac{dx}{dt} = {{ variables.p1 }} x + y $$
+					</div>
+					<div>
+						$$ \frac{dy}{dt} = {{ - variables.p3 }} x + {{ variables.p2 }} y $$
+					</div>
+					<p>
+						Donde las condiciones iniciales están dadas por:
+					</p>
+					<div>
+						$$ x \left( 0 \right) = 1 $$
+					</div>
+					<div>
+						$$ y \left( 0 \right) = 0 $$
+					</div>
+				</script>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Enunciado-->
+
+	<!-- ERRORES -->
+	<div data-ng-show="error">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	<!-- FIN Errores -->
+
+	<!--
+	<p>Asignaciones</p>
+	<p>{{assignments}}</p>
+	-->
+	<!--
+	<p>Intentos</p>
+	<p>{{attempts}}</p>
+	-->
+
+	<!-- CONTROLES con campos de entrada, comandos y mensajes -->
+	<div class="row"> 
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<!-- INSTRUCCIONES para diligencia la respuesta -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+						<small>
+							 <ul>
+							 	<li>
+							 		Recuerde ingresar la respuesta en función de la variable $t$, por ejemplo, respuestas de la forma $ \cos{\left( 4 \cdot t \right)} $. Utilice únicamente números <b>fraccionarios y raíces</b>, por ejemplo, de la forma $ \sqrt{ \frac{t}{4} } $. No utilice decimales.
+							 	</li>
+							 	<li>
+							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/sqrt(c)]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{\sqrt{c}}\right] \cdot e^{2 \cdot \pi \cdot x}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
+							 	</li>
+							 	<li>
+							 		Antes de enviar verifique que la respuesta proyectada es la correcta.
+							 	</li>                          
+					        </ul>
+						</small>
+					</div>
+					<!-- /FIN Instrucciones -->
+
+					<!-- FORMULARIO -->
+					<form>
+
+						<!-- Campo de entrada -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="row form-group">
+								<label for="respuesta" class="control-label">Respuesta</label>
+								<input type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+							</div>
+						</div>
+
+						<!-- Campos de mensajes -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+							<p math-jax-bind-math-to-tex="respuesta"></p>
+						</div>
+
+						<!-- Botón de envío -->
+						<div class="form-group col-md-12 col-sm-12 col-xs-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="botonAyudameAResolverlo"  ng-click="resolver()">Ayúdame a resolverlo</a></li>
+									<li><a id="botonIntentarNuevamente" ng-click="generarEjercicio(true)">Intentar con otros valores</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<!-- /FIN Formulario -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FIN Controles -->
+
+	<!-- SOLUCIÓN -->
+	<div class="row">
+		<div class="col-md-12" dynamic="solucion"></div>
+		<!-- Se define el template para la solución del ejercicio -->
+		<script type="text/ng-template" id="5-2-19-solucion">
+			<p>
+				De la primera ecuación diferencial obtenemos (1)
+			</p>
+			<div>
+				$$ \frac{dx}{dt} - {{ variables.p1 }} x - y = 0 $$
+			</div>
+			<div>
+				$$ \left( D - {{ variables.p1 }} \right) \left[ x \right] - \left[ y \right] = 0 $$
+			</div>
+			<p>
+				De la segunda ecuación diferencial obtenemos (2)
+			</p>
+			<div>
+				$$ \frac{dy}{dt} {{ ( variables.p3 < 0 ? ' ' : '+') }} {{ variables.p3 }} x - {{ variables.p2 }} y = 0 $$
+			</div>
+			<div>
+				$$ {{ variables.p3 }} \left[ x \right] + \left( D - {{ variables.p2 }} \right) \left[ y \right] = 0 $$
+			</div>
+			<p>
+				Multiplicando (1) por $ \left( D - {{ variables.p2 }} \right) $ obtenemos (3)
+			</p>
+			<div>
+				$$ \left( D - {{ variables.p2 }} \right) \left( D - {{ variables.p1 }} \right) \left[ x \right] - \left( D - {{ variables.p2 }} \right) \left[ y \right] = 0 $$
+			</div>
+			<p>
+				Sumando (2) + (3) obtenemos
+			</p>
+			<div>
+				$$ \left( D - {{ variables.p2 }} \right) \left( D - {{ variables.p1 }} \right) \left[ x \right] {{ ( variables.p3 < 0 ? ' ' : '+') }} {{ variables.p3 }} \left[ x \right] = 0 $$
+			</div>
+			<p>
+				Simplificando
+			</p>
+			<div>
+				$$ \left( D^{2} - {{ variables.c1 }} D {{ ( variables.c2 - variables.p3 < 0 ? ' ' : '+') }} {{ variables.c2 - variables.p3 }} \right) \left[ x \right] {{ ( variables.p3 < 0 ? ' ' : '+') }} {{ variables.p3 }} \left[ x \right] = 0 $$
+			</div>
+			<div>
+				$$ \left( D^{2} - {{ variables.c1 }} D + {{ variables.c2 }} \right) \left[ x \right] = 0 $$
+			</div>
+			<p>
+				La ecuación auxiliar es
+			</p>
+			<div>
+				$$ \left( r^{2} - {{ variables.c1 }} r + {{ variables.c2 }} \right) = 0 $$
+			</div>
+			<div>
+				$$ \left( r - {{ variables.raiz1 }} \right) \left( r - {{ variables.raiz2 }} \right) = 0 $$
+			</div>
+			<p>
+				Obteniendo las siguientes raíces
+			</p>
+			<div>
+				$$ r = {{ variables.raiz1 }} $$
+			</div>
+			<div>
+				$$ r = {{ variables.raiz2 }} $$
+			</div>
+			<p>
+				La solución para estas raíces sería
+			</p>
+			<div>
+				$$ x \left( t \right) = { C }_{ 1 } e^{ {{ variables.raiz1 }} t } + { C }_{ 2 } e^{ {{ variables.raiz2 }} t }  $$
+			</div>
+			<p>
+				Despejando $ y \left( t \right) $ de la ecuación $ \frac{dx}{dt} = {{ variables.p1 }} x + y $ tenemos 
+			</p>
+			<div>
+				$$ y = \frac{dx}{dt} - {{ variables.p1 }} x $$
+			</div>
+			<p>
+				Obteniendo la primera derivada de $ x \left( t \right) $
+			</p>
+			<div>
+				$$ \frac{dx}{dt} = \frac{d}{dt} \left( { C }_{ 1 } e^{ {{ variables.raiz1 }} t } + { C }_{ 2 } e^{ {{ variables.raiz2 }} t } \right) = {{ variables.raiz1 }} { C }_{ 1 } e^{ {{ variables.raiz1 }} t } + {{ variables.raiz2 }} { C }_{ 2 } e^{ {{ variables.raiz2 }} t } $$
+			</div>
+			<p>
+				Se obtiene
+			</p>
+			<div>
+				$$  y \left( t \right) = \left( {{ variables.raiz1 }} { C }_{ 1 } e^{ {{ variables.raiz1 }} t } + {{ variables.raiz2 }} { C }_{ 2 } e^{ {{ variables.raiz2 }} t } \right) - {{ variables.p1 }} \left( { C }_{ 1 } e^{ {{ variables.raiz1 }} t } + { C }_{ 2 } e^{ {{ variables.raiz2 }} t } \right) $$
+			</div>
+			<div>
+				$$  y \left( t \right) = {{ variables.raiz1 - variables.p1 }} { C }_{ 1 } e^{ {{ variables.raiz1 }} t } {{ ( variables.raiz2 - variables.p1 < 0 ? ' ' : '+') }} {{ variables.raiz2 - variables.p1 }} { C }_{ 2 } e^{ {{ variables.raiz2 }} t } $$
+			</div>
+			<p>
+				A partir de las condiciones iniciales tenemos que $ C_1 $ y $ C_2 $ 
+			</p>
+			<div>
+				$$ x \left( 0 \right) = { C }_{ 1 } + { C }_{ 2 } = 1 $$
+			</div>
+			<div>
+				$$  { C }_{ 2 } = 1 - { C }_{ 1 } $$
+			</div>
+			<div>
+				$$  y \left( 0 \right) = {{ variables.raiz1 - variables.p1 }} { C }_{ 1 } {{ ( variables.raiz2 - variables.p1 < 0 ? ' ' : '+') }} {{ variables.raiz2 - variables.p1 }} { C }_{ 2 } = 0 $$
+			</div>
+			<div>
+				$$ {{ variables.raiz1 - variables.p1 }} { C }_{ 1 } {{ ( variables.raiz2 - variables.p1 < 0 ? ' ' : '+') }} {{ variables.raiz2 - variables.p1 }} \left( 1 - { C }_{ 1 } \right) = 0 $$
+			</div>
+			<div>
+				$$ {{ variables.raiz1 - variables.p1 }} { C }_{ 1 } {{ ( variables.raiz2 - variables.p1 < 0 ? ' ' : '+') }} {{ variables.raiz2 - variables.p1 }} {{ ( - (variables.raiz2 - variables.p1) < 0 ? ' ' : '+') }} {{ - (variables.raiz2 - variables.p1) }} { C }_{ 1 } = 0 $$
+			</div>
+			<div>
+				$$ {{ variables.raiz1 - variables.raiz2 }} { C }_{ 1 } {{ ( variables.raiz2 - variables.p1 < 0 ? ' ' : '+') }} {{ variables.raiz2 - variables.p1 }} = 0 $$
+			</div>
+			<div>
+				$$ {{ variables.raiz1 - variables.raiz2 }} { C }_{ 1 } = {{ - (variables.raiz2 - variables.p1) }} $$
+			</div>
+			<div>
+				$$ { C }_{ 1 } = \frac{ {{ - (variables.raiz2 - variables.p1) }} }{ {{ variables.raiz1 - variables.raiz2 }} } $$
+			</div>
+			<p>
+				Y por lo tanto
+			</p>
+			<div>
+				$$ { C }_{ 2 } = 1 - \frac{ {{ - (variables.raiz2 - variables.p1) }} }{ {{ variables.raiz1 - variables.raiz2 }} } $$
+			</div>
+			<div>
+				$$ { C }_{ 2 } = \frac{ {{ variables.raiz1 - variables.p1 }} }{ {{ variables.raiz1 - variables.raiz2 }} } $$
+			</div>
+			<p>
+				Obteniendo
+			</p>
+			<div>
+				$$ x \left( t \right) = \frac{ {{ - (variables.raiz2 - variables.p1) }} }{ {{ variables.raiz1 - variables.raiz2 }} } e^{ {{ variables.raiz1 }} t } + \frac{ {{ variables.raiz1 - variables.p1 }} }{ {{ variables.raiz1 - variables.raiz2 }} } e^{ {{ variables.raiz2 }} t }  $$
+			</div>
+		</script>
+	</div>
+	<!-- FIN Solución -->
+
+	<!-- RESPUESTA Solución -->
+	<div class="row">
+		<div class="col-md-12" dynamic="respuestaSolucion"></div>
+		<script type="text/ng-template" id="5-2-19-respuestaSolucion">
+			<p> Obteniendo como respuesta $ {{variables.respuestaTex}} $.</p>
+		</script>
+	</div>
+</section>

@@ -260,15 +260,16 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
                     var respuestaEstudiante = str;
                     var respuestaReal = variables.respuesta;
                     var parser = math.parser();
-                    parser.eval('f(x,y,z)='+respuestaEstudiante);
-                    parser.eval('g(x,y,z)='+respuestaReal);
+                    parser.eval('f(t,x,y,z)='+respuestaEstudiante);
+                    parser.eval('g(t,x,y,z)='+respuestaReal);
                     for(k = 0; k < 10; k++){
+                        var t = Math.floor((Math.random() -0.5) * 1000);
                         var x = Math.floor((Math.random() -0.5) * 1000);
                         var y = Math.floor((Math.random() -0.5) * 1000);
                         var z = Math.floor((Math.random() -0.5) * 1000);
                         try {
-                            var f = parser.eval('f('+ x +','+ y +','+ z +')');
-                            var g = parser.eval('g('+ x +','+ y +','+ z +')');
+                            var f = parser.eval('f('+ t +','+ x +','+ y +','+ z +')');
+                            var g = parser.eval('g('+ t +','+ x +','+ y +','+ z +')');
                         }
                         catch(err) {
                             esCorrecto = false;
@@ -571,5 +572,78 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             variables['respuesta'] = [[(variables['Tfinal']).toString()]];
             // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
             variables['tipoRespuesta'] = "valores";
+        }
+
+        $scope.variables_3_5_3 = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            // Resistencia (aleatorio entre 50 y 150)
+            variables['R'] = Math.floor(Math.random() * 101) + 50;
+            // Condensador (aleatorio entre 10 y 50)
+            variables['C'] = (Math.floor(Math.random() * 40) + 11) / 10;
+            // Voltaje de recepción mínimo (aleatorio entre 10 y 50)
+            variables['Vmin'] = (Math.floor(Math.random() * 16) + 30) / 10;
+
+
+            // Temperatura inicial de la sala de lectura (aleatorio entero entre 30 y 50)
+            variables['To'] = Math.floor(Math.random() * 21) + 30;
+            // Temperatura del calefactor (aleatorio entero entre 60 y 75)
+            variables['Tc'] = Math.floor(Math.random() * 16) + 60;
+            // tiempo a la que se debe averiguar la temperatura (aleatorio entre 1 y 4)
+            variables['Tiempo'] = Math.floor(Math.random() * 9) + 2;
+            // constante de tiempo para el edificio  (aleatorio entero entre 5 y 10)
+            variables['Ka'] = Math.floor(Math.random() * 6) + 5;
+            // constante de tiempo para el edificio junto con su sistema de calentamiento (1 y ka)
+            variables['Kb'] = Math.floor(Math.random() * (variables['Ka'] - 2) ) + 2;
+            //
+            variables['K'] = 1 / variables['Ka'];
+            variables['K1'] = 1 / variables['Kb'];
+            variables['Ku'] = variables['K1'] - variables['K'];
+            variables['Ra'] = variables['K'] * variables['To'] + variables['Ku'] * variables['Tc'];
+            variables['Tfinal'] = variables['Ra'] / variables['K1'] + (variables['To'] - variables['Ra'] / variables['K1']) * math.exp(- variables['K1'] * variables['Tiempo']) ;
+
+            // Queda con tres decimales
+            variables['Tfinal'] = parseFloat(variables['Tfinal']).toFixed(1);
+            variables['respuesta'] = [[(variables['Tfinal']).toString()]];
+            // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
+            variables['tipoRespuesta'] = "valores";
+        }
+
+        $scope.variables_5_2_17 = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            // Raíces
+            variables['raiz1'] = Math.floor(Math.random() * 46) + 5;
+            variables['raiz2'] = Math.floor(Math.random() * 46) + 5;
+            variables['c1'] = variables['raiz1'] + variables['raiz2'];
+            variables['c2'] = variables['raiz1'] * variables['raiz2'];
+            variables['p1'] = Math.floor(Math.random() * (variables['c1'] - 1)) + 1;
+            variables['p2'] = variables['c1'] - variables['p1'];
+            variables['p3'] = (variables['p1'] * variables['p2']) - variables['c2'];
+
+            variables['respuesta'] = '1/'+ ( variables['raiz2'] - variables['raiz1'] )  +' * cos( sqrt( '+ variables['raiz1'] +' ) * t ) + 1/('+ ( variables['raiz2'] - variables['raiz1'] ) +' * sqrt(' + variables['raiz1'] + ') )* sin( sqrt('+ variables['raiz1'] +') * t ) - 1/'+ ( variables['raiz2'] - variables['raiz1'] ) +' * cos( sqrt( ' + variables['raiz2'] + ') * t ) - 1/('+ (variables['raiz2'] - variables['raiz1']) +' * sqrt('+ variables['raiz2'] +') ) * sin( sqrt( '+ variables['raiz2'] +' ) * t )';
+            
+            variables['respuestaTex'] = math.parse(''+variables.respuesta).toTex();
+
+            variables['tipoRespuesta'] = "funcion";
+        }
+
+        $scope.variables_5_2_19 = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            // Raíces
+            variables['raiz1'] = Math.floor(Math.random() * 46) + 5;
+            variables['raiz2'] = Math.floor(Math.random() * 46) + 5;
+            variables['c1'] = variables['raiz1'] + variables['raiz2'];
+            variables['c2'] = variables['raiz1'] * variables['raiz2'];
+            variables['p1'] = Math.floor(Math.random() * (variables['c1'] - 1)) + 1;
+            variables['p2'] = variables['c1'] - variables['p1'];
+            variables['p3'] = (variables['p1'] * variables['p2']) - variables['c2'];
+
+            variables['respuesta'] = -( variables['raiz2'] - variables['p1'] ) +'/'+ ( variables['raiz1'] - variables['raiz2'] )  +' * e^( '+ variables['raiz1'] +' * t ) + ' + ( variables['raiz1'] - variables['p1'] ) +'/'+ ( variables['raiz1'] - variables['raiz2'] )  +' * e^( '+ variables['raiz2'] +' * t )';
+            
+            variables['respuestaTex'] = math.parse(''+variables.respuesta).toTex();
+
+            variables['tipoRespuesta'] = "funcion";
         }
 }]);

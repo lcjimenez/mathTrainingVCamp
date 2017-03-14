@@ -28,7 +28,7 @@
 						$$ \frac{dx}{dt} = {{ variables.p1 }} x + y $$
 					</div>
 					<div>
-						$$ \frac{dy}{dt} = {{ - variables.p3 }} x + {{ variables.p2 }} y $$
+						$$ \frac{dy}{dt} = {{ variables.p3 }} x + {{ variables.p2 }} y $$
 					</div>
 					<p>
 						Donde las condiciones iniciales están dadas por:
@@ -142,10 +142,10 @@
 				De la segunda ecuación diferencial obtenemos (2)
 			</p>
 			<div>
-				$$ \frac{dy}{dt} {{ ( variables.p3 < 0 ? ' ' : '+') }} {{ variables.p3 }} x - {{ variables.p2 }} y = 0 $$
+				$$ \frac{dy}{dt} {{ ( -variables.p3 < 0 ? ' ' : '+') }} {{ -variables.p3 }} x - {{ variables.p2 }} y = 0 $$
 			</div>
 			<div>
-				$$ {{ variables.p3 }} \left[ x \right] + \left( D - {{ variables.p2 }} \right) \left[ y \right] = 0 $$
+				$$ {{ -variables.p3 }} \left[ x \right] + \left( D - {{ variables.p2 }} \right) \left[ y \right] = 0 $$
 			</div>
 			<p>
 				Multiplicando (1) por $ \left( D - {{ variables.p2 }} \right) $ obtenemos (3)
@@ -157,13 +157,13 @@
 				Sumando (2) + (3) obtenemos
 			</p>
 			<div>
-				$$ \left( D - {{ variables.p2 }} \right) \left( D - {{ variables.p1 }} \right) \left[ x \right] {{ ( variables.p3 < 0 ? ' ' : '+') }} {{ variables.p3 }} \left[ x \right] = 0 $$
+				$$ \left( D - {{ variables.p2 }} \right) \left( D - {{ variables.p1 }} \right) \left[ x \right] {{ ( -variables.p3 < 0 ? ' ' : '+') }} {{ -variables.p3 }} \left[ x \right] = 0 $$
 			</div>
 			<p>
 				Simplificando
 			</p>
 			<div>
-				$$ \left( D^{2} - {{ variables.c1 }} D {{ ( variables.c2 - variables.p3 < 0 ? ' ' : '+') }} {{ variables.c2 - variables.p3 }} \right) \left[ x \right] {{ ( variables.p3 < 0 ? ' ' : '+') }} {{ variables.p3 }} \left[ x \right] = 0 $$
+				$$ \left( D^{2} - {{ variables.c1 }} D {{ ( variables.c2 - variables.p3 < 0 ? ' ' : '+') }} {{ variables.c2 + variables.p3 }} \right) \left[ x \right] {{ ( -variables.p3 < 0 ? ' ' : '+') }} {{ -variables.p3 }} \left[ x \right] = 0 $$
 			</div>
 			<div>
 				$$ \left( D^{2} - {{ variables.c1 }} D + {{ variables.c2 }} \right) \left[ x \right] = 0 $$

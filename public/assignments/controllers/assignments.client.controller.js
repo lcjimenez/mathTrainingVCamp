@@ -633,12 +633,16 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             variables = {};
             // Raíces
             variables['raiz1'] = Math.floor(Math.random() * 46) + 5;
-            variables['raiz2'] = Math.floor(Math.random() * 46) + 5;
+            do{
+                variables['raiz2'] = Math.floor(Math.random() * 46) + 5;
+            } while (variables['raiz2'] == variables['raiz1']);
             variables['c1'] = variables['raiz1'] + variables['raiz2'];
             variables['c2'] = variables['raiz1'] * variables['raiz2'];
-            variables['p1'] = Math.floor(Math.random() * (variables['c1'] - 1)) + 1;
-            variables['p2'] = variables['c1'] - variables['p1'];
-            variables['p3'] = (variables['p1'] * variables['p2']) - variables['c2'];
+            do{
+                variables['p1'] = Math.floor(Math.random() * (variables['c1'] - 2)) + 2;
+                variables['p2'] = variables['c1'] - variables['p1'];
+                variables['p3'] = (variables['p1'] * variables['p2']) - variables['c2'];          
+            } while ( (variables['p2'] <= 1 && variables['p2'] >= -1)  || (variables['p3'] <= 1 && variables['p3'] >= -1) );
 
             variables['respuesta'] = -( variables['raiz2'] - variables['p1'] ) +'/'+ ( variables['raiz1'] - variables['raiz2'] )  +' * e^( '+ variables['raiz1'] +' * t ) + ' + ( variables['raiz1'] - variables['p1'] ) +'/'+ ( variables['raiz1'] - variables['raiz2'] )  +' * e^( '+ variables['raiz2'] +' * t )';
             

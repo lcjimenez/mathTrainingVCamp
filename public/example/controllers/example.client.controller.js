@@ -19,8 +19,10 @@ $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'mu
                                         {'guia':2, 'enabled': false,'nombre':'3-3-7','tipoRespuesta':'valores'},
                                         {'guia':2, 'enabled': false,'nombre':'3-3-10','tipoRespuesta':'valores'},
                                         {'guia':2, 'enabled': false,'nombre':'3-5-3','tipoRespuesta':'valores'},
-                                        {'guia':3, 'enabled': true,'nombre':'5-2-17','tipoRespuesta':'valores'},
-                                        {'guia':3, 'enabled': true,'nombre':'5-2-19','tipoRespuesta':'valores'}]},
+                                        {'guia':3, 'enabled': false,'nombre':'5-2-17','tipoRespuesta':'valores'},
+                                        {'guia':3, 'enabled': false,'nombre':'5-2-19','tipoRespuesta':'valores'},
+                                        {'guia':4, 'enabled': true,'nombre':'7-4-21','tipoRespuesta':'funcion'},
+                                        {'guia':4, 'enabled': true,'nombre':'7-4-23','tipoRespuesta':'funcion'}]},
                          {'tipo':'Quices','numeroIntentos':1,'ayudas':false, 'muestraSolucion':false,
                           'ejercicios':[{'guia':1, 'enabled': false,'nombre':'1-2-20a','tipoRespuesta':'valores'},
                                         {'guia':1, 'enabled': false,'nombre':'1-2-20b','tipoRespuesta':'valores'},
@@ -33,8 +35,10 @@ $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':10,'ayudas':true, 'mu
                                         {'guia':2, 'enabled': false,'nombre':'3-3-7','tipoRespuesta':'valores'},
                                         {'guia':2, 'enabled': false,'nombre':'3-3-10','tipoRespuesta':'valores'},
                                         {'guia':2, 'enabled': false,'nombre':'3-5-3','tipoRespuesta':'valores'},
-                                        {'guia':3, 'enabled': true,'nombre':'5-2-17','tipoRespuesta':'valores'},
-                                        {'guia':3, 'enabled': true,'nombre':'5-2-19','tipoRespuesta':'valores'}]}];
+                                        {'guia':3, 'enabled': false,'nombre':'5-2-17','tipoRespuesta':'valores'},
+                                        {'guia':3, 'enabled': false,'nombre':'5-2-19','tipoRespuesta':'valores'},
+                                        {'guia':4, 'enabled': true,'nombre':'7-4-21','tipoRespuesta':'funcion'},
+                                        {'guia':4, 'enabled': true,'nombre':'7-4-23','tipoRespuesta':'funcion'}]}];
   
   // Variable asociada a la asignación que contiene el grupo de ejercicios que se están realizando (talleres, quices, etc.). La variables cambia con el menú.
   $scope.asignacion = $scope.asignaciones[0];

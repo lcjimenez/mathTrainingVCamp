@@ -1,0 +1,191 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+		<!-- NoMBRE -->
+	<div class="row">
+		<div class="col-md-10">
+			<h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+		</div>
+		<div class="col-md-2">
+			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
+		</div>
+	</div>
+
+	
+
+
+	<!-- ENUNCIADO -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
+				<!-- Se define el template para el enunciado del ejercicio -->
+				<script type="text/ng-template" id="7-4-23-enunciado">
+					<p>
+						Determine $\mathcal{L}^{-1} \left\{ F \right\}$ donde
+					</p>
+					<div>
+						$$ F \left( s \right) = \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} $$
+					</div>
+				</script>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Enunciado-->
+
+	<!-- ERRORES -->
+	<div data-ng-show="error">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	<!-- FIN Errores -->
+
+	<!--
+	<p>Asignaciones</p>
+	<p>{{assignments}}</p>
+	-->
+	<!--
+	<p>Intentos</p>
+	<p>{{attempts}}</p>
+	-->
+
+	<!-- CONTROLES con campos de entrada, comandos y mensajes -->
+	<div class="row"> 
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<!-- INSTRUCCIONES para diligencia la respuesta -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+						<small>
+							 <ul>
+							 	<li>
+							 		Recuerde ingresar la respuesta en función de la variable $t$, por ejemplo, respuestas de la forma $ \cos{\left( 4 \cdot t \right)} $. Utilice únicamente números <b>fraccionarios y raíces</b>, por ejemplo, de la forma $ \sqrt{ \frac{t}{4} } $. No utilice decimales.
+							 	</li>
+							 	<li>
+							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/sqrt(c)]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{\sqrt{c}}\right] \cdot e^{2 \cdot \pi \cdot x}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
+							 	</li>
+							 	<li>
+							 		Antes de enviar verifique que la respuesta proyectada es la correcta.
+							 	</li>                          
+					        </ul>
+						</small>
+					</div>
+					<!-- /FIN Instrucciones -->
+
+					<!-- FORMULARIO -->
+					<form>
+
+						<!-- Campo de entrada -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="row form-group">
+								<label for="respuesta" class="control-label">Respuesta</label>
+								<input type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+							</div>
+						</div>
+
+						<!-- Campos de mensajes -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+							<p math-jax-bind-math-to-tex="respuesta"></p>
+						</div>
+
+						<!-- Botón de envío -->
+						<div class="form-group col-md-12 col-sm-12 col-xs-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="botonAyudameAResolverlo"  ng-click="resolver()">Ayúdame a resolverlo</a></li>
+									<li><a id="botonIntentarNuevamente" ng-click="generarEjercicio(true)">Intentar con otros valores</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<!-- /FIN Formulario -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FIN Controles -->
+
+	<!-- SOLUCIÓN -->
+	<div class="row">
+		<div class="col-md-12" dynamic="solucion"></div>
+		<!-- Se define el template para la solución del ejercicio -->
+		<script type="text/ng-template" id="7-4-23-solucion">
+			<p>
+				Obervamos que debemos utilizar el método de <b>factores lineales repetidos</b>
+			</p>
+			<div>
+				$$ \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} = \frac{A}{ \left( s + {{variables.p1}} \right) } + \frac{B}{ \left( s + {{variables.p1}} \right)^2 } + \frac{C}{ \left( s + {{variables.p2}} \right) } $$
+			</div>
+			<div>
+				$$ \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} = \frac{ A \left( s + {{variables.p1}} \right) \left( s + {{variables.p2}} \right) + B \left( s + {{variables.p2}} \right) + C \left( s + {{variables.p2}} \right)^2  }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right) } $$
+			</div>
+			<div>
+				$$ \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} = \frac{ A s^2 + {{ variables.p1 + variables.p2 }} A s +{{variables.p1 * variables.p2}} A + B s + {{ variables.p2 }} B + C s^2 + {{ 2 * variables.p1}} C s + {{ variables.p1 * variables.p1 }} C }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right) } $$
+			</div>
+			<div>
+				$$ \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} = \frac{ \left( A + C \right) s^2 + \left( {{ variables.p1 + variables.p2 }} A + B + {{ 2 * variables.p1 }} C \right) s  + \left( {{ variables.p1 * variables.p2 }} A + {{ variables.p2 }} B + {{variables.p1 * variables.p1}} C \right)}{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right) } $$
+			</div>
+			<p>
+				Obteniendo
+			</p>
+			<div>
+				$$ {{variables.a1}} = A + C $$
+			</div>
+			<div>
+				$$ {{variables.a2}} = {{ variables.p1 + variables.p2 }}  A + B + {{2 * variables.p1}} C $$
+			</div>
+			<div>
+				$$ {{variables.a3}} = {{ variables.p1 * variables.p2 }}  A + {{variables.p2}} B + {{variables.p1 * variables.p1}} C $$
+			</div>
+			<p>
+				Resolviendo las ecuaciones lineales se obtienen los valores de $A$, $B$ y $C$
+			</p>
+			<div>
+				$$ A = {{ variables.A }} $$
+			</div>
+			<div>
+				$$ B = {{ variables.B }} $$
+			</div>
+			<div>
+				$$ C = {{ variables.C }} $$
+			</div>
+			<p>
+				Reemplazando los valores
+			</p>
+			<div>
+				$$ \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} = \frac{ {{variables.A}} }{ \left( s + {{variables.p1}} \right) } + \frac{ {{variables.B}} }{ \left( s + {{variables.p1}} \right)^2 } + \frac{ {{variables.C}} }{ \left( s + {{variables.p2}} \right) } $$
+			</div>
+			<p>
+				Obteniendo la transformada inversa se tiene
+			</p>
+			<div>
+				$$ \mathcal{L}^{-1} \left\{  \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} \right\} = \mathcal{L}^{-1} \left\{  \frac{ {{variables.A}} }{ \left( s + {{variables.p1}} \right) } + \frac{ {{variables.B}} }{ \left( s + {{variables.p1}} \right)^2 } + \frac{ {{variables.C}} }{ \left( s + {{variables.p2}} \right) } \right\} $$
+			</div>
+			<div>
+				$$ \mathcal{L}^{-1} \left\{  \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} \right\} = \mathcal{L}^{-1} \left\{  \frac{ {{variables.A}} }{ \left( s + {{variables.p1}} \right) } \right\} + \mathcal{L}^{-1} \left\{ \frac{ {{variables.B}} }{ \left( s + {{variables.p1}} \right)^2 } \right\} + \mathcal{L}^{-1} \left\{ \frac{ {{variables.C}} }{ \left( s + {{variables.p2}} \right) } \right\} $$
+			</div>
+			<div>
+				$$ \mathcal{L}^{-1} \left\{  \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} \right\} = {{variables.A}} \mathcal{L}^{-1} \left\{  \frac{ 1 }{ \left( s + {{variables.p1}} \right) } \right\} + {{variables.B}} \mathcal{L}^{-1} \left\{ \frac{ 1 }{ \left( s + {{variables.p1}} \right)^2 } \right\} + {{variables.C}} \mathcal{L}^{-1} \left\{ \frac{ 1 }{ \left( s + {{variables.p2}} \right) } \right\} $$
+			</div>
+			<div>
+				$$ \mathcal{L}^{-1} \left\{  \frac{ {{variables.a1}} s^2 + {{variables.a2}} s + {{variables.a3}} }{ \left( s + {{variables.p1}} \right)^2 \left( s + {{variables.p2}} \right)} \right\} = {{variables.A}} e^{- {{variables.p1}} t } + {{variables.B}} t e^{- {{variables.p1}} t } + {{variables.C}} e^{- {{variables.p2}} t } $$
+			</div>
+		</script>
+	</div>
+	<!-- FIN Solución -->
+
+	<!-- RESPUESTA Solución -->
+	<div class="row">
+		<div class="col-md-12" dynamic="respuestaSolucion"></div>
+		<script type="text/ng-template" id="7-4-23-respuestaSolucion">
+			<p> Obteniendo como respuesta $ {{variables.respuestaTex}} $.</p>
+		</script>
+	</div>
+</section>

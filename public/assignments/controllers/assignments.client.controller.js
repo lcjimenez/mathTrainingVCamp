@@ -694,7 +694,7 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             } while (variables['p2'] == variables['p1']);
             variables['a1'] = variables['A'] + variables['C'];
             variables['a2'] = variables['A'] * (variables['p1'] + variables['p2']) + variables['B'] + 2 * variables['C'] * variables['p1'];
-            variables['a3'] = variables['A'] * (variables['p1'] * variables['p2']) + variables['B'] * variables['p2'] + variables['C'] * variables['p1']^2;
+            variables['a3'] = variables['A'] * (variables['p1'] * variables['p2']) + variables['B'] * variables['p2'] + variables['C'] * (variables['p1'] * variables['p1']);
 
 
             variables['respuesta'] = variables['A'] + ' * e^( -' + variables['p1'] + ' * t ) + ' + variables['B'] + ' * t * e^( -' + variables['p1'] + ' * t ) + ' + variables['C'] + ' * e^( -' + variables['p2'] + ' * t )';

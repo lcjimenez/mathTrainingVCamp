@@ -10,6 +10,7 @@
 				<th>Ejercicio</th>
 				<th>Respuesta</th>
 				<th>Respuesta Estudiante</th>
+				<th>Fecha</th>
 				<!--<th>Fecha</th> -->
 			</tr>
 			<!-- La lista de artículos -->
@@ -20,6 +21,7 @@
 				<td>{{attempt.asignacion.ejercicio}}</td>
 				<td>{{attempt.asignacion.variables.respuesta}}</td>
 				<td>{{attempt.respuestaEstudiante}}</td>
+				<td>{{attempt.creado | date : "yyyy-MM-dd" }}</td>
 				<!-- <td>{{attempt.creado}}</td> -->
 	<!-- 			<a data-ng-href="#!/attempts/{{attempt._id}}" data-ng-bind="attempt.creador"></a>
 				<br>

@@ -583,30 +583,63 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             variables['C'] = (Math.floor(Math.random() * 40) + 11) / 10;
             // Voltaje de recepción mínimo (aleatorio entre 10 y 50)
             variables['Vmin'] = (Math.floor(Math.random() * 16) + 30) / 10;
-
-
-            // Temperatura inicial de la sala de lectura (aleatorio entero entre 30 y 50)
-            variables['To'] = Math.floor(Math.random() * 21) + 30;
-            // Temperatura del calefactor (aleatorio entero entre 60 y 75)
-            variables['Tc'] = Math.floor(Math.random() * 16) + 60;
-            // tiempo a la que se debe averiguar la temperatura (aleatorio entre 1 y 4)
-            variables['Tiempo'] = Math.floor(Math.random() * 9) + 2;
-            // constante de tiempo para el edificio  (aleatorio entero entre 5 y 10)
-            variables['Ka'] = Math.floor(Math.random() * 6) + 5;
-            // constante de tiempo para el edificio junto con su sistema de calentamiento (1 y ka)
-            variables['Kb'] = Math.floor(Math.random() * (variables['Ka'] - 2) ) + 2;
-            //
-            variables['K'] = 1 / variables['Ka'];
-            variables['K1'] = 1 / variables['Kb'];
-            variables['Ku'] = variables['K1'] - variables['K'];
-            variables['Ra'] = variables['K'] * variables['To'] + variables['Ku'] * variables['Tc'];
-            variables['Tfinal'] = variables['Ra'] / variables['K1'] + (variables['To'] - variables['Ra'] / variables['K1']) * math.exp(- variables['K1'] * variables['Tiempo']) ;
-
+            // ln( 1 - Ec/5 )
+            variables['logt'] = Math.log( 1 - (variables['Vmin'] / 5 ) );
+            // Tiempo en pico segundos
+            variables['tmin'] = - ( variables['R'] * variables['C'] ) * variables['logt'];
+            
             // Queda con tres decimales
-            variables['Tfinal'] = parseFloat(variables['Tfinal']).toFixed(1);
-            variables['respuesta'] = [[(variables['Tfinal']).toString()]];
+            variables['tmin'] = parseFloat(variables['tmin']).toFixed(0);
+            variables['respuesta'] = [[(variables['tmin']).toString()]];
             // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
             variables['tipoRespuesta'] = "valores";
+        }
+
+        $scope.variables_4_2_17a = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            variables['raiz2'] = Math.floor(Math.random() * 12) + 2;
+            variables['raiz1'] = Math.floor(Math.random() * 12) + 2 + variables['raiz2'];
+            variables['a'] = Math.floor(Math.random() * 22) + 2;
+            variables['b'] = - 2 * variables['a'] * variables['raiz1'];
+            variables['c'] = (variables['raiz1'] * variables['raiz1'] - variables['raiz2'] * variables['raiz2'] ) * variables['a'];
+            variables['C1'] = Math.floor(Math.random() * 12) + 2;
+            variables['C2'] = Math.floor(Math.random() * 12) + 2;
+            variables['respuesta'] = variables['C1'] + ' * e^(' + ( variables['raiz1'] + variables['raiz2'] )  + ' * t) + ' + variables['C2'] +' * e^('+ ( variables['raiz1'] - variables['raiz2'] )  + ' * t)' ;
+            variables['respuestaTex'] = math.parse(''+variables.respuesta).toTex();
+            // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
+            variables['tipoRespuesta'] = "funcion";
+        }
+
+        $scope.variables_4_2_17b = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            variables['raiz2'] = 0;
+            variables['raiz1'] = Math.floor(Math.random() * 12) + 2;
+            variables['a'] = Math.floor(Math.random() * 22) + 2;
+            variables['b'] = - 2 * variables['a'] * variables['raiz1'];
+            variables['c'] = (variables['raiz1'] * variables['raiz1'] + variables['raiz2'] * variables['raiz2'] ) * variables['a'];
+            variables['C1'] = Math.floor(Math.random() * 12) + 2;
+            variables['C2'] = Math.floor(Math.random() * 12) + 2;
+            variables['respuesta'] = variables['C1'] + ' * e^(' + ( variables['raiz1'] + variables['raiz2'] )  + ' * t) + ' + variables['C2'] +' * t * e^('+ ( variables['raiz1'] - variables['raiz2'] )  + ' * t)' ;
+            variables['respuestaTex'] = math.parse(''+variables.respuesta).toTex();
+            // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
+            variables['tipoRespuesta'] = "funcion";
+        }
+        $scope.variables_4_2_17c = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            variables['raiz2'] = Math.floor(Math.random() * 22) + 2;
+            variables['raiz1'] = Math.floor(Math.random() * 22) + 2;
+            variables['a'] = Math.floor(Math.random() * 22) + 2;
+            variables['b'] = - 2 * variables['a'] * variables['raiz1'];
+            variables['c'] = (variables['raiz1'] * variables['raiz1'] + variables['raiz2'] * variables['raiz2'] ) * variables['a'];
+            variables['C1'] = Math.floor(Math.random() * 12) + 2;
+            variables['C2'] = Math.floor(Math.random() * 12) + 2;
+            variables['respuesta'] = variables['C1'] + ' * e^(' + variables['raiz1']  + ' * t) * cos (' + variables['raiz2'] + ' * t ) + ' + variables['C2'] +' * e^('+ variables['raiz1'] + ' * t) * sin (' + variables['raiz2'] + ' * t )' ;
+            variables['respuestaTex'] = math.parse(''+variables.respuesta).toTex();
+            // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
+            variables['tipoRespuesta'] = "funcion";
         }
 
         $scope.variables_5_2_17 = function() {

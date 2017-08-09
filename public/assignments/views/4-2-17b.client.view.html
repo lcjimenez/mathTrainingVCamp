@@ -1,0 +1,190 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+		<!-- NoMBRE -->
+	<div class="row">
+		<div class="col-md-10">
+			<h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+		</div>
+		<div class="col-md-2">
+			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
+		</div>
+	</div>
+	
+
+
+	<!-- ENUNCIADO -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
+				<!-- Se define el template para el enunciado del ejercicio -->
+				<script type="text/ng-template" id="4-2-17b-enunciado">
+					<p>Encuentre la solución a la ecuación diferencial:</p>
+					<div>
+						$$ {{ variables.a }} \frac{ { d }^{ 2 }y }{ d{ x }^{ 2 } } - {{- variables.b}}  \frac{ dy }{ dx } + {{variables.c}} y = 0 $$
+					</div>
+					<p>Con condiciones iniciales:</p>
+					<div>
+						$$ y \left( 0 \right) = {{ variables.C1 }} $$
+					</div>
+					<div>
+						$$ \frac{dy}{dt} \left( 0 \right) = {{ variables.C1 * (variables.raiz1 + variables.raiz2) + variables.C2 }} $$
+					</div>
+				</script>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Enunciado-->
+
+	<!-- ERRORES -->
+	<div data-ng-show="error">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	<!-- FIN Errores -->
+
+	<!--
+	<p>Asignaciones</p>
+	<p>{{assignments}}</p>
+	-->
+	<!--
+	<p>Intentos</p>
+	<p>{{attempts}}</p>
+	-->
+
+	<!-- CONTROLES con campos de entrada, comandos y mensajes -->
+	<div class="row"> 
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<!-- INSTRUCCIONES para diligencia la respuesta -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+						<small>
+							 <ul>
+							 	<li>
+							 		Recuerde ingresar la respuesta en función de la variable $t$, por ejemplo, respuestas de la forma $ \cos{\left( 4 \cdot t \right)} $. Utilice únicamente números <b>fraccionarios y raíces</b>, por ejemplo, de la forma $ \sqrt{ \frac{t}{4} } $. No utilice decimales.
+							 	</li>
+							 	<li>
+							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
+							 	</li>
+							 	<li>
+							 		Antes de enviar verifique que la respuesta proyectada es la correcta.
+							 	</li>                          
+					        </ul>
+						</small>
+					</div>
+					<!-- /FIN Instrucciones -->
+
+					<!-- FORMULARIO -->
+					<form>
+
+						<!-- Campo de entrada -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="row form-group">
+								<label for="respuesta" class="control-label">Respuesta</label>
+								<input type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+							</div>
+						</div>
+
+						<!-- Campos de mensajes -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+							<p math-jax-bind-math-to-tex="respuesta"></p>
+						</div>
+
+						<!-- Botón de envío -->
+						<div class="form-group col-md-12 col-sm-12 col-xs-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="botonAyudameAResolverlo"  ng-click="resolver()">Ayúdame a resolverlo</a></li>
+									<li><a id="botonIntentarNuevamente" ng-click="generarEjercicio(true)">Intentar con otros valores</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<!-- /FIN Formulario -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FIN Controles -->
+
+	<!-- SOLUCIÓN -->
+	<div class="row">
+		<div class="col-md-12" dynamic="solucion"></div>
+		<!-- Se define el template para la solución del ejercicio -->
+		<script type="text/ng-template" id="4-2-17b-solucion">
+			<p>Podemos observar la ecuación diferencial es lineal y homogénea de segundo orden, por lo cual se puede obtener su ecuación caraterística:</p>
+			<div>$$ {{variables.a}} { r }^{ 2 } - {{- variables.b}} r + {{variables.c}} = 0$$</div>
+			<p>La solución general para obtener las raíces de la ecuación cuadrática $ a \cdot r^2 + b \cdot r + c = 0$ está dada por $ r = \frac{-b \pm \sqrt{ b^2 - 4 \cdot a \cdot c} }{2 \cdot a} $, de lo cual podemos deducir que: </p>
+			<div>$$ r = \frac{ - \left( {{variables.b}} \right) \pm \sqrt{ \left( {{variables.b}} \right) ^2 - 4 \cdot \left( {{variables.a}} \right) \cdot \left( {{variables.c}} \right) } }{2 \cdot \left( {{variables.a}} \right) } $$</div>
+			<div>$$ r = \frac{ {{-variables.b}}  \pm \sqrt{ {{variables.b * variables.b}} - {{ 4 * variables.a * variables.c}} } }{ {{2 * variables.a}} } $$</div>
+			<div>$$ r = \frac{ {{-variables.b}}  \pm \sqrt{ {{ ( variables.b * variables.b ) - ( 4 * variables.a * variables.c )}} } }{ {{2 * variables.a}} } $$</div>
+			<div>$$ r = \frac{ {{-variables.b}}  \pm {{ variables.raiz2 * 2 * variables.a }} }{ {{2 * variables.a}} } $$</div>
+			<div>$$ r = {{ variables.raiz1 }}  \pm {{-variables.raiz2}}  $$</div>
+			<p>De esta manera se obtienen las raices repetidas: </p>
+			<div>$$ r = {{ variables.raiz1}} $$</div>
+			<p>
+				De lo cual se obtiene la solución general para la ecuación homogénea:
+			</p>
+			<div>$$ y \left( t \right) = C_1 \cdot e^{ {{ variables.raiz1 + variables.raiz2}} \cdot t} + C_2 \cdot t \cdot e^{ {{ variables.raiz1 - variables.raiz2}} \cdot t}   $$</div>
+			<p>
+				Para obtener los valores de $ C_1 $ y $ C_2 $ debemos reemplazar las condiciones iniciales en $ y \left( 0 \right)  = {{ variables.C1 }} $ y $ \frac{dy}{dt} \left( 0 \right) = {{ variables.C1 * (variables.raiz1 + variables.raiz2) + variables.C2 }} $.
+			</p>
+			<div>$$ y \left( 0 \right) = C_1 \cdot e^{ {{ variables.raiz1 + variables.raiz2}} \cdot \left( 0 \right)} + C_2 \cdot \left( 0 \right) \cdot e^{ {{ variables.raiz1 - variables.raiz2}} \cdot \left( 0 \right)}   $$</div>
+			<div>$$ {{ variables.C1 }} = C_1 $$</div>
+			<p>
+				Adicionalmente, obtenemos $ \frac{dy}{dt} $ como:
+			</p>
+			<div>$$ \frac{dy}{dt} = \frac{d}{dt} \left( C_1 \cdot e^{ {{ variables.raiz1 + variables.raiz2}} \cdot t} + C_2 \cdot t \cdot e^{ {{ variables.raiz1 - variables.raiz2}} \cdot t} \right) $$</div>
+			<div>$$ \frac{dy}{dt} = C_1 \cdot \frac{d}{dt} \left( e^{ {{ variables.raiz1 + variables.raiz2}} \cdot t} \right) + C_2 \cdot \frac{d}{dt} \left( t \cdot e^{ {{ variables.raiz1 - variables.raiz2}} \cdot t} \right) $$</div>
+			<div>$$ \frac{dy}{dt} = C_1 \cdot {{ variables.raiz1 + variables.raiz2}} \cdot e^{ {{ variables.raiz1 + variables.raiz2}} \cdot t} + C_2 \cdot \left( e^{ {{ variables.raiz1 - variables.raiz2}} \cdot t} + t \cdot {{ variables.raiz1 - variables.raiz2}} \cdot e^{ {{ variables.raiz1 - variables.raiz2}} \cdot t} \right) $$</div>
+			<p> De lo cual se obtiene:</p>
+			<div>$$ \frac{dy}{dt} \left( 0 \right) = C_1 \cdot {{ variables.raiz1 + variables.raiz2}} \cdot e^{ {{ variables.raiz1 + variables.raiz2}} \cdot \left( 0 \right)} + C_2 \cdot \left( e^{ {{ variables.raiz1 - variables.raiz2}} \cdot \left( 0 \right) } + \left( 0 \right) \cdot {{ variables.raiz1 - variables.raiz2}} \cdot e^{ {{ variables.raiz1 - variables.raiz2}} \cdot \left( 0 \right) } \right) $$</div>
+			<div>$$ {{ variables.C1 * (variables.raiz1 + variables.raiz2) + variables.C2 }} = C_1 \cdot {{ variables.raiz1 + variables.raiz2}} + C_2 $$</div>
+			<p> Observamos que tenemos dos ecuaciones lineales:</p>
+			<div>$$
+			\left\{ \begin{array}{ccccc}
+			C_1 & + & 0 & = & {{ variables.C1 }} \\
+			C_1 \cdot {{ variables.raiz1 + variables.raiz2}} & + & C_2 & = & {{ variables.C1 * (variables.raiz1 + variables.raiz2) + variables.C2 }} \end{array} \right.
+			$$</div>
+			<p> Utilizando la técnica de Gauss-Jordan para la solución de ecuaciones lineales, se obtienen las siguientes matrices aumentadas:</p>
+			<div>$$
+			\left[ \begin{array}{ccc}
+			1 & 0 & {{ variables.C1 }} \\
+			{{ variables.raiz1 + variables.raiz2}} & 1 & {{ variables.C1 * (variables.raiz1 + variables.raiz2) + variables.C2 }} \end{array} \right]
+			$$</div>
+			<div>$$
+			\left[ \begin{array}{ccc}
+			1 & 0 & {{ variables.C1 }} \\
+			0 & 1 & {{ variables.C2 }} \end{array} \right]
+			$$</div>
+			<p> Obteniendo como resultado:</p>
+			<div>$$
+			\left\{ \begin{array}{ccccc}
+			C_1 & + & 0 & = & {{ variables.C1 }} \\
+			0 & + & C_2 & = & {{ variables.C2 }} \end{array} \right.
+			$$</div>
+			<p> Reemplazando en $ y \left( t \right) $, se obtiene la solución:</p>
+			<div>$$ y \left( t \right) = {{variables.C1}} \cdot e^{ {{ variables.raiz1 + variables.raiz2}} \cdot t} + {{variables.C2}} \cdot t \cdot e^{ {{ variables.raiz1 - variables.raiz2}} \cdot t}   $$</div>
+
+		</script>
+	</div>
+	<!-- FIN Solución -->
+
+	<!-- RESPUESTA Solución -->
+	<div class="row">
+		<div class="col-md-12" dynamic="respuestaSolucion"></div>
+		<script type="text/ng-template" id="4-2-17b-respuestaSolucion">
+			<p> Obteniendo como respuesta $ {{variables.respuestaTex}} $.</p>
+		</script>
+	</div>
+</section>
+

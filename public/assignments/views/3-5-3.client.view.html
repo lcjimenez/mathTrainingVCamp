@@ -22,10 +22,13 @@
 				<!-- Se define el template para el enunciado del ejercicio -->
 				<script type="text/ng-template" id="3-5-3-enunciado">
 					<p>
-						La trayectorio de una señal eléctrica binaria entre compuertas en un circuito integrado se puede modelar como un circuito $ RC $, tal que, la fuente de voltaje modela la compuerta de transmisión y el condensador modela la compuerta de recepción. La resistencia es de ${{variables.R}} \Omega$ y la capacitancia es de ${{ variables.C }} \times 10^{-12} F$ (${{ variables.C }}$ picofaradios, $pF$). Si el condensador no tiene carga inicialmente y la copuerta de transmisión cambia de manera instantánea de $0$ a $5 V$.
+						La trayectoria de una señal eléctrica binaria entre compuertas en un circuito integrado se puede modelar como un circuito $ RC $, tal que, la fuente de voltaje modela la compuerta de transmisión y el condensador modela la compuerta de recepción. La resistencia es de ${{variables.R}} \Omega$ y la capacitancia es de ${{ variables.C }} \times 10^{-12} F$ (${{ variables.C }}$ picofaradios, $pF$). Si el condensador no tiene carga inicialmente y la copuerta de transmisión cambia de manera instantánea de $0$ a $5 V$.
 					</p>
 					<p>
-						¿Cuánto tipo tarda el voltaje en la compuerta de recepción en alcanzar ${{variables.Vmin}} V$? (Suponiendo que este es el voltaje mínimo para transmitir un "1" lógico).
+						¿Cuánto tiempo, en pico sengundos, tarda el voltaje en la compuerta de recepción en alcanzar ${{variables.Vmin}} V$? (Suponiendo que este es el voltaje mínimo para transmitir un "1" lógico).
+					</p>
+					<p>
+						Nota: Recuerde que $1 ps = 10^{-12} s $.
 					</p>
 				</script>
 			</div>
@@ -60,7 +63,7 @@
 						<small>
 							 <ul>
 							 	<li>
-							 		Debe ingresar las respuestas como valores con <b>un decimal</b>, por ejemplo, respuestas de la forma $32.3$.
+							 		Debe ingresar las respuestas como valores enteros, por ejemplo, respuestas de la forma $124$ o $358$.
 							 	</li>
 							 	<li>
 							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
@@ -118,7 +121,7 @@
 		<!-- Se define el template para la solución del ejercicio -->
 		<script type="text/ng-template" id="3-5-3-solucion">
 			<div>
-				$$ T \left( t \right) = E_R + E_C $$
+				$$ E \left( t \right) = E_R + E_C $$
 			</div>
 			<div>
 				$$ E_R = IR $$
@@ -126,6 +129,122 @@
 			<div>
 				$$ E_C = \frac{ 1 }{ C } q $$
 			</div>
+			<div>
+				$$ E \left( t \right) = IR + \frac{ 1 }{ C } q = \frac{ dq }{ dt } R + \frac{ 1 }{ C } q $$
+			</div>
+			<div>
+				$$ \frac{ dq }{ dt } R + \frac{ 1 }{ C } q = E \left( t \right) $$
+			</div>
+			<div>
+				$$ \frac{ dq }{ dt } + \frac{ 1 }{ RC } q = \frac{ 1 }{ R } E \left( t \right) $$
+			</div>
+			<div>
+				$$ \frac{ dq }{ dt } + \frac{ 1 }{ \left( {{variables.R}} \right) \left( {{variables.C}} \times 10^{-12} \right) } q = \frac{ 1 }{ {{variables.R}} } \cdot 5 $$
+			</div>
+			<div>
+				$$ \frac{ dq }{ dt } +  {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} q = {{1 / variables.R  * 1000 * 5| number}} \times 10^{-3} $$
+			</div>
+			<p>
+				Se puede observar que la ecuación diferencial es lineal, para la cual tendríamos que su forma canónica $ P \left( t \right) = {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} $ y $ Q \left( t \right) = {{1 / variables.R  * 1000 * 5| number}} \times 10^{-3} $.
+			</p>
+			<p>
+				De esta manera se puede obtener $ \mu $ como:
+			</p>
+			<div>
+				$$ \mu \left( t \right) = e^{ \int P \left( t \right) dt } = e^{ \int {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} dt } = e^{ {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } $$
+			</div>
+			<p>
+				Obteniendo $ q \left( t \right) = \mu \left( t \right) ^ {-1} \int \mu \left( t \right) Q \left( t \right) dt $ como:
+			</p>
+			<div>
+				$$ q \left( t \right) = e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } \int e^{ {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } \cdot {{1 / variables.R  * 1000 * 5| number}} \times 10^{-3} dt $$
+			</div>
+			<div>
+				$$ q \left( t \right) = e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } \cdot {{1 / variables.R  * 1000 * 5| number}} \times 10^{-3} \int e^{ {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } dt $$
+			</div>
+			<div>
+				$$ q \left( t \right) = e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } \cdot {{1 / variables.R  * 1000 * 5| number}} \times 10^{-3} \left( {{  (variables.R * variables.C ) }} \times 10^{-12} e^{ {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } + C_1 \right) $$
+			</div>
+			<div>
+				$$ q \left( t \right) = {{ 5 * variables.C }} \times 10^{-12} + C_1 \cdot {{ 5 / variables.R * 1000 | number }} \times 10^{-3} \cdot e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } $$
+			</div>
+			<p>
+				Podemos cambiar la contante como $ C_2 = C_1 \cdot {{ 5 / variables.R * 1000 | number }} \times 10^{-3} $, de tal manera que reescribimos:
+			</p>
+			<div>
+				$$ q \left( t \right) = {{ 5 * variables.C }} \times 10^{-12} + C_2 \cdot e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } $$
+			</div>
+			<p>
+				Para hallar el valor de $ C_2 $ se reemplazan las condiciones iniciales, teniendo en cuenta que de acuerdo al enunciado el voltaje inicial del condensador es $ E_C \left( 0 \right) = 0 $ y por lo tanto:
+			</p>
+			<div>
+				 $$ q \left( 0 \right) = C \cdot E_C \left( 0 \right) = C \cdot 0 = 0  $$
+			</div>
+			<p>
+				De tal manera que si se reemplazan las condiciones iniciales se obtiene que:
+			</p>
+			<div>
+				$$ 0 = {{ 5 * variables.C }} \times 10^{-12} + C_2 \cdot e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot \left( 0 \right) } $$
+			</div>
+			<div>
+				$$ 0 = {{ 5 * variables.C }} \times 10^{-12} + C_2 $$
+			</div>
+			<div>
+				$$ C_2 = - {{ 5 * variables.C }} \times 10^{-12} $$
+			</div>
+			<p>
+				De tal manera que:
+			</p>
+			<div>
+				$$ q \left( t \right) = {{ 5 * variables.C }} \times 10^{-12} + \left( - {{ 5 * variables.C }} \times 10^{-12}  \right) \cdot e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } $$
+			</div>
+			<div>
+				$$ q \left( t \right) = {{ 5 * variables.C }} \times 10^{-12} - {{ 5 * variables.C }} \times 10^{-12} \cdot e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } $$
+			</div>
+			<div>
+				$$ q \left( t \right) = {{ 5 * variables.C }} \times 10^{-12} \left( 1 - e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } \right) $$
+			</div>
+			<p>
+				Para hallar el voltaje en el condensador, tenemos que $ E_C = \frac{ 1 }{ C } \cdot q $, de tal manera que:
+			</p>
+			<div>
+				$$ E_C \left( t \right) = \frac{1}{ {{variables.C}} \times 10^{-12} } \left( {{ 5 * variables.C }} \times 10^{-12} \left( 1 - e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } \right) \right) $$
+			</div>
+			<div>
+				$$ E_C \left( t \right) = 5 \left( 1 - e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } \right) $$
+			</div>
+			<p>
+				Para hallar obtener el tiempo que el condesansador obtiene un nivel de carga $ E_C = {{ variables.Vmin}} V $, despejamos el valor de $ t $ :
+			</p>
+			<div>
+				$$ \frac{ E_C \left( t \right) }{ 5 } =  1 - e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } $$
+			</div>
+			<div>
+				$$ e^{ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t } =  1 - \frac{ E_C \left( t \right) }{ 5 } $$
+			</div>
+			<div>
+				$$ - {{ 1 / (variables.R * variables.C ) * 1000 | number }} \times 10^{9} \cdot t = \ln \left( 1 - \frac{ E_C \left( t \right) }{ 5 } \right) $$
+			</div>
+			<div>
+				$$ t = - \frac{1}{ {{ 1 / (variables.R * variables.C ) * 1000 | number }} } \times 10^{-9} \cdot \ln \left( 1 - \frac{ E_C \left( t \right) }{ 5 } \right) $$
+			</div>
+			<p>
+				Y se reemplaza el valor de $ E_C $:
+			</p>
+			<div>
+				$$ t = - \frac{1}{ {{ 1 / (variables.R * variables.C ) * 1000 | number }} } \times 10^{-9} \cdot \ln \left( 1 - \frac{ {{ variables.Vmin }} }{ 5 } \right) $$
+			</div>
+			<div>
+				$$ t = - \frac{1}{ {{ 1 / (variables.R * variables.C ) * 1000 | number }} } \times 10^{-9} \cdot \ln \left( 1 - {{ variables.Vmin / 5 | number }} \right) $$
+			</div>
+			<div>
+				$$ t = - \frac{1}{ {{ 1 / (variables.R * variables.C ) * 1000 | number }} } \times 10^{-9} \cdot \left( {{ variables.logt | number }} \right) $$
+			</div>
+			<div>
+				$$ t = {{ variables.tmin }} \times 10^{-12}  $$
+			</div>
+
+
 		</script>
 	</div>
 	<!-- FIN Solución -->
@@ -134,7 +253,7 @@
 	<div class="row">
 		<div class="col-md-12" dynamic="respuestaSolucion"></div>
 		<script type="text/ng-template" id="3-5-3-respuestaSolucion">
-			<p>La solución es $ T \left( {{variables.Tiempo}} \right) = {{variables.respuesta[0][0]}} $.</p>
+			<p>La solución es $ t = {{variables.respuesta[0][0]}} ps $.</p>
 		</script>
 	</div>
 </section>

@@ -688,6 +688,105 @@ angular.module('assignments').controller('AssignmentsController', ['$scope', '$t
             variables['tipoRespuesta'] = "funcion";
         }
 
+        $scope.variables_6_3_3a = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            do{
+                do{
+                    variables['raiz1'] = Math.floor(Math.random() * 9) - 4;
+                } while( Math.abs(variables['raiz1']) <= 1)
+                
+                do{
+                    variables['raiz2'] = Math.floor(Math.random() * 9) - 4;
+                } while (variables['raiz2'] == variables['raiz1'] || Math.abs(variables['raiz2']) <= 1);
+                do{
+                    variables['raiz3'] = Math.floor(Math.random() * 9) - 4;
+                } while (variables['raiz3'] == variables['raiz1'] || variables['raiz3'] == variables['raiz2'] || Math.abs(variables['raiz3']) <= 1);
+                variables['b'] = variables['raiz3'] + variables['raiz2'] + variables['raiz1'];
+                variables['c'] = variables['raiz3'] * variables['raiz2'] + variables['raiz3'] * variables['raiz1'] + variables['raiz2'] * variables['raiz1'];
+                variables['d'] = variables['raiz3'] * variables['raiz2'] * variables['raiz1'];
+            } while( Math.abs(variables['b']) <= 1 || Math.abs(variables['c']) <= 1 || Math.abs(variables['d']) <= 1 );
+
+            variables['C1'] = Math.floor(Math.random() * 9) + 2;
+            variables['C2'] = Math.floor(Math.random() * 9) + 2;
+            variables['C3'] = Math.floor(Math.random() * 9) + 2;
+
+            variables['Y0'] = variables['C1'] + variables['C2'] + variables['C3'];
+            variables['DY0'] = variables['C1'] * (- variables['raiz1']) + variables['C2'] * (- variables['raiz2']) + variables['C3'] * (- variables['raiz3']);
+            variables['D2Y0'] = variables['C1'] * (variables['raiz1']*variables['raiz1']) + variables['C2'] * (variables['raiz2']*variables['raiz2']) + variables['C3'] * (variables['raiz3']*variables['raiz3']);
+
+            variables['respuesta'] = variables['C1'] + ' * e^(' + ( - variables['raiz1'] )  + ' * t) + ' + variables['C2'] +' * e^('+ ( - variables['raiz2'] )  + ' * t) + ' + variables['C3'] +' * e^('+ ( - variables['raiz3'] )  + ' * t)' ;
+            variables['respuestaTex'] = math.parse(''+variables.respuesta).toTex();
+            // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
+            variables['tipoRespuesta'] = "funcion";
+        }
+
+        $scope.variables_6_3_3b = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            do{
+                do{
+                    variables['raiz1'] = Math.floor(Math.random() * 9) - 4;
+                } while( Math.abs(variables['raiz1']) <= 1)
+                
+                do{
+                    variables['raiz2'] = Math.floor(Math.random() * 9) - 4;
+                } while (variables['raiz2'] == variables['raiz1'] || Math.abs(variables['raiz2']) <= 1);
+                variables['raiz3'] = variables['raiz2'];
+                variables['b'] = variables['raiz3'] + variables['raiz2'] + variables['raiz1'];
+                variables['c'] = variables['raiz3'] * variables['raiz2'] + variables['raiz3'] * variables['raiz1'] + variables['raiz2'] * variables['raiz1'];
+                variables['d'] = variables['raiz3'] * variables['raiz2'] * variables['raiz1'];
+            } while( Math.abs(variables['b']) <= 1 || Math.abs(variables['c']) <= 1 || Math.abs(variables['d']) <= 1 );
+
+            variables['C1'] = Math.floor(Math.random() * 9) + 2;
+            variables['C2'] = Math.floor(Math.random() * 9) + 2;
+            variables['C3'] = Math.floor(Math.random() * 9) + 2;
+
+            variables['Y0'] = variables['C1'] + variables['C2'];
+            variables['DY0'] = variables['C1'] * (- variables['raiz1']) + variables['C2'] * (- variables['raiz2']) + variables['C3'];
+            variables['D2Y0'] = variables['C1'] * (variables['raiz1']*variables['raiz1']) + variables['C2'] * (variables['raiz2']*variables['raiz2']) + variables['C3'] * (2 * (-variables['raiz2']) );
+
+            variables['respuesta'] = variables['C1'] + ' * e^(' + ( - variables['raiz1'] )  + ' * t) + ' + variables['C2'] +' * e^('+ ( - variables['raiz2'] )  + ' * t) + ' + variables['C3'] +' * t * e^('+ ( - variables['raiz2'] )  + ' * t)' ;
+            variables['respuestaTex'] = math.parse(''+variables.respuesta).toTex();
+            // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
+            variables['tipoRespuesta'] = "funcion";
+        }
+
+        $scope.variables_6_3_3c = function() {
+            // Se definen las variables del ejercicio
+            variables = {};
+            do{
+                do{
+                    variables['raiz1'] = Math.floor(Math.random() * 9) - 4;
+                } while( Math.abs(variables['raiz1']) <= 1)
+                
+                do{
+                    variables['raizalpha'] = Math.floor(Math.random() * 9) - 4;
+                } while ( variables['raizalpha'] == variables['raiz1'] || Math.abs(variables['raizalpha']) <= 1);
+
+                do{
+                    variables['raizbeta'] = Math.floor(Math.random() * 9) + 2;
+                } while ( variables['raizalpha'] == variables['raizbeta'] );
+
+                variables['b'] = - (2 * variables['raizalpha'] + variables['raiz1'] );
+                variables['c'] = variables['raizalpha'] * variables['raizalpha'] + variables['raizbeta'] * variables['raizbeta'] + variables['raiz1'] * 2 * variables['raizalpha'];
+                variables['d'] = - ( variables['raiz1'] * ( variables['raizalpha'] * variables['raizalpha'] + variables['raizbeta'] * variables['raizbeta'] ) );
+            } while( Math.abs(variables['b']) <= 1 || Math.abs(variables['c']) <= 1 || Math.abs(variables['d']) <= 1 );
+
+            variables['C1'] = Math.floor(Math.random() * 9) + 2;
+            variables['C2'] = Math.floor(Math.random() * 9) + 2;
+            variables['C3'] = Math.floor(Math.random() * 9) + 2;
+
+            variables['Y0'] = variables['C1'] + variables['C2'];
+            variables['DY0'] = variables['C1'] * variables['raiz1'] + variables['C2'] * variables['raizalpha'] + variables['C3'] * variables['raizbeta'] ;
+            variables['D2Y0'] = variables['C1'] * (variables['raiz1'] * variables['raiz1']) + variables['C2'] * (variables['raizalpha'] * variables['raizalpha'] - variables['raizbeta'] * variables['raizbeta']) + variables['C3'] * (2 * variables['raizalpha'] * variables['raizbeta']);
+
+            variables['respuesta'] = variables['C1'] + ' * e^(' + variables['raiz1'] + ' * t) + ' + variables['C2'] +' * e^('+ variables['raizalpha']  + ' * t) * cos(' + variables['raizbeta'] + ' * t) + ' + variables['C3'] +' * e^('+ variables['raizalpha']  + ' * t) * sin(' + variables['raizbeta'] + ' * t)' ;
+            variables['respuestaTex'] = math.parse(''+variables.respuesta).toTex();
+            // Se define el tipo de respuesta del ejercicio ("valores", "funcion", etc.)
+            variables['tipoRespuesta'] = "funcion";
+        }
+
         $scope.variables_7_4_21 = function() {
             // Se definen las variables del ejercicio
             variables = {};

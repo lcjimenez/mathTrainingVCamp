@@ -1,0 +1,240 @@
+<section data-ng-controller="AssignmentsController" data-ng-init="generarEjercicio(false)">
+
+		<!-- NoMBRE -->
+	<div class="row">
+		<div class="col-md-10">
+			<h3><b>{{infoAssignment.type}}:</b> {{exerciseDot}}</h3>
+		</div>
+		<div class="col-md-2">
+			Intentos: {{attempts.length}}/{{infoAssignment.attempts}} 
+		</div>
+	</div>
+	
+
+
+	<!-- ENUNCIADO -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong class="text-uppercase">Enunciado</strong></div>
+				<div class="panel-body" ng-model='enunciadoCompilado' dynamic='enunciado'></div>
+				<!-- Se define el template para el enunciado del ejercicio -->
+				<script type="text/ng-template" id="6-3-3c-enunciado">
+					<p>Encuentre la solución a la ecuación diferencial:</p>
+					<div>
+						$$ \frac{ { d }^{ 3 }y }{ d{ t }^{ 3 } } {{ ( variables.b < 0 ? ' ' : '+') }} {{variables.b}} \frac{ { d }^{ 2 }y }{ d{ t }^{ 2 } } {{ ( variables.c < 0 ? ' ' : '+') }} {{variables.c}} \frac{ dy }{ dt } {{ ( variables.d < 0 ? ' ' : '+') }} {{variables.d}} y = 0 $$
+					</div>
+					<p>Con condiciones iniciales:</p>
+					<div>
+						$$ y \left( 0 \right) = {{ variables.Y0 }} $$
+					</div>
+					<div>
+						$$ \frac{dy}{dt} \left( 0 \right) = {{ variables.DY0 }} $$
+					</div>
+					<div>
+						$$ \frac{d^2 y }{d t^2} \left( 0 \right) = {{ variables.D2Y0 }} $$
+					</div>
+
+				</script>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Enunciado-->
+
+	<!-- ERRORES -->
+	<div data-ng-show="error">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	<!-- FIN Errores -->
+
+	<!--
+	<p>Asignaciones</p>
+	<p>{{assignments}}</p>
+	-->
+	<!--
+	<p>Intentos</p>
+	<p>{{attempts}}</p>
+	-->
+
+	<!-- CONTROLES con campos de entrada, comandos y mensajes -->
+	<div class="row"> 
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+					<!-- INSTRUCCIONES para diligencia la respuesta -->
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<strong class="text-danger">Importante <small>(Lea antes de responder)</small></strong>
+						<small>
+							 <ul>
+							 	<li>
+							 		Recuerde ingresar la respuesta en función de la variable $t$, por ejemplo, respuestas de la forma $ \cos{\left( 4 \cdot t \right)} $. Utilice únicamente números <b>fraccionarios y raíces</b>, por ejemplo, de la forma $ \sqrt{ \frac{t}{4} } $. No utilice decimales.
+							 	</li>
+							 	<li>
+							 		Utilice la notación de <b>mathjs</b> para las ecuaciones $f\left( x \right)$, por ejemplo, [(a*b)/c]*e^(2*pi*x) equivaldría a $\left[\frac{\left(a \cdot b\right)}{c}\right] \cdot e^{2\cdot\pi}$. (<a href="http://mathjs.org/docs/expressions/syntax.html" target="_blank">Pulse aquí </a> para revisar la síntaxis completa de <b>mathjs</b>).
+							 	</li>
+							 	<li>
+							 		Antes de enviar verifique que la respuesta proyectada es la correcta.
+							 	</li>                          
+					        </ul>
+						</small>
+					</div>
+					<!-- /FIN Instrucciones -->
+
+					<!-- FORMULARIO -->
+					<form>
+
+						<!-- Campo de entrada -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<div class="row form-group">
+								<label for="respuesta" class="control-label">Respuesta</label>
+								<input type="text" class ="form-control"  placeholder="Ingresa la respuesta" aria-describedby="ayudaRespuesta" ng-model="respuesta" ng-disabled="deshabilitado">
+							</div>
+						</div>
+
+						<!-- Campos de mensajes -->
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<p class="form-control-static" ng-bind-html="mensajeRespuesta"></p>
+							<p math-jax-bind-math-to-tex="respuesta"></p>
+						</div>
+
+						<!-- Botón de envío -->
+						<div class="form-group col-md-12 col-sm-12 col-xs-12">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-disabled="deshabilitado" ng-click="enviar(false)">Enviar</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-disabled="ayudaDeshabilitada">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="botonAyudameAResolverlo"  ng-click="resolver()">Ayúdame a resolverlo</a></li>
+									<li><a id="botonIntentarNuevamente" ng-click="generarEjercicio(true)">Intentar con otros valores</a></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+					<!-- /FIN Formulario -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /FIN Controles -->
+
+	<!-- SOLUCIÓN -->
+	<div class="row">
+		<div class="col-md-12" dynamic="solucion"></div>
+		<!-- Se define el template para la solución del ejercicio -->
+		<script type="text/ng-template" id="6-3-3c-solucion">
+			<p>Podemos observar la ecuación diferencial es lineal y homogénea de tercer orden, por lo cual se puede obtener su ecuación caraterística:</p>
+			<div>
+				$$ r^3 {{ ( variables.b < 0 ? ' ' : '+') }} {{variables.b}} r^2 {{ ( variables.c < 0 ? ' ' : '+') }} {{variables.c}} r {{ ( variables.d < 0 ? ' ' : '+') }} {{variables.d}} = 0 $$
+			</div>
+		<p>
+			Obtener las raíces de una ecuación polinómica de orden superior puede no ser una tarea fácil, para esto podemos apoyarnos de herramientas como Wolfram Alpha para obtener las raíces de esta ecuación.
+		</p>
+		<p>
+			Para esto ingresamos al enlace <a href="https://www.wolframalpha.com/" class="media-object" target="_blank">https://www.wolframalpha.com/</a> el cual nos direcciona a la siguiente ventana
+		</p>
+		<a href="https://www.wolframalpha.com/" class="media-object" target="_blank">
+			<img class="img-responsive" src="img/wolfram-alpha.png"  alt="Wolfram Alpha"/>
+		</a>
+		<p>
+			Una vez haya ingresado incluya dentro del campo de entrada el siguiente texto:
+		</p>
+		<p>
+			r^3 {{ ( variables.b < 0 ? ' ' : '+') }} {{variables.b}} r^2 {{ ( variables.c < 0 ? ' ' : '+') }} {{variables.c}} r {{ ( variables.d < 0 ? ' ' : '+') }} {{variables.d}} = 0
+		</p>
+		<p>
+			Y te debe entregar dentro de las opciones de salida una ecuación similar a la siguiente
+		</p>
+		<div>
+			$$ \left( r {{ (- variables.raiz1 < 0 ? ' ' : '+') }} {{- variables.raiz1}} \right) \left( r^2 {{ ( - 4 * variables.raizalpha < 0 ? ' ' : '+') }} {{- 4* variables.raizalpha}} \cdot r + {{variables.raizalpha * variables.raizalpha + variables.raizbeta * variables.raizbeta}} \right) = 0 $$
+		</div>
+		<p>
+			Con raíces:
+		</p>
+		<div>
+			$$ r = {{variables.raiz1}}  $$
+		</div>
+		<div>
+			$$ r = {{variables.raizalpha}} \pm j {{variables.raizbeta}}  $$
+		</div>
+		<p>
+			Observamos que tenemos raíces complejas por lo cual la solución general para la ecuación difencial homogénea sería:
+		</p>
+		<div>
+			$$ y \left( t \right) = { C }_{ 1 } \cdot e^{ {{variables.raiz1}} \cdot t } + { C }_{ 2 } \cdot e^{ {{variables.raizalpha}} \cdot t } \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) + { C }_{ 3 } \cdot e^{ {{variables.raizalpha}} \cdot t } \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) $$
+		</div>
+		<p>
+			Para obtener las constantes de la ecuación diferecial se deben obtener la primera y la segunda derivada.
+		</p>
+		<p>
+			Por facilidad al derivar reescribimos la solución como:
+		</p>
+		<div>
+			$$ y \left( t \right) = { C }_{ 1 } \cdot e^{ {{variables.raiz1}} \cdot t } + \left( { C }_{ 2 } \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) + { C }_{ 3 } \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) \right) \cdot e^{ {{variables.raizalpha}} \cdot t } $$
+		</div>
+		<p>
+			Para la primera derivada:
+		</p>
+		<div>
+			$$ \frac{d y}{d t} \left( t \right) = { C }_{ 1 } \cdot \left( {{variables.raiz1}} \right) \cdot e^{ {{variables.raiz1}} \cdot t } + \left( { C }_{ 2 } \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) + { C }_{ 3 } \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) \right) \cdot \left( {{variables.raizalpha}} \right) \cdot e^{ {{variables.raizalpha}} \cdot t } + \left( - { C }_{ 2 } \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) + { C }_{ 3 } \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) \right) \cdot \left( {{variables.raizbeta}} \right) \cdot e^{ {{variables.raizalpha}} \cdot t } $$
+		</div>
+		<div>
+			$$ \frac{d y}{d t} \left( t \right) = { C }_{ 1 } \cdot \left( {{variables.raiz1}} \right) \cdot e^{ {{variables.raiz1}} \cdot t } + \left( \left( C_2 \left( {{variables.raizalpha}} \right) + C_3 \cdot \left( {{variables.raizbeta}} \right) \right) \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) + \left( C_3 \cdot \left( {{variables.raizalpha}} \right) - C_2 \cdot \left( {{variables.raizbeta}} \right) \right) \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) \right) \cdot e^{ {{variables.raizalpha}} \cdot t } $$
+		</div>
+		<p>
+			Para la segunda derivada:
+		</p>
+		<div>
+			$$ \frac{d^2 y}{d t^2} \left( t \right) = { C }_{ 1 } \cdot \left( {{variables.raiz1}} \right)^2 \cdot e^{ {{variables.raiz1}} \cdot t } + \left( \left( C_2 \cdot \left( {{variables.raizalpha}} \right) + C_3 \cdot \left( {{variables.raizbeta}} \right) \right) \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) + \left( C_3 \cdot \left( {{variables.raizalpha}} \right) - C_2 \left( {{variables.raizbeta}} \right) \right) \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) \right) \cdot \left( {{variables.raizalpha}} \right) \cdot e^{ {{variables.raizalpha}} \cdot t } + \left( - \left( C_2 \cdot \left( {{variables.raizalpha}} \right) + C_3 \cdot \left( {{variables.raizbeta}} \right) \right) \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) + \left( C_3 \cdot \left( {{variables.raizalpha}} \right) - C_2 \left( {{variables.raizbeta}} \right) \right) \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) \right) \cdot \left( {{variables.raizbeta}} \right) \cdot e^{ {{variables.raizalpha}} \cdot t } $$
+		</div>
+		<div>
+			$$ \frac{d^2 y}{d t^2} \left( t \right) = { C }_{ 1 } \cdot \left( {{variables.raiz1}} \right)^2 \cdot e^{ {{variables.raiz1}} \cdot t } + \left( \left( C_2 \cdot \left( {{variables.raizalpha}} \right)^2 + 2 \cdot C_3 \cdot \left( {{variables.raizalpha}} \right) \cdot \left( {{variables.raizbeta}} \right) - C_2 \left( {{variables.raizbeta}} \right)^2 \right) \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) + \left( C_3 \cdot \left( {{variables.raizalpha}} \right)^2 - 2 \cdot C_2 \cdot \left( {{variables.raizalpha}} \right) \cdot \left( {{variables.raizbeta}} \right) - C_3 \left( {{variables.raizbeta}} \right)^2 \right) \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) \right) \cdot e^{ {{variables.raizalpha}} \cdot t } $$
+		</div>
+		<div>
+			$$ \frac{d^2 y}{d t^2} \left( t \right) = { C }_{ 1 } \cdot \left( {{variables.raiz1 * variables.raiz1}} \right) \cdot e^{ {{variables.raiz1}} \cdot t } + \left( \left( C_2 \cdot \left( {{ (variables.raizalpha * variables.raizalpha) - (variables.raizbeta * variables.raizbeta) }} \right) + C_3 \cdot \left( {{ 2 * variables.raizalpha * variables.raizbeta}} \right) \right) \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) - \left( C_2 \left( {{2 * variables.raizalpha * variables.raizbeta}} \right) + C_3 \left( {{variables.raizbeta * variables.raizbeta - variables.raizalpha * variables.raizalpha}} \right) \right) \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) \right) \cdot e^{ {{variables.raizalpha}} \cdot t } $$
+		</div>
+		<p>
+			Reemplazando las condiciones iniciales tendríamos:
+		</p>
+		<div>
+			$$ y \left( 0 \right) = { C }_{ 1 } + { C }_{ 2 } = {{variables.Y0}} $$
+		</div>
+		<div>
+			$$ \frac{d y}{d t} \left( 0 \right) = { C }_{ 1 } \cdot \left( {{variables.raiz1}} \right) + { C }_{ 2 } \cdot \left( {{variables.raizalpha}} \right) + { C }_{ 3 } \cdot \left( {{variables.raizbeta}} \right) = {{variables.DY0}} $$
+		</div>
+		<div>
+			$$ \frac{d^2 y}{d t^2} \left( 0 \right) = { C }_{ 1 } \cdot \left( {{variables.raiz1 * variables.raiz1}} \right) + { C }_{ 2 } \cdot \left( {{variables.raizalpha * variables.raizalpha - variables.raizbeta * variables.raizbeta}} \right) + { C }_{ 3 } \cdot \left( {{2 * variables.raizalpha * variables.raizbeta}} \right) = {{variables.D2Y0}} $$
+		</div>
+		<p> Podemos utilizar la técnica de Gauss-Jordan u otra ténica para la solución de ecuaciones lineales. Tambien podemos acceder al siguiente enlace y utilizar la calculadora de Gauss-Jordan <a href="http://es.onlinemschool.com/math/assistance/equation/gaus/" class="media-object" target="_blank">http://es.onlinemschool.com/math/assistance/equation/gaus/</a></p>
+		
+		<p>Obteniendo los siguientes resultados:</p>
+		<div>
+			$$ { C }_{ 1 } = {{variables.C1}} $$
+		</div>
+		<div>
+			$$ { C }_{ 2 } = {{variables.C2}} $$
+		</div>
+		<div>
+			$$ { C }_{ 3 } = {{variables.C3}} $$
+		</div>
+		<p>
+			Obteniendo la siguiente solución para la ecuación diferencial:
+		</p>
+		<div>
+			$$ y \left( t \right) = {{variables.C1}} \cdot e^{ {{variables.raiz1}} \cdot t } + {{variables.C2}} \cdot e^{ {{variables.raizalpha}} \cdot t } \cdot \cos \left( {{variables.raizbeta}} \cdot t \right) + {{variables.C3}} \cdot e^{ {{variables.raizalpha}} \cdot t } \cdot \sin \left( {{variables.raizbeta}} \cdot t \right) $$
+		</div>
+		</script>
+	</div>
+	<!-- FIN Solución -->
+
+	<!-- RESPUESTA Solución -->
+	<div class="row">
+		<div class="col-md-12" dynamic="respuestaSolucion"></div>
+		<script type="text/ng-template" id="6-3-3c-respuestaSolucion">
+			<p> Obteniendo como respuesta $ {{variables.respuestaTex}} $.</p>
+		</script>
+	</div>
+</section>
+

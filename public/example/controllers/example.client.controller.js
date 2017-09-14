@@ -34,7 +34,7 @@ $scope.asignaciones = [{'tipo':'Talleres','numeroIntentos':15,'ayudas':true, 'mu
                                         {'guia':1, 'enabled': true,'nombre':'1-2-20b','tipoRespuesta':'valores'},
                                         {'guia':1, 'enabled': true,'nombre':'1-4-8','tipoRespuesta':'valores'},
                                         {'guia':1, 'enabled': true,'nombre':'1-4-15','tipoRespuesta':'valores'},
-                                        {'guia':1, 'enabled': true,'nombre':'2-3-17a','tipoRespuesta':'funcion'},
+                                        {'guia':1, 'enabled': true,'nombre':'2-3-17','tipoRespuesta':'funcion'},
                                         {'guia':1, 'enabled': true,'nombre':'2-3-30','tipoRespuesta':'funcion'},
                                         {'guia':1, 'enabled': true,'nombre':'2-5-9','tipoRespuesta':'funcion'},
                                         {'guia':2, 'enabled': true,'nombre':'3-2-2','tipoRespuesta':'valores'},

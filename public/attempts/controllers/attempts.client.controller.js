@@ -7,7 +7,7 @@ angular.module('attempts').controller('AttemptsController', ['$scope', '$routePa
         // Exponer el service Authentication
         $scope.authentication = Authentication;
         // Revisa si el usuario es el administrador
-        $scope.esAdmin = ($scope.authentication.user == null ? false : $scope.authentication.user.username == 'lcjimenez');
+        $scope.esAdmin = ($scope.authentication.user == null ? false : $scope.authentication.user.username == 'amaldonadoc');
 
  // // Crear un nuevo método controller para crear nuevos attempts
  //        $scope.create = function() {

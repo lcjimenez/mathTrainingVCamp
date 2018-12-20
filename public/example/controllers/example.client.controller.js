@@ -3,7 +3,7 @@ angular.module('example').controller('ExampleController', ['$scope', '$window', 
     $scope.authentication = Authentication;
     $scope.infoAssignment = InfoAssignment;
     // Revisa si el usuario es el administrador
-    $scope.esAdmin = ($scope.authentication.user == null ? false : $scope.authentication.user.username == 'lcjimenez');
+    $scope.esAdmin = ($scope.authentication.user == null ? false : $scope.authentication.user.username == 'amaldonadoc');
     //setTimeout(function() {MathJax.Hub.Queue(["Typeset",MathJax.Hub]);});
 
     // Se definen las asignaciones, con sus respectivos "tipos"
